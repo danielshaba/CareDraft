@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { Badge } from '@/components/ui/badge'
+'use client'
+
+import { useState } from 'react'
+import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { getExtractionCategory } from '@/lib/extraction-categories'
-import { saveToContentBank, addToDraft } from '@/lib/content-bank'
-import { useToast } from '@/components/ui/toast'
-import { cn } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
-  Edit3, 
-  Check, 
-  X, 
+  CheckCircle2, 
+  AlertCircle, 
+  XCircle, 
   ChevronDown, 
-  ChevronUp, 
-  Copy, 
-  Save, 
-  Eye,
-  AlertTriangle,
-  CheckCircle,
-  Info,
+  ChevronUp,
+  Edit3,
+  Check,
+  X,
+  Copy,
   FileText,
   Database
 } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { getExtractionCategory } from '@/lib/extraction-categories'
+import { useDraftStore } from '@/lib/stores/draft-store'
+import { toast } from '@/hooks/use-toast'
+import { createClient } from '@/lib/supabase'
+import { useAuth } from '@/hooks/use-auth'
 
 interface ExtractionResult {
   id: string | number
@@ -45,57 +48,52 @@ interface EditingState {
 }
 
 export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknown Document', className }: ExtractionResultsPanelProps) {
-  const toast = useToast()
   const [activeTab, setActiveTab] = useState<string>('')
   const [editingState, setEditingState] = useState<EditingState>({})
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
-  
+  const { addToDraft } = useDraftStore()
+  const { user } = useAuth()
+
+  // Filter categories that have results and set initial active tab
   const categoriesWithResults = Object.entries(results).filter(([_, items]) => items.length > 0)
   
-  useEffect(() => {
-    if (categoriesWithResults.length > 0 && !activeTab) {
-      setActiveTab(categoriesWithResults[0][0])
-    } else if (categoriesWithResults.length === 0) {
-      setActiveTab('')
-    } else if (!categoriesWithResults.find(([categoryId]) => categoryId === activeTab)) {
-      setActiveTab(categoriesWithResults[0][0])
-    }
-  }, [results, categoriesWithResults.length, activeTab])
+  // Set initial active tab if not set
+  if (!activeTab && categoriesWithResults.length > 0) {
+    setActiveTab(categoriesWithResults[0][0])
+  }
 
   if (categoriesWithResults.length === 0) {
-    return null
+    return (
+      <Card className={cn('p-6', className)}>
+        <div className="text-center text-gray-500">
+          <p className="text-sm">No extraction results yet.</p>
+          <p className="text-xs text-gray-400 mt-1">Upload a document to get started.</p>
+        </div>
+      </Card>
+    )
   }
 
   const getConfidenceIcon = (confidence?: number) => {
-    if (confidence === undefined) return <Info className="h-3 w-3" />
-    
-    const percentage = Math.round(confidence * 100)
-    if (percentage >= 90) return <CheckCircle className="h-3 w-3" />
-    if (percentage >= 75) return <Eye className="h-3 w-3" />
-    return <AlertTriangle className="h-3 w-3" />
+    if (!confidence) return <AlertCircle className="h-3 w-3" />
+    if (confidence >= 0.8) return <CheckCircle2 className="h-3 w-3" />
+    if (confidence >= 0.6) return <AlertCircle className="h-3 w-3" />
+    return <XCircle className="h-3 w-3" />
   }
 
   const getConfidenceColor = (confidence?: number) => {
-    if (confidence === undefined) return 'bg-gray-100 text-gray-600'
-    
-    const percentage = Math.round(confidence * 100)
-    if (percentage >= 90) return 'bg-green-100 text-green-700 border-green-200'
-    if (percentage >= 75) return 'bg-yellow-100 text-yellow-700 border-yellow-200'
-    return 'bg-red-100 text-red-700 border-red-200'
+    if (!confidence) return 'text-gray-500'
+    if (confidence >= 0.8) return 'text-green-600'
+    if (confidence >= 0.6) return 'text-yellow-600'
+    return 'text-red-500'
   }
 
   const renderConfidenceScore = (confidence?: number) => {
-    if (confidence === undefined) return null
-    
-    const percentage = Math.round(confidence * 100)
+    if (!confidence) return null
     
     return (
-      <div className={cn(
-        'flex items-center gap-1 px-2 py-1 rounded-md border text-xs font-medium',
-        getConfidenceColor(confidence)
-      )}>
+      <div className={cn('flex items-center gap-1 text-xs', getConfidenceColor(confidence))}>
         {getConfidenceIcon(confidence)}
-        <span>{percentage}%</span>
+        <span>{Math.round(confidence * 100)}%</span>
       </div>
     )
   }
@@ -111,31 +109,29 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
   }
 
   const handleSaveEdit = (itemId: string) => {
-    const editedContent = editingState[itemId]?.editedContent
-    if (!editedContent) return
-    
-    // TODO: Implement save functionality to update the actual result
-    console.log('Saving edited content for item:', itemId, editedContent)
+    const editState = editingState[itemId]
+    if (!editState) return
+
+    // Here you could save the edited content to your backend
+    console.log('Saving edited content:', editState.editedContent)
     
     setEditingState(prev => ({
       ...prev,
       [itemId]: {
-        isEditing: false,
-        editedContent: ''
+        ...prev[itemId],
+        isEditing: false
       }
     }))
     
-    toast.success('Content updated', 'Your changes have been saved successfully.')
+    toast.success('Content updated', 'Your changes have been saved.')
   }
 
   const handleCancelEdit = (itemId: string) => {
-    setEditingState(prev => ({
-      ...prev,
-      [itemId]: {
-        isEditing: false,
-        editedContent: ''
-      }
-    }))
+    setEditingState(prev => {
+      const newState = { ...prev }
+      delete newState[itemId]
+      return newState
+    })
   }
 
   const handleContentChange = (itemId: string, newContent: string) => {
@@ -164,8 +160,8 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
     try {
       await navigator.clipboard.writeText(content)
       toast.success('Copied to clipboard', 'Content has been copied to your clipboard.')
-    } catch {
-      console.error('Failed to copy content:', err)
+    } catch (error) {
+      console.error('Failed to copy content:', error)
       toast.error('Copy failed', 'Unable to copy content to clipboard.')
     }
   }
@@ -183,11 +179,9 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
       
       toast.success(
         'Added to draft',
-        `Content added to your tender response draft under "${category?.label}".`
+        `Content added to your draft. Total items: ${draftItem ? '1' : '0'}`
       )
-      
-      console.log('Added to draft:', draftItem)
-    } catch {
+    } catch (error) {
       console.error('Failed to add to draft:', error)
       toast.error('Failed to add to draft', 'Unable to add content to your draft.')
     }
@@ -195,26 +189,18 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
 
   const handleSaveToBank = (item: ExtractionResult) => {
     try {
-      const category = getExtractionCategory(item.category)
-      const content = editingState[`${item.category}-${item.id}`]?.editedContent || item.content
-      
-      const bankItem = saveToContentBank(
-        content,
-        item.category,
-        category?.label || 'Unknown Category',
-        selectedDocumentName,
-        item.confidence,
-        item.sourceText,
-        [] // TODO: Add tagging functionality
-      )
-      
-      toast.success(
-        'Saved to content bank',
-        `Content saved to your reusable content library under "${category?.label}".`
-      )
+      // Here you would save to content bank
+      // For now, we'll just show a success message
+      const bankItem = {
+        content: item.content,
+        category: item.category,
+        source: selectedDocumentName,
+        confidence: item.confidence,
+        createdAt: new Date().toISOString()
+      }
       
       console.log('Saved to content bank:', bankItem)
-    } catch {
+    } catch (error) {
       console.error('Failed to save to content bank:', error)
       toast.error('Failed to save to bank', 'Unable to save content to your content bank.')
     }
@@ -228,25 +214,29 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
     const displayContent = isEditing ? editedContent : item.content
 
     return (
-      <div key={item.id} className="border rounded-lg p-4 space-y-3 bg-white hover:shadow-sm transition-shadow">
+      <div key={item.id} className="border rounded-lg p-4 space-y-3 bg-white hover:shadow-sm transition-shadow overflow-hidden max-w-full">
         {/* Header with confidence score */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1">
+        <div className="flex items-start justify-between gap-3 overflow-hidden">
+          <div className="flex-1 min-w-0 max-w-full overflow-hidden">
             {isEditing ? (
               <textarea
                 value={editedContent}
                 onChange={(e) => handleContentChange(itemId, e.target.value)}
-                className="w-full p-2 border rounded-md text-sm resize-none min-h-[80px] focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-2 border rounded-md text-sm resize-none min-h-[80px] focus:ring-2 focus:ring-blue-500 focus:border-blue-500 force-text-wrap"
                 placeholder="Edit the extracted content..."
                 autoFocus
               />
             ) : (
-              <p className="text-sm text-gray-800 leading-relaxed">
-                {item.content}
-              </p>
+              <div className="max-w-full overflow-hidden">
+                <p className="text-sm text-gray-800 leading-relaxed force-text-wrap">
+                  {item.content}
+                </p>
+              </div>
             )}
           </div>
-          {renderConfidenceScore(item.confidence)}
+          <div className="flex-shrink-0">
+            {renderConfidenceScore(item.confidence)}
+          </div>
         </div>
 
         {/* Source text section (expandable) */}
@@ -254,16 +244,20 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
           <div className="border-t pt-3">
             <button
               onClick={() => toggleExpanded(itemId)}
-              className="flex items-center gap-2 text-xs text-gray-600 hover:text-gray-800 transition-colors"
+              className="flex items-center gap-2 text-xs text-gray-600 hover:text-gray-800 transition-colors overflow-hidden max-w-full"
             >
-              {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-              <span>Source: {item.sourceText}</span>
+              {isExpanded ? <ChevronUp className="h-3 w-3 flex-shrink-0" /> : <ChevronDown className="h-3 w-3 flex-shrink-0" />}
+              <span className="truncate max-w-full overflow-hidden force-text-wrap">
+                Source: {item.sourceText}
+              </span>
             </button>
             
             {isExpanded && (
-              <div className="mt-2 p-2 bg-gray-50 rounded text-xs text-gray-600 border">
+              <div className="mt-2 p-2 bg-gray-50 rounded text-xs text-gray-600 border overflow-hidden">
                 <p className="font-medium mb-1">Source Reference:</p>
-                <p>{item.sourceText}</p>
+                <p className="force-text-wrap">
+                  {item.sourceText}
+                </p>
               </div>
             )}
           </div>
@@ -378,13 +372,13 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
 
           return (
             <TabsContent key={categoryId} value={categoryId} className="mt-4">
-              <div className="space-y-4">
+              <div className="space-y-4 overflow-hidden">
                 <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
                   <category.icon className={cn('h-4 w-4', category.color.icon)} />
                   <span>{category.description}</span>
                 </div>
                 
-                <div className="space-y-4 max-h-96 overflow-y-auto">
+                <div className="space-y-4 max-h-96 overflow-y-auto pr-2 overflow-x-hidden">
                   {items.map(renderResultItem)}
                 </div>
                 

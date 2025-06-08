@@ -2,10 +2,54 @@
 
 import { createClient } from '@/lib/supabase'
 
+// Type definitions for PDF.js
+interface PDFDocumentProxy {
+  numPages: number
+  getPage: (pageNum: number) => Promise<PDFPageProxy>
+}
+
+interface PDFPageProxy {
+  getTextContent: () => Promise<{ items: Array<{ str: string }> }>
+}
+
+interface PDFLib {
+  getDocument: (config: { 
+    data: ArrayBuffer
+    verbosity?: number
+    disableAutoFetch?: boolean
+    disableStream?: boolean
+  }) => { promise: Promise<PDFDocumentProxy> }
+  GlobalWorkerOptions: { workerSrc: string }
+  version: string
+}
+
+interface MammothLib {
+  default: {
+    extractRawText: (config: { arrayBuffer: ArrayBuffer }) => Promise<{ value: string }>
+  }
+}
+
+interface JSZipLib {
+  loadAsync: (data: ArrayBuffer) => Promise<{
+    file: (name: string) => { async: (type: string) => Promise<string> } | null
+  }>
+}
+
 // Dynamic imports to avoid SSR issues
-let pdfjsLib: unknown = null
-let mammoth: unknown = null
-let JSZip: unknown = null
+let pdfjsLib: PDFLib | null = null
+let mammoth: MammothLib | null = null
+let JSZip: JSZipLib | null = null
+
+interface TextExtractionResult {
+  text: string
+  metadata: {
+    wordCount: number
+    characterCount: number
+    processingTime: number
+    extractionMethod: string
+  }
+  error?: string
+}
 
 const initializeLibraries = async () => {
   // Only initialize on client-side
@@ -14,37 +58,35 @@ const initializeLibraries = async () => {
   }
 
   if (!pdfjsLib) {
-    const pdfjs = await import('pdfjs-dist')
-    pdfjsLib = pdfjs.default || pdfjs
-    
-    // Configure worker for client-side use
-    if (typeof window !== 'undefined') {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
+    try {
+      const pdfjs = await import('pdfjs-dist')
+      pdfjsLib = (pdfjs.default || pdfjs) as PDFLib
+      
+      // Try multiple worker setup approaches
+      if (typeof window !== 'undefined') {
+        try {
+          // First try using local worker
+          pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js'
+        } catch (workerError) {
+          console.warn('Local worker setup failed, trying CDN fallback:', workerError)
+          // Fallback to CDN
+          pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`
+        }
+      }
+    } catch (error) {
+      console.error('Failed to initialize PDF.js:', error)
+      throw new Error('PDF.js initialization failed')
     }
   }
 
   if (!mammoth) {
-    mammoth = await import('mammoth')
+    mammoth = await import('mammoth') as MammothLib
   }
 
   if (!JSZip) {
-    JSZip = (await import('jszip')).default
+    JSZip = (await import('jszip')).default as JSZipLib
   }
 }
-
-export interface TextExtractionResult {
-  text: string
-  metadata: {
-    wordCount: number
-    characterCount: number
-    pageCount?: number
-    processingTime: number
-    extractionMethod: 'pdf' | 'docx' | 'odt'
-  }
-  error?: string
-}
-
-export type ExtractionMethod = 'pdf' | 'docx' | 'odt'
 
 /**
  * Extract text from a file stored in Supabase Storage
@@ -79,8 +121,9 @@ export async function extractTextFromStorage(
     
     // Determine file type and extract text
     const fileExtension = fileName.toLowerCase().split('.').pop()
+    
     let result: TextExtractionResult
-
+    
     switch (fileExtension) {
       case 'pdf':
         result = await extractFromPDF(arrayBuffer)
@@ -91,22 +134,25 @@ export async function extractTextFromStorage(
       case 'odt':
         result = await extractFromODT(arrayBuffer)
         break
+      case 'txt':
+        result = await extractFromTXT(arrayBuffer)
+        break
       default:
         throw new Error(`Unsupported file type: ${fileExtension}`)
     }
 
-    // Add processing time
+    // Update processing time
     result.metadata.processingTime = Date.now() - startTime
-
+    
     return result
-  } catch {
+  } catch (error) {
     return {
       text: '',
       metadata: {
         wordCount: 0,
         characterCount: 0,
         processingTime: Date.now() - startTime,
-        extractionMethod: 'pdf'
+        extractionMethod: 'error'
       },
       error: error instanceof Error ? error.message : 'Unknown extraction error'
     }
@@ -122,40 +168,62 @@ async function extractFromPDF(arrayBuffer: ArrayBuffer): Promise<TextExtractionR
   }
 
   try {
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
+    // Set up PDF loading options with error handling
+    const loadingTask = pdfjsLib.getDocument({
+      data: arrayBuffer,
+      verbosity: 0, // Reduce console noise
+      disableAutoFetch: false,
+      disableStream: false
+    })
+    
+    const pdf = await loadingTask.promise
     let fullText = ''
 
     // Extract text from each page
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      const page = await pdf.getPage(pageNum)
-      const textContent = await page.getTextContent()
-      
-      // Combine text items with proper spacing
-      const pageText = textContent.items
-        .map((item: unknown) => item.str)
-        .join(' ')
-      
-      fullText += pageText + '\n\n'
+      try {
+        const page = await pdf.getPage(pageNum)
+        const textContent = await page.getTextContent()
+        
+        // Combine text items with proper spacing
+        const pageText = textContent.items
+          .map((item: { str: string }) => item.str)
+          .join(' ')
+        
+        if (pageText.trim()) {
+          fullText += (fullText ? '\n\n' : '') + `Page ${pageNum}:\n${pageText.trim()}`
+        }
+      } catch (pageError) {
+        console.warn(`Failed to extract text from page ${pageNum}:`, pageError)
+        // Continue with other pages even if one fails
+        continue
+      }
     }
 
-    // Clean up text
-    const cleanText = fullText
-      .replace(/\s+/g, ' ')
-      .replace(/\n\s*\n/g, '\n\n')
-      .trim()
+    if (!fullText.trim()) {
+      throw new Error('No text content found in PDF')
+    }
 
     return {
-      text: cleanText,
+      text: fullText,
       metadata: {
-        wordCount: cleanText.split(/\s+/).filter((word: string) => word.length > 0).length,
-        characterCount: cleanText.length,
-        pageCount: pdf.numPages,
+        wordCount: fullText.split(/\s+/).filter(word => word.length > 0).length,
+        characterCount: fullText.length,
         processingTime: 0, // Will be set by caller
         extractionMethod: 'pdf'
       }
     }
-  } catch {
-    throw new Error(`PDF extraction failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+  } catch (error) {
+    return {
+      text: '',
+      metadata: {
+        wordCount: 0,
+        characterCount: 0,
+        processingTime: 0,
+        extractionMethod: 'pdf'
+      },
+      error: error instanceof Error ? error.message : 'Unknown extraction error'
+    }
   }
 }
 
@@ -171,17 +239,30 @@ async function extractFromDOCX(arrayBuffer: ArrayBuffer): Promise<TextExtraction
     const result = await mammoth.default.extractRawText({ arrayBuffer })
     const text = result.value.trim()
 
+    if (!text) {
+      throw new Error('No text content found in DOCX file')
+    }
+
     return {
       text,
       metadata: {
-        wordCount: text.split(/\s+/).filter((word: string) => word.length > 0).length,
+        wordCount: text.split(/\s+/).filter(word => word.length > 0).length,
         characterCount: text.length,
         processingTime: 0, // Will be set by caller
         extractionMethod: 'docx'
       }
     }
-  } catch {
-    throw new Error(`DOCX extraction failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+  } catch (error) {
+    return {
+      text: '',
+      metadata: {
+        wordCount: 0,
+        characterCount: 0,
+        processingTime: 0,
+        extractionMethod: 'docx'
+      },
+      error: error instanceof Error ? error.message : 'Unknown extraction error'
+    }
   }
 }
 
@@ -201,41 +282,72 @@ async function extractFromODT(arrayBuffer: ArrayBuffer): Promise<TextExtractionR
       throw new Error('content.xml not found in ODT file')
     }
 
-    const contentXml = await contentFile.async('text')
+    const xmlContent = await contentFile.async('text')
     
-    // Parse XML and extract text (basic implementation)
-    const textMatches = contentXml.match(/<text:p[^>]*>(.*?)<\/text:p>/g) || []
-    const text = textMatches
-      .map((match: string) => match.replace(/<[^>]*>/g, '').trim())
-      .filter((paragraph: string) => paragraph.length > 0)
-      .join('\n\n')
+    // Basic XML text extraction (remove tags)
+    const text = xmlContent
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+
+    if (!text) {
+      throw new Error('No text content found in ODT file')
+    }
 
     return {
       text,
       metadata: {
-        wordCount: text.split(/\s+/).filter((word: string) => word.length > 0).length,
+        wordCount: text.split(/\s+/).filter(word => word.length > 0).length,
         characterCount: text.length,
         processingTime: 0, // Will be set by caller
         extractionMethod: 'odt'
       }
     }
-  } catch {
-    throw new Error(`ODT extraction failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+  } catch (error) {
+    return {
+      text: '',
+      metadata: {
+        wordCount: 0,
+        characterCount: 0,
+        processingTime: 0,
+        extractionMethod: 'odt'
+      },
+      error: error instanceof Error ? error.message : 'Unknown extraction error'
+    }
   }
 }
 
 /**
- * Get human-readable extraction method name
+ * Extract text from TXT file
  */
-export function getExtractionMethodName(method: ExtractionMethod): string {
-  switch (method) {
-    case 'pdf':
-      return 'PDF.js'
-    case 'docx':
-      return 'Mammoth'
-    case 'odt':
-      return 'JSZip + XML'
-    default:
-      return 'Unknown'
+async function extractFromTXT(arrayBuffer: ArrayBuffer): Promise<TextExtractionResult> {
+  try {
+    const decoder = new TextDecoder('utf-8')
+    const text = decoder.decode(arrayBuffer).trim()
+
+    if (!text) {
+      throw new Error('No text content found in TXT file')
+    }
+
+    return {
+      text,
+      metadata: {
+        wordCount: text.split(/\s+/).filter(word => word.length > 0).length,
+        characterCount: text.length,
+        processingTime: 0, // Will be set by caller
+        extractionMethod: 'txt'
+      }
+    }
+  } catch (error) {
+    return {
+      text: '',
+      metadata: {
+        wordCount: 0,
+        characterCount: 0,
+        processingTime: 0,
+        extractionMethod: 'txt'
+      },
+      error: error instanceof Error ? error.message : 'Unknown extraction error'
+    }
   }
-} 
+}
