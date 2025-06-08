@@ -1,0 +1,492 @@
+{
+  "config": {
+    "configFile": "/Users/danielshaba/Downloads/CareDraft/caredraft/playwright-visual.config.ts",
+    "rootDir": "/Users/danielshaba/Downloads/CareDraft/caredraft/e2e/visual",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": "/Users/danielshaba/Downloads/CareDraft/caredraft/e2e/visual/visual-setup.ts",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-visual-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "playwright-visual-report/results.json"
+        }
+      ],
+      [
+        "list",
+        {
+          "printSteps": true
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/danielshaba/Downloads/CareDraft/caredraft/test-results-visual",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {},
+        "id": "chromium-visual",
+        "name": "chromium-visual",
+        "testDir": "/Users/danielshaba/Downloads/CareDraft/caredraft/e2e/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.visual.spec.ts"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/danielshaba/Downloads/CareDraft/caredraft/test-results-visual",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {},
+        "id": "webkit-visual",
+        "name": "webkit-visual",
+        "testDir": "/Users/danielshaba/Downloads/CareDraft/caredraft/e2e/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.visual.spec.ts"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/danielshaba/Downloads/CareDraft/caredraft/test-results-visual",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {},
+        "id": "firefox-visual",
+        "name": "firefox-visual",
+        "testDir": "/Users/danielshaba/Downloads/CareDraft/caredraft/e2e/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.visual.spec.ts"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/danielshaba/Downloads/CareDraft/caredraft/test-results-visual",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {},
+        "id": "mobile-visual",
+        "name": "mobile-visual",
+        "testDir": "/Users/danielshaba/Downloads/CareDraft/caredraft/e2e/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.visual.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.52.0",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "components.visual.spec.ts",
+      "file": "components.visual.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "UI Components Visual Regression",
+          "file": "components.visual.spec.ts",
+          "line": 1,
+          "column": 55,
+          "specs": [
+            {
+              "title": "Button Components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-visual",
+                  "projectName": "chromium-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "99b47709ad32662f2642-d7e26eafa271e8ad51f4",
+              "file": "components.visual.spec.ts",
+              "line": 1,
+              "column": 111
+            },
+            {
+              "title": "Button Components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-visual",
+                  "projectName": "webkit-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "99b47709ad32662f2642-8a421402f070c748bb3e",
+              "file": "components.visual.spec.ts",
+              "line": 1,
+              "column": 111
+            },
+            {
+              "title": "Button Components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-visual",
+                  "projectName": "firefox-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "99b47709ad32662f2642-0ee656f0ba2e9ec66691",
+              "file": "components.visual.spec.ts",
+              "line": 1,
+              "column": 111
+            },
+            {
+              "title": "Button Components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-visual",
+                  "projectName": "mobile-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "99b47709ad32662f2642-92835129cc3742d6545d",
+              "file": "components.visual.spec.ts",
+              "line": 1,
+              "column": 111
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "pages.visual.spec.ts",
+      "file": "pages.visual.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Page Visual Regression",
+          "file": "pages.visual.spec.ts",
+          "line": 1,
+          "column": 55,
+          "specs": [
+            {
+              "title": "Homepage Layout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-visual",
+                  "projectName": "chromium-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e8dd1e9fcc4424516661-b257a01ed8e8e0a0fc33",
+              "file": "pages.visual.spec.ts",
+              "line": 1,
+              "column": 102
+            },
+            {
+              "title": "Dashboard Layout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-visual",
+                  "projectName": "chromium-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e8dd1e9fcc4424516661-ca3ea109b019c1dc398c",
+              "file": "pages.visual.spec.ts",
+              "line": 1,
+              "column": 276
+            },
+            {
+              "title": "Homepage Layout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-visual",
+                  "projectName": "webkit-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e8dd1e9fcc4424516661-3d6f042f4ff53aa33dde",
+              "file": "pages.visual.spec.ts",
+              "line": 1,
+              "column": 102
+            },
+            {
+              "title": "Dashboard Layout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-visual",
+                  "projectName": "webkit-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e8dd1e9fcc4424516661-d1d64fcb3f225006ac55",
+              "file": "pages.visual.spec.ts",
+              "line": 1,
+              "column": 276
+            },
+            {
+              "title": "Homepage Layout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-visual",
+                  "projectName": "firefox-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e8dd1e9fcc4424516661-4ee313a784a8e8dab376",
+              "file": "pages.visual.spec.ts",
+              "line": 1,
+              "column": 102
+            },
+            {
+              "title": "Dashboard Layout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-visual",
+                  "projectName": "firefox-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e8dd1e9fcc4424516661-c5f62a9d7e63c03c7d10",
+              "file": "pages.visual.spec.ts",
+              "line": 1,
+              "column": 276
+            },
+            {
+              "title": "Homepage Layout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-visual",
+                  "projectName": "mobile-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e8dd1e9fcc4424516661-7b20f3d70b6adb1b227c",
+              "file": "pages.visual.spec.ts",
+              "line": 1,
+              "column": 102
+            },
+            {
+              "title": "Dashboard Layout",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-visual",
+                  "projectName": "mobile-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e8dd1e9fcc4424516661-72ce13034838d0f4c6dd",
+              "file": "pages.visual.spec.ts",
+              "line": 1,
+              "column": 276
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "performance.visual.spec.ts",
+      "file": "performance.visual.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Performance Monitoring",
+          "file": "performance.visual.spec.ts",
+          "line": 1,
+          "column": 55,
+          "specs": [
+            {
+              "title": "Homepage Performance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-visual",
+                  "projectName": "chromium-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b08e374153204e7be6aa-3419939b4cedc864cc06",
+              "file": "performance.visual.spec.ts",
+              "line": 1,
+              "column": 102
+            },
+            {
+              "title": "Homepage Performance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-visual",
+                  "projectName": "webkit-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b08e374153204e7be6aa-8f02058f9411705c41e7",
+              "file": "performance.visual.spec.ts",
+              "line": 1,
+              "column": 102
+            },
+            {
+              "title": "Homepage Performance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-visual",
+                  "projectName": "firefox-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b08e374153204e7be6aa-388a6cf40c7101be1a4d",
+              "file": "performance.visual.spec.ts",
+              "line": 1,
+              "column": 102
+            },
+            {
+              "title": "Homepage Performance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-visual",
+                  "projectName": "mobile-visual",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b08e374153204e7be6aa-3c02773fd8370b4b95d2",
+              "file": "performance.visual.spec.ts",
+              "line": 1,
+              "column": 102
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-06-07T02:03:46.226Z",
+    "duration": 25.617000000000075,
+    "expected": 0,
+    "skipped": 16,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

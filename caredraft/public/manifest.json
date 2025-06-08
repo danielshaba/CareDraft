@@ -1,0 +1,52 @@
+{
+  "name": "CareDraft - AI-Powered Care Proposal Platform",
+  "short_name": "CareDraft",
+  "description": "Create winning care proposals with AI-powered assistance",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#EAF7F7",
+  "theme_color": "#2A6F6F",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-GB",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/images/caredraft-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Access your CareDraft dashboard",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "32x32"
+        }
+      ]
+    },
+    {
+      "name": "Create Proposal",
+      "short_name": "New Proposal",
+      "description": "Start a new care proposal",
+      "url": "/proposals/create",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "32x32"
+        }
+      ]
+    }
+  ]
+} 

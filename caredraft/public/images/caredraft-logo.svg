@@ -1,0 +1,20 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- CareDraft Logo: Care Hand + Document + Text -->
+  <g>
+    <!-- Hand/Care Icon -->
+    <path d="M30 10C23.3726 10 18 15.3726 18 22V34C18 40.6274 23.3726 46 30 46C36.6274 46 42 40.6274 42 34V22C42 15.3726 36.6274 10 30 10Z" fill="#2A6F6F"/>
+    <!-- Fingers -->
+    <rect x="24" y="6" width="2" height="10" rx="1" fill="#2A6F6F"/>
+    <rect x="28" y="4" width="2" height="10" rx="1" fill="#2A6F6F"/>
+    <rect x="32" y="6" width="2" height="10" rx="1" fill="#2A6F6F"/>
+    <rect x="36" y="8" width="2" height="8" rx="1" fill="#2A6F6F"/>
+    <!-- Document Lines -->
+    <rect x="12" y="50" width="36" height="2" rx="1" fill="#1F4949"/>
+    <rect x="12" y="54" width="30" height="2" rx="1" fill="#1F4949"/>
+    <rect x="12" y="58" width="24" height="2" rx="1" fill="#1F4949"/>
+    
+    <!-- CareDraft Text -->
+    <text x="60" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#2A6F6F">Care</text>
+    <text x="60" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#1F4949">Draft</text>
+  </g>
+</svg> 

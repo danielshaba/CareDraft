@@ -1,0 +1,27 @@
+{
+  "scripts": {
+    "dev": "cd caredraft && npm run dev",
+    "build": "cd caredraft && npm run build",
+    "start": "cd caredraft && npm run start",
+    "lint": "cd caredraft && npm run lint",
+    "test": "cd caredraft && npm run test",
+    "test:e2e": "cd caredraft && npm run test:e2e",
+    "test:e2e:ui": "cd caredraft && npm run test:e2e:ui",
+    "test:e2e:headed": "cd caredraft && npm run test:e2e:headed",
+    "test:e2e:debug": "cd caredraft && npm run test:e2e:debug",
+    "test:e2e:report": "cd caredraft && npm run test:e2e:report",
+    "test:all": "cd caredraft && npm run test:all",
+    "test:supabase": "node scripts/test-supabase.js",
+    "setup:supabase": "node scripts/setup-supabase-config.js",
+    "build:analyze": "cd caredraft && npm run build:analyze"
+  },
+  "dependencies": {
+    "@next/bundle-analyzer": "^15.3.3",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "@types/react": "19.1.6",
+    "typescript": "5.8.3"
+  }
+}

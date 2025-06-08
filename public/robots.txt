@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /settings/
+Disallow: /notifications/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /auth/reset-password
+Disallow: /auth/verify-email
+
+# Allow specific public pages
+Allow: /auth/login
+Allow: /auth/signup
+Allow: /
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://caredraft.com/sitemap.xml 

@@ -1,0 +1,204 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: caredraft/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./caredraft
+      run: npm ci
+      
+    - name: Run ESLint
+      working-directory: ./caredraft
+      run: npm run lint
+      
+    - name: Type check
+      working-directory: ./caredraft
+      run: npx tsc --noEmit
+
+  unit-tests:
+    name: Unit Tests & Coverage
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: caredraft/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./caredraft
+      run: npm ci
+      
+    - name: Run unit tests with coverage
+      working-directory: ./caredraft
+      run: npm run test:ci
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./caredraft/coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+        verbose: true
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-reports
+        path: |
+          caredraft/coverage/
+          !caredraft/coverage/tmp/
+        retention-days: 30
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: caredraft/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./caredraft
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      working-directory: ./caredraft
+      run: npx playwright install --with-deps
+      
+    - name: Run E2E tests
+      working-directory: ./caredraft
+      run: npm run test:e2e:ci
+      
+    - name: Upload E2E test reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: e2e-test-results
+        path: |
+          caredraft/playwright-report/
+          caredraft/test-results/
+        retention-days: 30
+
+  visual-tests:
+    name: Visual Regression & Performance Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: caredraft/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./caredraft
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      working-directory: ./caredraft
+      run: npx playwright install --with-deps
+      
+    - name: Run visual regression tests
+      working-directory: ./caredraft
+      run: npm run test:visual:ci
+      
+    - name: Run performance tests
+      working-directory: ./caredraft
+      run: npm run test:performance
+      
+    - name: Upload visual test reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: visual-test-results
+        path: |
+          caredraft/playwright-visual-report/
+          caredraft/test-results-visual/
+        retention-days: 30
+        
+    - name: Upload visual snapshots
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: visual-snapshots-diff
+        path: |
+          caredraft/test-results-visual/
+        retention-days: 7
+
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: [unit-tests, e2e-tests, visual-tests]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: caredraft/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./caredraft
+      run: npm ci
+      
+    - name: Build application
+      working-directory: ./caredraft
+      run: npm run build
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files
+        path: |
+          caredraft/.next/
+          !caredraft/.next/cache/
+        retention-days: 7

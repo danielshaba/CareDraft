@@ -1,0 +1,525 @@
+# CareDraft - Product Requirements Document
+
+## 1. Overview & Context
+
+### Mission Statement
+CareDraft is an AI-powered SaaS platform designed specifically for UK care providers to streamline the creation and management of contract bids. Our mission is to transform the bidding process from a time-consuming, manual endeavor into an efficient, AI-assisted workflow that increases win rates and reduces preparation time.
+
+### Target Users
+- **Primary**: UK care agencies, bid teams, care home managers
+- **Secondary**: Compliance officers, business development teams
+- **Tertiary**: Directors and senior management overseeing bid processes
+
+### Business Objectives
+- Reduce bid turnaround time by 70% (from weeks to hours)
+- Increase win rates by 40% through improved compliance and quality
+- Automate 80% of compliance checking and requirement extraction
+- Enable teams to handle 3x more tender opportunities
+
+### Success Metrics
+- Average bid preparation time: < 24 hours from upload to first draft
+- Win rate improvement: +30% vs. baseline
+- User engagement: 50+ AI-assist calls per proposal
+- System reliability: < 1% error rate on LLM calls, 99.9% uptime
+
+## 2. User Personas & Use Cases
+
+### Persona 1: Sarah - Care Home Manager
+**Demographics**: 35-50 years old, 10+ years care sector experience
+**Goals**: Complete high-quality bids quickly, ensure compliance, win contracts
+**Pain Points**: Limited time, complex requirements, manual compliance checking
+**Tech Comfort**: Moderate (uses email, basic software)
+**Primary Use Cases**:
+- Upload tender documents and extract key requirements
+- Generate compliant bid responses using AI assistance
+- Track compliance requirements and deadlines
+
+### Persona 2: James - Professional Bid Writer
+**Demographics**: 25-40 years old, specialized in bid writing
+**Goals**: Produce winning bids efficiently, manage multiple proposals
+**Pain Points**: Repetitive content creation, research time, version control
+**Tech Comfort**: High (comfortable with complex software)
+**Primary Use Cases**:
+- Research regulations and social value guidelines
+- Collaborate on draft sections with team members
+- Manage multiple tenders simultaneously
+
+### Core Use Cases
+1. **Tender Document Processing**: Upload PDF/DOCX files and automatically extract compliance requirements, deadlines, and evaluation criteria
+2. **AI-Assisted Content Generation**: Brainstorm section content with context-aware AI guidance
+3. **Collaborative Draft Building**: Create and edit full bid responses with team collaboration features
+4. **Compliance Management**: Track and verify compliance requirements with automated checking
+5. **Knowledge Research**: Access internal knowledge base and external research with AI summarization
+
+## 3. Core Features by Module
+
+### Extract Module
+**Purpose**: Automatically process uploaded tender documents and extract key information
+
+**Key Features**:
+- **File Upload System**
+  - Support: PDF, DOCX, ODT formats (max 50MB)
+  - Automatic OCR and text extraction
+  - Document indexing and storage in Supabase
+  
+- **Smart Extraction Buttons**
+  - "Commissioner's Priorities" - Extract key priorities and strategic objectives
+  - "Compliance Requirements" - Identify mandatory requirements and standards
+  - "Dates & Timelines" - Extract submission deadlines and key milestones
+  - "Social Value Criteria" - Identify social value requirements and scoring
+  - "TUPE Requirements" - Extract staff transfer obligations
+  - "Evaluation Criteria" - Parse scoring methodology and weightings
+
+- **Results Interface**
+  - Tabbed results panel with categorized extractions
+  - "Copy to Draft" and "Save to Bank" actions for each item
+  - Confidence scores for AI extractions
+  - Manual edit capabilities for extracted content
+
+### Brainstorm Module
+**Purpose**: Generate relevant ideas and content for specific bid sections
+
+**Key Features**:
+- **Context Panel**
+  - Display active tender information
+  - Show current section being worked on
+  - Display word limits and requirements
+
+- **AI Source Selection**
+  - "Library AI" toggle - Use company knowledge base
+  - "Creative AI" toggle - Generate original content
+  - "Internet AI" toggle - Research current information
+
+- **Idea Generation**
+  - Prompt input with suggestion templates
+  - "Generate" button with loading states
+  - Batch generation (3-5 ideas per request)
+
+- **Idea Management**
+  - Idea cards with preview text
+  - Actions: "+" (add to draft), "♻️" (regenerate), "🗑️" (discard)
+  - Keyword highlighting for compliance terms
+  - Rating system for idea quality
+
+### Draft Builder Module
+**Purpose**: Collaborative rich-text editing environment for bid creation
+
+**Key Features**:
+- **Section Management**
+  - Hierarchical section tree (storyboard view)
+  - Word count limits with real-time tracking
+  - Status badges (Not Started, In Progress, Review, Complete)
+  - Owner assignment and due date tracking
+
+- **Rich Text Editor** 
+  - Toolbar: Bold, Italic, Underline, Bullets, Numbering, Headings
+  - **AI-Assist Options**: 
+    - 🪄 Elaborate (expand content)
+    - 🪄 Summarize (condense content)
+    - 🪄 Rewrite (improve clarity)
+  - ⚡ Compliance Check (verify against requirements)
+  - 📋 Answer Bank (insert saved responses)
+  - 🔍 Find & Replace functionality
+  - 🕒 Real-time word count display
+
+- **Collaboration Features**
+  - Inline comments with threading
+  - @mentions for team notifications
+  - Version history and track changes
+  - Auto-save every 30 seconds
+
+- **Document Actions**
+  - "Save Draft" with version control
+  - "Submit for Review" workflow
+  - Export to PDF/DOCX formats
+
+### Tender Details Module
+**Purpose**: Centralized tender information and compliance tracking
+
+**Key Features**:
+- **Tender Information Form**
+  - Tender Name/ID (required)
+  - Issuing Authority (dropdown with UK councils)
+  - Release Date and Submission Deadline (date pickers)
+  - Estimated Contract Value (currency input)
+  - Contract Duration (months/years)
+  - Service Type (dropdown: Residential, Domiciliary, Nursing, etc.)
+
+- **Evaluation Criteria Sliders**
+  - Quality weighting (0-100%)
+  - Price weighting (0-100%)
+  - Social Value weighting (0-100%)
+  - Experience weighting (0-100%)
+  - Auto-validation (must total 100%)
+
+- **Word Limits Configuration**
+  - Section-by-section word limits
+  - Add/remove sections dynamically
+  - Import limits from extracted tender
+
+- **Dynamic Compliance Checklist**
+  - Auto-populated from Extract module
+  - Manual addition of custom items
+  - Checkboxes with completion status
+  - Tooltips linking to source documents
+  - Notes field for each requirement
+  - Downloadable PDF checklist
+
+### Knowledge Hub Module
+**Purpose**: Intelligent research and knowledge management system
+
+**Key Features**:
+- **Smart Search Interface**
+  - Global search bar with filters
+  - "Use Library AI" checkbox (RAG-powered internal search)
+  - "Use Internet AI" checkbox (external research)
+  - Search history and saved queries
+
+- **Results Categorization**
+  - **"Internal Docs" Tab**: RAG-powered snippets from company knowledge
+  - **"External Web" Tab**: LLM summaries of authoritative sources
+  - **"Competitor News" Tab**: Industry intelligence (future phase)
+  - **"Policy Updates" Tab**: Regulatory changes (future phase)
+
+- **Content Actions**
+  - "Copy to Draft" - Insert directly into active section
+  - "Save to Answer Bank" - Store for future use
+  - "Visit Source" - Open original document/link
+  - Confidence scoring for AI-generated content
+
+- **Research Session Management**
+  - Sidebar with saved research sessions
+  - Actions: "Open", "Share", "Delete"
+  - "New Session" button for fresh research
+  - Session export to PDF/DOCX
+
+### Shared Components
+
+**Global Sidebar** (240px width):
+- 🔍 Search
+- 📊 Dashboard
+- 📝 Proposals
+- 👤 Assigned to Me
+- 📋 My Drafts
+- 🔍 Extract
+- 🧠 Knowledge Hub
+- ⚙️ Settings
+
+**Top Bar** (64px height):
+- CareDraft logo
+- Module tabs: Extract | Brainstorm | Draft Builder | Tender Details | Knowledge Hub
+- Utility icons: 🔔 Notifications | ❓ Help | 👤 Profile
+
+**Authentication**:
+- Supabase Auth with email "magic link"
+- Password reset and account management
+- Role-based access control (Admin, Manager, Writer, Viewer)
+
+## 4. User Flows & Navigation
+
+### Primary User Flow
+1. **Dashboard** → View active proposals and create new
+2. **Create New Proposal** → Initialize tender details
+3. **Tender Details** → Configure basic information and evaluation criteria
+4. **Extract** → Upload and process tender document
+5. **Brainstorm** → Generate ideas for specific sections
+6. **Draft Builder** → Write and collaborate on bid content
+7. **Knowledge Hub** → Research supporting information (ad-hoc)
+8. **Draft Builder** → Finalize and review content
+9. **Submit** → Export and submit final bid
+10. **Archive** → Store completed proposal for future reference
+
+### Data Persistence Flow
+- **Extract data** flows to Tender Details (auto-populate compliance checklist)
+- **Brainstorm ideas** flow to Draft Builder (insert into sections)
+- **Knowledge Hub research** flows to Draft Builder and Answer Bank
+- **Draft content** persists across sessions with auto-save
+- **Compliance items** track completion status globally
+
+## 5. Data & API Requirements
+
+### Supabase Database Schema
+
+**Users Table**:
+```sql
+- id (uuid, primary key)
+- email (text, unique)
+- full_name (text)
+- role (enum: admin, manager, writer, viewer)
+- organization_id (uuid, foreign key)
+- created_at (timestamp)
+```
+
+**Proposals Table**:
+```sql
+- id (uuid, primary key)
+- title (text)
+- issuing_authority (text)
+- deadline (timestamp)
+- status (enum: draft, review, submitted, archived)
+- owner_id (uuid, foreign key to users)
+- created_at (timestamp)
+- tender_document_url (text)
+```
+
+**Sections Table**:
+```sql
+- id (uuid, primary key)
+- proposal_id (uuid, foreign key)
+- title (text)
+- content (text)
+- word_limit (integer)
+- status (enum: not_started, in_progress, review, complete)
+- assigned_to (uuid, foreign key to users)
+- due_date (timestamp)
+- parent_section_id (uuid, nullable)
+```
+
+**ComplianceItems Table**:
+```sql
+- id (uuid, primary key)
+- proposal_id (uuid, foreign key)
+- requirement (text)
+- source_page (integer)
+- completed (boolean)
+- notes (text)
+- confidence_score (decimal)
+```
+
+**AnswerBank Table**:
+```sql
+- id (uuid, primary key)
+- title (text)
+- content (text)
+- category (text)
+- organization_id (uuid, foreign key)
+- created_by (uuid, foreign key to users)
+- usage_count (integer)
+```
+
+**ResearchSessions Table**:
+```sql
+- id (uuid, primary key)
+- proposal_id (uuid, foreign key)
+- query (text)
+- results (jsonb)
+- created_by (uuid, foreign key to users)
+- created_at (timestamp)
+```
+
+### Supabase Storage Buckets
+- **tender-documents**: Store uploaded PDF/DOCX files
+- **exports**: Store generated bid documents
+- **knowledge-base**: Store company knowledge documents
+
+### External APIs
+- **OpenAI/Anthropic**: LLM API for content generation and analysis
+- **Pinecone/Supabase Vector**: Embedding storage for RAG functionality
+- **Serper/Tavily**: Internet search API for Knowledge Hub
+
+### Environment Variables
+```
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+OPENAI_API_KEY=your_openai_key
+ANTHROPIC_API_KEY=your_anthropic_key
+PINECONE_API_KEY=your_pinecone_key
+SERPER_API_KEY=your_serper_key
+```
+
+## 6. Technical Architecture
+
+### Frontend Stack
+- **Framework**: Next.js 14+ with App Router
+- **Language**: TypeScript for type safety
+- **Styling**: Tailwind CSS for responsive design
+- **UI Components**: Radix UI primitives with custom styling
+- **Rich Text**: TipTap editor for Draft Builder
+- **State Management**: Zustand for global state
+- **Authentication**: Supabase Auth with SessionContextProvider
+
+### Folder Structure
+```
+/app
+  /(auth)
+    /login
+    /signup
+  /(dashboard)
+    /page.tsx
+    /proposals
+    /extract
+    /brainstorm
+    /draft-builder
+    /tender-details
+    /knowledge-hub
+/components
+  /ui (shared components)
+  /extract (Extract module components)
+  /brainstorm (Brainstorm module components)
+  /draft-builder (Draft Builder components)
+  /tender-details (Tender Details components)
+  /knowledge-hub (Knowledge Hub components)
+  /shared
+    /Sidebar.tsx
+    /TopBar.tsx
+    /AuthProvider.tsx
+/lib
+  /supabase.ts
+  /utils.ts
+  /api-client.ts
+/styles
+  /globals.css
+/utils
+  /constants.ts
+  /types.ts
+```
+
+### Key Technical Decisions
+- **Desktop-first responsive design** (min-width: 1024px optimized)
+- **Server-side rendering** for SEO and performance
+- **Edge functions** for AI API calls to reduce latency
+- **Real-time subscriptions** for collaborative editing
+- **Optimistic updates** for better user experience
+
+## 7. Design & Style Guidelines
+
+### Color Palette
+- **Primary Teal**: #3B9C9C (buttons, links, highlights)
+- **Secondary Coral**: #FF6B61 (CTAs, accent elements)
+- **Neutrals**: 
+  - Background: #F5F5F5
+  - Borders: #CCCCCC  
+  - Text: #333333
+- **Status Colors**:
+  - Success Green: #28A745
+  - Warning Amber: #FFC107
+  - Error Red: #DC3545
+
+### Typography
+- **Headings**: Poppins Medium (600 weight)
+  - H1: 32px, H2: 24px, H3: 20px, H4: 18px
+- **Body Text**: Open Sans Regular (400 weight)
+  - Body: 16px, Small: 14px, Caption: 12px
+- **UI Elements**: Lato for buttons and interface text
+
+### Iconography
+- **Style**: 2px stroke weight, 4px corner radius
+- **Size**: 16px (small), 20px (medium), 24px (large)
+- **Sources**: Lucide icons for consistency
+
+### Layout Standards
+- **Sidebar**: 240px fixed width
+- **Top Bar**: 64px fixed height
+- **Content Padding**: 24px margins
+- **Card Design**: 8px corner radius, subtle drop shadow (10% opacity)
+- **Grid**: 8px base unit for spacing consistency
+
+## 8. MVP & Roadmap
+
+### Phase 1: MVP (Months 1-3)
+**Core Foundation**
+- User registration/login with Supabase Auth
+- Basic Tender Details form and data persistence
+- File upload with simple text extraction (mock AI)
+- Brainstorm module with placeholder AI responses
+- Draft Builder with basic textarea (no rich text)
+- Static compliance checklist creation
+- Knowledge Hub with mock search results
+
+**Success Criteria**: Users can create accounts, upload tenders, and create basic drafts
+
+### Phase 2: AI Integration (Months 4-6)
+**Smart Features**
+- Real Supabase storage integration
+- OpenAI/Anthropic API integration for Extract module
+- RAG implementation for Knowledge Hub internal search
+- TipTap rich text editor in Draft Builder
+- Live compliance checking
+- Answer Bank functionality
+
+**Success Criteria**: AI-powered content generation and intelligent research
+
+### Phase 3: Collaboration & Analytics (Months 7-9)
+**Team Features**
+- Real-time collaborative editing
+- Comments and @mentions system
+- Notification system
+- Analytics dashboard for bid outcomes
+- Performance metrics and AI success tracking
+- Advanced compliance automation
+
+**Success Criteria**: Teams can collaborate effectively and track performance
+
+### Phase 4: Enterprise & Scale (Months 10-12)
+**Advanced Capabilities**
+- Desktop app packaging (Electron or PWA)
+- Advanced security (SSO, GDPR compliance)
+- Multi-organization support
+- Custom AI fine-tuning per client
+- API access for integrations
+- White-label options
+
+**Success Criteria**: Enterprise-ready platform with advanced features
+
+## 9. Success Metrics & KPIs
+
+### Primary Metrics
+- **Time Efficiency**: Average bid preparation time < 24 hours
+- **Win Rate**: 30% improvement vs. pre-CareDraft baseline
+- **User Adoption**: 80% monthly active user rate
+- **Content Quality**: 90% compliance check pass rate
+
+### Secondary Metrics
+- **AI Engagement**: 50+ AI-assist calls per proposal
+- **Collaboration**: 5+ team members per proposal average
+- **Knowledge Usage**: 70% of drafts include Knowledge Hub research
+- **System Performance**: 99.9% uptime, <2s response times
+
+### Business Metrics
+- **Revenue**: £500K ARR by end of Year 1
+- **Customer Growth**: 100+ organizations onboarded
+- **Retention**: 90% annual retention rate
+- **NPS**: Net Promoter Score > 50
+
+## 10. Appendices
+
+### Glossary of Terms
+- **CQC**: Care Quality Commission - UK healthcare regulator
+- **TUPE**: Transfer of Undertakings Protection of Employment
+- **RAG**: Retrieval-Augmented Generation for AI knowledge systems
+- **KLOI**: Key Lines of Inquiry used in CQC inspections
+- **Social Value**: Community benefits delivered through contracts
+- **ITT**: Invitation to Tender document
+
+### Example API Schemas
+
+**Extract Request**:
+```json
+{
+  "document_url": "https://storage.supabase.co/tender-docs/file.pdf",
+  "extraction_type": "compliance_requirements",
+  "context": "residential care tender"
+}
+```
+
+**Brainstorm Request**:
+```json
+{
+  "prompt": "Generate ideas for staffing approach",
+  "context": {
+    "tender_type": "domiciliary_care",
+    "word_limit": 500,
+    "requirements": ["24/7 coverage", "qualified nurses"]
+  },
+  "sources": ["library_ai", "creative_ai"]
+}
+```
+
+### Wireframe References
+- Dashboard: Clean card-based layout with proposal overview
+- Extract: Split-pane with document viewer and extraction results
+- Draft Builder: Traditional document editor with sidebar navigation
+- Knowledge Hub: Google-like search with categorized results
+
+This PRD provides the comprehensive foundation needed for frontend, backend, and design teams to build CareDraft as specified, with clear integration points for AI and Supabase functionality. 

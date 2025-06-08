@@ -1,0 +1,1 @@
+export class MockDataGenerator { static generateUser() { return { id: 'user-1', email: 'test@example.com', name: 'Test User', role: 'admin' }; } static generateDocument() { return { id: 'doc-1', title: 'Test Document', content: 'Test content', status: 'draft' }; } }

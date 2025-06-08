@@ -1,0 +1,13 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/deadline-processor",
+      "schedule": "0 */6 * * *"
+    }
+  ],
+  "functions": {
+    "app/api/cron/deadline-processor/route.ts": {
+      "maxDuration": 300
+    }
+  }
+} 

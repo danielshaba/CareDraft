@@ -1,0 +1,1 @@
+import { test, expect } from '@playwright/test'; test.describe('Performance Monitoring', () => { test('Homepage Performance', async ({ page }) => { const startTime = Date.now(); await page.goto('/'); await page.waitForLoadState('networkidle'); const loadTime = Date.now() - startTime; console.log('Load Time:', loadTime, 'ms'); expect(loadTime).toBeLessThan(5000); }); });

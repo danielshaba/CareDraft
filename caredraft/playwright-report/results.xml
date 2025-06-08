@@ -1,0 +1,42 @@
+<testsuites id="" name="" tests="15" failures="0" skipped="0" errors="0" time="15.280459">
+<testsuite name="simple-smoke.spec.ts" timestamp="2025-06-07T01:17:59.472Z" hostname="chromium" tests="3" failures="0" skipped="0" time="13.339" errors="0">
+<testcase name="CareDraft Basic Tests › should be able to run Playwright tests" classname="simple-smoke.spec.ts" time="4.601">
+</testcase>
+<testcase name="CareDraft Basic Tests › should handle basic browser interactions" classname="simple-smoke.spec.ts" time="4.454">
+</testcase>
+<testcase name="CareDraft Basic Tests › should work on different viewport sizes" classname="simple-smoke.spec.ts" time="4.284">
+</testcase>
+</testsuite>
+<testsuite name="simple-smoke.spec.ts" timestamp="2025-06-07T01:17:59.472Z" hostname="firefox" tests="3" failures="0" skipped="0" time="12.295" errors="0">
+<testcase name="CareDraft Basic Tests › should be able to run Playwright tests" classname="simple-smoke.spec.ts" time="5.779">
+</testcase>
+<testcase name="CareDraft Basic Tests › should handle basic browser interactions" classname="simple-smoke.spec.ts" time="4.265">
+</testcase>
+<testcase name="CareDraft Basic Tests › should work on different viewport sizes" classname="simple-smoke.spec.ts" time="2.251">
+</testcase>
+</testsuite>
+<testsuite name="simple-smoke.spec.ts" timestamp="2025-06-07T01:17:59.472Z" hostname="webkit" tests="3" failures="0" skipped="0" time="4.823" errors="0">
+<testcase name="CareDraft Basic Tests › should be able to run Playwright tests" classname="simple-smoke.spec.ts" time="1.539">
+</testcase>
+<testcase name="CareDraft Basic Tests › should handle basic browser interactions" classname="simple-smoke.spec.ts" time="1.626">
+</testcase>
+<testcase name="CareDraft Basic Tests › should work on different viewport sizes" classname="simple-smoke.spec.ts" time="1.658">
+</testcase>
+</testsuite>
+<testsuite name="simple-smoke.spec.ts" timestamp="2025-06-07T01:17:59.472Z" hostname="Mobile Chrome" tests="3" failures="0" skipped="0" time="3.645" errors="0">
+<testcase name="CareDraft Basic Tests › should be able to run Playwright tests" classname="simple-smoke.spec.ts" time="1.14">
+</testcase>
+<testcase name="CareDraft Basic Tests › should handle basic browser interactions" classname="simple-smoke.spec.ts" time="1.174">
+</testcase>
+<testcase name="CareDraft Basic Tests › should work on different viewport sizes" classname="simple-smoke.spec.ts" time="1.331">
+</testcase>
+</testsuite>
+<testsuite name="simple-smoke.spec.ts" timestamp="2025-06-07T01:17:59.472Z" hostname="Mobile Safari" tests="3" failures="0" skipped="0" time="2.027" errors="0">
+<testcase name="CareDraft Basic Tests › should be able to run Playwright tests" classname="simple-smoke.spec.ts" time="0.8">
+</testcase>
+<testcase name="CareDraft Basic Tests › should handle basic browser interactions" classname="simple-smoke.spec.ts" time="0.662">
+</testcase>
+<testcase name="CareDraft Basic Tests › should work on different viewport sizes" classname="simple-smoke.spec.ts" time="0.565">
+</testcase>
+</testsuite>
+</testsuites>
