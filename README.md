@@ -1,6 +1,6 @@
 # CareDraft
 
-A comprehensive care management platform built with Next.js, TypeScript, and Supabase. CareDraft helps organizations streamline their care documentation, compliance tracking, and proposal management processes.
+A comprehensive care tender management platform built with Next.js, TypeScript, and Supabase. CareDraft helps organizations streamline their tender documentation, compliance tracking, and proposal management processes.
 
 ## 🚀 Features
 
