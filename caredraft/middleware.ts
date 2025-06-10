@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase'
+import { createServerClient } from '@supabase/ssr'
 
 // Define route patterns
 const authRoutes = ['/login', '/signup', '/reset-password', '/auth']
@@ -18,20 +19,39 @@ const roleBasedRoutes = {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   
-  // Skip middleware for static files and API routes
+  // Skip middleware for static files, API routes, and auth callbacks
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/static') ||
     pathname.includes('.') ||
-    pathname.startsWith('/favicon')
+    pathname.startsWith('/favicon') ||
+    pathname.startsWith('/auth/callback') ||
+    pathname === '/api/auth/callback'
   ) {
     return NextResponse.next()
   }
 
   try {
     // Create Supabase client for middleware
-    const { supabase, response } = updateSession(request)
+    const response = await updateSession(request)
+    
+    // We need to create a new server client to get user data
+    // The updateSession function already handles session refresh
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll()
+          },
+          setAll() {
+            // No need to set cookies in middleware, updateSession handles it
+          },
+        },
+      }
+    )
     
     // Try to get the user - if there's no session, this will fail and that's ok
     let user = null

@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/components/providers/AuthProvider'
 import { loginFormSchema, type LoginFormData } from '@/lib/auth.validation'
 import { InlineLoader } from '@/components/LoadingSpinner'
@@ -14,6 +15,7 @@ import CareDraftLogo from '@/components/ui/CareDraftLogo'
 
 export default function LoginPage() {
   const { signIn, loading: authLoading } = useAuth()
+  const searchParams = useSearchParams()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -29,6 +31,21 @@ export default function LoginPage() {
   })
 
   const watchedEmail = watch('email', '')
+
+  // Check for URL error parameters on component mount
+  useEffect(() => {
+    const urlError = searchParams.get('error')
+    const urlMessage = searchParams.get('message')
+    
+    if (urlError && urlMessage) {
+      setSubmitError(decodeURIComponent(urlMessage))
+      // Clear the URL parameters to prevent the error from persisting on reload
+      const url = new URL(window.location.href)
+      url.searchParams.delete('error')
+      url.searchParams.delete('message')
+      window.history.replaceState({}, '', url.toString())
+    }
+  }, [searchParams])
 
   const onSubmit = async (data: LoginFormData) => {
     if (isSubmitting || authLoading) return
