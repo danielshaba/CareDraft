@@ -1,25 +1,28 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { 
-  Search,
-  ScanText, 
-  Lightbulb, 
-  Edit3, 
-  FileSearch, 
+  Search, 
+  Bell, 
+  Settings, 
+  LogOut,
+  Menu, 
+  ChevronDown, 
+  ScanText,
+  Lightbulb,
+  Edit3,
+  FileSearch,
   Database,
   HelpCircle,
-  User,
-  ChevronDown,
-  Settings,
-  LogOut,
-  Menu
+  User
 } from 'lucide-react'
-import { useAuth } from '@/components/providers/MinimalAuthProvider'
+import { useAuth } from '@/components/providers/AuthProvider'
 import { NotificationDropdown } from '@/components/notifications/NotificationDropdown'
 import CareDraftLogo from '@/components/ui/CareDraftLogo'
+
+// Context and providers (removed unused imports)
 
 interface ModuleTab {
   id: string
@@ -145,23 +148,23 @@ export function TopBar({ className = '', onMenuClick }: TopBarProps) {
                 key={tab.id}
                 href={tab.href}
                 className={`
-                  relative group flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200
-                  ${isActive
-                    ? 'bg-white text-brand-coral shadow-sm'
-                    : 'text-neutral-600 hover:text-brand-teal hover:bg-white/70 focus:bg-white/70 focus:text-brand-teal focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50'
+                  flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-200
+                  ${isActive 
+                    ? 'bg-white text-brand-primary-500 shadow-sm'
+                    : 'text-white hover:text-brand-primary-100 hover:bg-white/10'
                   }
                 `}
                 title={tab.description}
               >
                 <Icon 
-                  className={`h-4 w-4 ${isActive ? 'text-brand-coral' : ''}`} 
+                  className={`h-4 w-4 ${isActive ? 'text-brand-primary-500' : ''}`} 
                   strokeWidth={2} 
                 />
                 <span className="hidden lg:block">{tab.label}</span>
                 
                 {/* Active indicator */}
                 {isActive && (
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-brand-coral rounded-full" />
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-brand-primary-500 rounded-full" />
                 )}
               </Link>
             )
@@ -213,7 +216,7 @@ export function TopBar({ className = '', onMenuClick }: TopBarProps) {
               className="flex items-center space-x-2 p-2 rounded-lg hover:bg-brand-teal-light transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50"
               aria-label="Profile menu"
             >
-              <div className="w-7 h-7 bg-brand-coral rounded-full flex items-center justify-center">
+              <div className="w-7 h-7 bg-brand-primary-500 rounded-full flex items-center justify-center">
                 <User className="h-4 w-4 text-white" strokeWidth={2} />
               </div>
               <ChevronDown className="h-4 w-4 text-neutral-600 hidden sm:block" strokeWidth={2} />

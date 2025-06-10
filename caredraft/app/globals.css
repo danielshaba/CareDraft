@@ -111,7 +111,7 @@
 
   /* Interactive Text - Updated with brand colors */
   .text-link {
-    @apply font-sans text-brand-teal hover:text-brand-teal-dark underline underline-offset-2 transition-colors duration-200;
+    @apply font-sans text-brand-accent-500 hover:text-brand-accent-600 underline underline-offset-2 transition-colors duration-200;
   }
 
   .text-button {
@@ -120,11 +120,11 @@
 
   /* Brand Text - Updated with new brand colors */
   .text-brand {
-    @apply font-sans font-bold text-brand-coral;
+    @apply font-sans font-bold text-brand-primary-500;
   }
 
   .text-brand-accent {
-    @apply font-sans font-semibold text-brand-teal;
+    @apply font-sans font-semibold text-brand-accent-500;
   }
 }
 
@@ -188,24 +188,24 @@
   }
 
   .btn-text-outline {
-    @apply text-button text-brand-coral;
+    @apply text-button text-brand-primary-500;
   }
 
   /* CareDraft Brand Button Styles */
   .btn-primary {
-    @apply bg-brand-coral hover:bg-brand-coral-dark text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand-coral focus:ring-opacity-50;
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-primary-500 hover:bg-brand-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-500 transition-colors duration-200;
   }
 
   .btn-secondary {
-    @apply bg-brand-teal hover:bg-brand-teal-dark text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50;
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-accent-500 hover:bg-brand-accent-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-accent-500 transition-colors duration-200;
   }
 
   .btn-outline {
-    @apply border-2 border-brand-coral text-brand-coral hover:bg-brand-coral hover:text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand-coral focus:ring-opacity-50;
+    @apply inline-flex items-center px-4 py-2 border border-brand-primary-500 text-sm font-medium rounded-md text-brand-primary-500 bg-white hover:bg-brand-primary-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-500 transition-all duration-200;
   }
 
   .btn-ghost {
-    @apply text-neutral-600 hover:text-brand-teal hover:bg-brand-teal-light font-medium px-6 py-3 rounded-lg transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50;
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-neutral-600 bg-transparent hover:bg-brand-accent-50 hover:text-brand-accent-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-accent-500 transition-all duration-200;
   }
 
   /* Card Styles with CareDraft Branding */
@@ -292,7 +292,7 @@
 
   /* CareDraft Brand Utility Classes */
   .text-brand-primary {
-    @apply text-brand-500;
+    @apply text-brand-primary-500;
   }
   
   .bg-brand-primary {

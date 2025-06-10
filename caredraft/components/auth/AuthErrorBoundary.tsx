@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { AlertCircle, RefreshCw, LogOut, Home } from 'lucide-react'
-import { useAuth } from '@/components/providers/MinimalAuthProvider'
+import { useAuth } from '@/components/providers/AuthProvider'
 
 interface AuthErrorBoundaryState {
   hasError: boolean

@@ -16,7 +16,7 @@ import {
   Folder,
   Clock
 } from 'lucide-react'
-import { useAuth } from '@/components/providers/MinimalAuthProvider'
+import { useAuth } from '@/components/providers/AuthProvider'
 import { ProtectedComponent } from '@/components/ProtectedComponent'
 import CareDraftLogo from '@/components/ui/CareDraftLogo'
 
@@ -209,8 +209,8 @@ export function Sidebar({ className = '' }: SidebarProps) {
                 w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ease-in-out
                 ${level === 0 ? 'mb-1' : 'mb-0.5'}
                 ${active
-                  ? 'bg-brand-coral-light text-brand-coral border-r-2 border-brand-coral'
-                  : 'text-neutral-600 hover:bg-brand-teal-light hover:text-brand-teal focus:bg-brand-teal-light focus:text-brand-teal focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50'
+                  ? 'bg-brand-primary-50 text-brand-primary-500 border-r-2 border-brand-primary-500'
+                  : 'text-neutral-600 hover:bg-brand-primary-50 hover:text-brand-primary-500 focus:bg-brand-primary-50 focus:text-brand-primary-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500 focus:ring-opacity-50'
                 }
               `}
               style={{ paddingLeft: `${16 + level * 16}px` }}
@@ -218,7 +218,7 @@ export function Sidebar({ className = '' }: SidebarProps) {
               <Icon className="h-5 w-5 mr-3" strokeWidth={2} />
               <span className="flex-1 text-left">{item.label}</span>
               {item.badge && (
-                <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-brand-coral text-white rounded-full">
+                <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-brand-primary-500 text-white rounded-full">
                   {item.badge}
                 </span>
               )}
@@ -234,8 +234,8 @@ export function Sidebar({ className = '' }: SidebarProps) {
                 flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ease-in-out
                 ${level === 0 ? 'mb-1' : 'mb-0.5'}
                 ${active
-                  ? 'bg-brand-coral-light text-brand-coral border-r-2 border-brand-coral'
-                  : 'text-neutral-600 hover:bg-brand-teal-light hover:text-brand-teal focus:bg-brand-teal-light focus:text-brand-teal focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50'
+                  ? 'bg-brand-primary-50 text-brand-primary-500 border-r-2 border-brand-primary-500'
+                  : 'text-neutral-600 hover:bg-brand-primary-50 hover:text-brand-primary-500 focus:bg-brand-primary-50 focus:text-brand-primary-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500 focus:ring-opacity-50'
                 }
               `}
               style={{ paddingLeft: `${16 + level * 16}px` }}
@@ -243,7 +243,7 @@ export function Sidebar({ className = '' }: SidebarProps) {
               <Icon className="h-5 w-5 mr-3" strokeWidth={2} />
               <span className="flex-1">{item.label}</span>
               {item.badge && (
-                <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-brand-coral text-white rounded-full">
+                <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-brand-primary-500 text-white rounded-full">
                   {item.badge}
                 </span>
               )}
@@ -276,7 +276,7 @@ export function Sidebar({ className = '' }: SidebarProps) {
       {/* User Info */}
       <div className="px-6 py-4 border-b border-neutral-100">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-brand-coral rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 bg-brand-primary-500 rounded-full flex items-center justify-center">
             <User className="h-4 w-4 text-white" strokeWidth={2} />
           </div>
           <div className="flex-1 min-w-0">

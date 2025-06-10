@@ -22,30 +22,52 @@ const config: Config = {
       colors: {
         // CareDraft Brand Colors
         brand: {
-          // Primary coral color as specified in requirements
-          coral: "#FF6B6B",
-          "coral-light": "#FFE5E5",
-          "coral-dark": "#E55555",
-          // Secondary teal color as specified in requirements
-          teal: "#4ECDC4",
-          "teal-light": "#E8F9F8",
-          "teal-dark": "#3BA5A0",
-          // Current brand primary (keeping for backwards compatibility)
-          primary: "#2A6F6F",
-          "primary-dark": "#1F4949",
-          "primary-light": "#EAF7F7",
-          // Brand color scale for CareDraft
-          50: "#EAF7F7",
-          100: "#D5F0F0",
-          200: "#ABE0E0",
-          300: "#81D1D1",
-          400: "#5DB1B1",
-          500: "#2A6F6F",
-          600: "#1F4949",
-          700: "#255C5C",
-          800: "#1F4949",
-          900: "#1A3636",
-          950: "#0F1E1E",
+          50: '#f0fdfd',   // Very light teal
+          100: '#ccfbf1',  // Light mint
+          200: '#99f6e4',  // Lighter teal
+          300: '#5eead4',  // Medium light teal
+          400: '#2dd4bf',  // Medium teal
+          500: '#3B9C9C',  // Primary brand color
+          600: '#0d9488',  // Darker teal
+          700: '#0f766e',  // Dark teal
+          800: '#115e59',  // Very dark teal
+          900: '#134e4a',  // Darkest teal
+        },
+        'brand-primary': {
+          50: '#f0fdfd',
+          100: '#ccfbf1', 
+          200: '#99f6e4',
+          300: '#5eead4',
+          400: '#2dd4bf',
+          500: '#3B9C9C',  // Primary #3B9C9C
+          600: '#0d9488',
+          700: '#0f766e',
+          800: '#115e59',
+          900: '#134e4a',
+        },
+        'brand-accent': {
+          50: '#f0fdfd',
+          100: '#ccfbf1',
+          200: '#99f6e4', 
+          300: '#5eead4',
+          400: '#2dd4bf',
+          500: '#2A6F6F',  // Accent #2A6F6F
+          600: '#0f766e',
+          700: '#134e4a',
+          800: '#115e59',
+          900: '#0c4a4e',
+        },
+        'brand-secondary': {
+          50: '#EAF7F7',   // Secondary #EAF7F7
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065f46',
+          900: '#064e3b',
         },
         // Neutral grays for consistency
         neutral: {

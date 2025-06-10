@@ -6,6 +6,7 @@
 import React, { useState, useRef } from 'react';
 import { NotificationIndicator } from './NotificationIndicator';
 import { NotificationPanel } from './NotificationPanel';
+import { useAuth } from '@/components/providers/AuthProvider'
 
 interface NotificationDropdownProps {
   /** Size variant for the bell indicator */
