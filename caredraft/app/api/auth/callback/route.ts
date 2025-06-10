@@ -77,7 +77,67 @@ export async function GET(request: Request) {
 
     console.log('Auth successful - User:', data.user.email)
     
-    // Determine the correct redirect URL
+    // Check if this is a new user who needs onboarding
+    try {
+      const { data: existingUser, error: userError } = await supabase
+        .from('users')
+        .select('id, full_name, created_at')
+        .eq('id', data.user.id)
+        .single()
+      
+      if (userError && userError.code !== 'PGRST116') { // PGRST116 = not found
+        console.error('Error checking user existence:', userError)
+        // Continue with normal flow if there's an error
+      } else if (!existingUser) {
+        console.log('New user detected - creating basic profile and redirecting to onboarding')
+        
+        // Create a minimal user profile for new users  
+        const { error: createUserError } = await supabase
+          .from('users')
+          .insert({
+            id: data.user.id,
+            email: data.user.email || '',
+            full_name: data.user.email?.split('@')[0] || 'New User',
+            organization_id: 'default-org', // Temporary - will be updated in onboarding
+            role: 'admin',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          })
+        
+        if (createUserError) {
+          console.error('Error creating user profile:', createUserError)
+          // Continue to onboarding anyway - they can complete setup there
+        } else {
+          console.log('Basic user profile created')
+        }
+        
+        // New user - redirect to onboarding instead of dashboard
+        const redirectUrl = next === '/dashboard' ? '/onboarding/welcome' : next
+        
+        // Determine the correct redirect URL
+        const forwardedHost = request.headers.get('x-forwarded-host')
+        const isLocalEnv = process.env.NODE_ENV === 'development'
+        
+        let finalRedirectUrl: string
+        if (isLocalEnv) {
+          finalRedirectUrl = `${origin}${redirectUrl}`
+        } else if (forwardedHost) {
+          finalRedirectUrl = `https://${forwardedHost}${redirectUrl}`
+        } else {
+          finalRedirectUrl = `${origin}${redirectUrl}`
+        }
+        
+        console.log('Redirecting new user to onboarding:', finalRedirectUrl)
+        return NextResponse.redirect(finalRedirectUrl)
+      } else {
+        console.log('Existing user detected - proceeding to dashboard')
+      }
+    } catch (checkError) {
+      console.error('Error during new user check:', checkError)
+      // Continue with normal flow if there's an error
+    }
+    
+    // Determine the correct redirect URL for existing users
     const forwardedHost = request.headers.get('x-forwarded-host')
     const isLocalEnv = process.env.NODE_ENV === 'development'
     

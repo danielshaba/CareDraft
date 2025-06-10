@@ -10,15 +10,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { 
   Building2, 
   Mail, 
-  Lock, 
   Search, 
   MapPin, 
   ArrowRight,
   AlertCircle,
   Loader2,
   Shield,
-  Eye,
-  EyeOff
+  User
 } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -29,34 +27,28 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import CareDraftLogo from '@/components/ui/CareDraftLogo'
 import { useOnboardingStore } from '@/lib/stores/onboarding-store'
+import { useAuth } from '@/components/providers/AuthProvider'
+import { createClient } from '@/lib/supabase'
 import { 
   CompaniesHouseCompany, 
   formatCompanyName, 
   formatCompanyDescription 
 } from '@/lib/services/companies-house'
 
-// Validation schema
-const signupSchema = z.object({
+// Validation schema for profile setup
+const profileSetupSchema = z.object({
   companyName: z.string().min(2, 'Company name must be at least 2 characters'),
-  adminEmail: z.string().email('Please enter a valid email address'),
-  password: z.string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/(?=.*[a-z])/, 'Password must contain at least one lowercase letter')
-    .regex(/(?=.*[A-Z])/, 'Password must contain at least one uppercase letter')
-    .regex(/(?=.*\d)/, 'Password must contain at least one number'),
-  confirmPassword: z.string(),
+  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
   agreedToTerms: z.boolean().refine(val => val, 'You must agree to the terms and conditions'),
   agreedToPrivacy: z.boolean().refine(val => val, 'You must agree to the privacy policy'),
   marketingConsent: z.boolean().optional()
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword']
 })
 
-type SignupFormData = z.infer<typeof signupSchema>
+type ProfileSetupFormData = z.infer<typeof profileSetupSchema>
 
 export default function OnboardingWelcomePage() {
   const router = useRouter()
+  const { user } = useAuth()
   const { 
     companyBasicInfo, 
     updateCompanyBasicInfo, 
@@ -73,8 +65,7 @@ export default function OnboardingWelcomePage() {
   const [showResults, setShowResults] = useState(false)
   const [searchLoading, setSearchLoading] = useState(false)
   const [selectedCompany, setSelectedCompany] = useState<CompaniesHouseCompany | null>(null)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [isCreatingProfile, setIsCreatingProfile] = useState(false)
   
   // Refs
   const searchTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
@@ -88,13 +79,11 @@ export default function OnboardingWelcomePage() {
     setValue,
     watch,
     trigger
-  } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<ProfileSetupFormData>({
+    resolver: zodResolver(profileSetupSchema),
     defaultValues: {
       companyName: companyBasicInfo.name || '',
-      adminEmail: companyBasicInfo.adminEmail || '',
-      password: '',
-      confirmPassword: '',
+      fullName: user?.email?.split('@')[0] || '',
       agreedToTerms: companyBasicInfo.agreedToTerms || false,
       agreedToPrivacy: companyBasicInfo.agreedToPrivacy || false,
       marketingConsent: companyBasicInfo.marketingConsent || false
@@ -102,6 +91,13 @@ export default function OnboardingWelcomePage() {
   })
 
   const watchedCompanyName = watch('companyName')
+
+  // Redirect if user is not authenticated
+  useEffect(() => {
+    if (!user) {
+      router.replace('/login')
+    }
+  }, [user, router])
 
   // Company search with debouncing
   useEffect(() => {
@@ -164,40 +160,62 @@ export default function OnboardingWelcomePage() {
     trigger('companyName')
   }
 
-  // Form submission
-  const onSubmit = async (data: SignupFormData) => {
+  // Form submission - Update user profile with company information
+  const onSubmit = async (data: ProfileSetupFormData) => {
+    if (!user) {
+      setError('submit', 'No authenticated user found')
+      return
+    }
+
     try {
-      setLoading(true)
+      setIsCreatingProfile(true)
       clearError('submit')
+      
+      const supabase = createClient()
       
       // Update onboarding store
       updateCompanyBasicInfo({
         name: data.companyName,
-        adminEmail: data.adminEmail,
-        password: data.password,
-        confirmPassword: data.confirmPassword,
+        adminEmail: user.email || '',
         agreedToTerms: data.agreedToTerms,
         agreedToPrivacy: data.agreedToPrivacy,
         marketingConsent: data.marketingConsent || false
       })
 
-      // TODO: Create user account with Supabase
-      // For now, just proceed to email verification
+      // Update the existing user profile with the full name and company info
+      const { error: userError } = await supabase
+        .from('users')
+        .update({
+          full_name: data.fullName,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id)
+
+      if (userError) {
+        console.error('Error updating user profile:', userError)
+        setError('submit', 'Failed to update profile. Please try again.')
+        return
+      }
+
+      console.log('User profile updated successfully')
       
-      // Navigate to email verification step
-      nextStep()
-      router.push('/onboarding/verify-email')
+      // Navigate to dashboard since profile is set up
+      router.push('/dashboard')
       
     } catch (error) {
-      console.error('Signup error:', error)
-      setError('submit', 'Failed to create account. Please try again.')
+      console.error('Profile setup error:', error)
+      setError('submit', 'Failed to set up profile. Please try again.')
     } finally {
-      setLoading(false)
+      setIsCreatingProfile(false)
     }
   }
 
+  if (!user) {
+    return <div>Redirecting...</div>
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-light via-white to-brand-light flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-brand-secondary via-white to-brand-secondary/50 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -210,14 +228,22 @@ export default function OnboardingWelcomePage() {
               <CareDraftLogo className="h-12 w-auto" />
             </div>
             <CardTitle className="text-2xl font-bold text-brand-primary">
-              Welcome to CareDraft
+              Complete Your Profile
             </CardTitle>
             <CardDescription className="text-gray-600">
-              Let's set up your account to get started with intelligent tender management
+              Welcome! Let's set up your CareDraft account to get started
             </CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6">
+            {/* Display authenticated user email */}
+            <div className="bg-brand-secondary/20 p-3 rounded-lg">
+              <div className="flex items-center text-sm text-gray-600">
+                <Mail className="w-4 h-4 mr-2" />
+                Authenticated as: <span className="font-medium ml-1">{user.email}</span>
+              </div>
+            </div>
+
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Company Name with Autocomplete */}
               <div className="space-y-2 relative">
@@ -256,7 +282,7 @@ export default function OnboardingWelcomePage() {
                           key={company.company_number}
                           type="button"
                           onClick={() => handleCompanySelect(company)}
-                          className="w-full px-4 py-3 text-left hover:bg-brand-light focus:bg-brand-light focus:outline-none border-b border-gray-100 last:border-b-0"
+                          className="w-full px-4 py-3 text-left hover:bg-brand-secondary/10 focus:bg-brand-secondary/10 focus:outline-none border-b border-gray-100 last:border-b-0"
                         >
                           <div className="font-medium text-gray-900 text-sm">
                             {formatCompanyName(company)}
@@ -284,146 +310,88 @@ export default function OnboardingWelcomePage() {
                 )}
               </div>
 
-              {/* Admin Email */}
+              {/* Full Name */}
               <div className="space-y-2">
-                <Label htmlFor="adminEmail" className="text-sm font-medium text-gray-700">
-                  <Mail className="w-4 h-4 inline mr-2" />
-                  Admin Email Address
+                <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
+                  <User className="w-4 h-4 inline mr-2" />
+                  Full Name
                 </Label>
                 <Input
-                  {...register('adminEmail')}
-                  type="email"
-                  placeholder="admin@yourcompany.com"
-                  className={formErrors.adminEmail ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-brand-primary'}
-                  autoComplete="email"
+                  {...register('fullName')}
+                  type="text"
+                  placeholder="Enter your full name"
+                  className={formErrors.fullName ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-brand-primary'}
+                  autoComplete="name"
                 />
-                {formErrors.adminEmail && (
+                {formErrors.fullName && (
                   <p className="text-sm text-red-600 flex items-center">
                     <AlertCircle className="w-4 h-4 mr-1" />
-                    {formErrors.adminEmail.message}
+                    {formErrors.fullName.message}
                   </p>
                 )}
               </div>
 
-              {/* Password */}
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                  <Lock className="w-4 h-4 inline mr-2" />
-                  Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    {...register('password')}
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Create a strong password"
-                    className={`pr-10 ${formErrors.password ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-brand-primary'}`}
-                    autoComplete="new-password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-                {formErrors.password && (
-                  <p className="text-sm text-red-600 flex items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
-                    {formErrors.password.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Confirm Password */}
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">
-                  <Lock className="w-4 h-4 inline mr-2" />
-                  Confirm Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    {...register('confirmPassword')}
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    placeholder="Confirm your password"
-                    className={`pr-10 ${formErrors.confirmPassword ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-brand-primary'}`}
-                    autoComplete="new-password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-                  >
-                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-                {formErrors.confirmPassword && (
-                  <p className="text-sm text-red-600 flex items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
-                    {formErrors.confirmPassword.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Consent Checkboxes */}
-              <div className="space-y-4 pt-4 border-t border-gray-200">
+              {/* Terms and Conditions */}
+              <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <Checkbox 
+                  <Checkbox
                     {...register('agreedToTerms')}
+                    id="agreedToTerms"
                     className="mt-1"
                   />
-                  <div className="text-sm text-gray-600">
+                  <Label htmlFor="agreedToTerms" className="text-sm text-gray-700 leading-5">
                     I agree to the{' '}
-                    <Link href="/terms" className="text-brand-primary hover:underline" target="_blank">
-                      Terms and Conditions
+                    <Link 
+                      href="/terms" 
+                      className="text-brand-primary hover:text-brand-accent underline"
+                      target="_blank"
+                    >
+                      Terms of Service
                     </Link>
-                    {formErrors.agreedToTerms && (
-                      <p className="text-red-600 text-xs mt-1 flex items-center">
-                        <AlertCircle className="w-3 h-3 mr-1" />
-                        {formErrors.agreedToTerms.message}
-                      </p>
-                    )}
-                  </div>
+                  </Label>
                 </div>
+                {formErrors.agreedToTerms && (
+                  <p className="text-sm text-red-600 flex items-center">
+                    <AlertCircle className="w-4 h-4 mr-1" />
+                    {formErrors.agreedToTerms.message}
+                  </p>
+                )}
 
                 <div className="flex items-start space-x-3">
-                  <Checkbox 
+                  <Checkbox
                     {...register('agreedToPrivacy')}
+                    id="agreedToPrivacy"
                     className="mt-1"
                   />
-                  <div className="text-sm text-gray-600">
+                  <Label htmlFor="agreedToPrivacy" className="text-sm text-gray-700 leading-5">
                     I agree to the{' '}
-                    <Link href="/privacy" className="text-brand-primary hover:underline" target="_blank">
+                    <Link 
+                      href="/privacy" 
+                      className="text-brand-primary hover:text-brand-accent underline"
+                      target="_blank"
+                    >
                       Privacy Policy
                     </Link>
-                    {formErrors.agreedToPrivacy && (
-                      <p className="text-red-600 text-xs mt-1 flex items-center">
-                        <AlertCircle className="w-3 h-3 mr-1" />
-                        {formErrors.agreedToPrivacy.message}
-                      </p>
-                    )}
-                  </div>
+                  </Label>
                 </div>
+                {formErrors.agreedToPrivacy && (
+                  <p className="text-sm text-red-600 flex items-center">
+                    <AlertCircle className="w-4 h-4 mr-1" />
+                    {formErrors.agreedToPrivacy.message}
+                  </p>
+                )}
 
                 <div className="flex items-start space-x-3">
-                  <Checkbox 
+                  <Checkbox
                     {...register('marketingConsent')}
+                    id="marketingConsent"
                     className="mt-1"
                   />
-                  <div className="text-sm text-gray-600">
-                    I would like to receive updates about new features and tender opportunities
-                    <span className="text-xs text-gray-500 block mt-1">(Optional)</span>
-                  </div>
+                  <Label htmlFor="marketingConsent" className="text-sm text-gray-700 leading-5">
+                    I would like to receive product updates and marketing communications
+                  </Label>
                 </div>
               </div>
-
-              {/* Data Security Notice */}
-              <Alert className="bg-brand-light/50 border-brand-primary/30">
-                <Shield className="h-4 w-4 text-brand-primary" />
-                <AlertDescription className="text-sm text-gray-700">
-                  <strong>Your data is secure:</strong> We use enterprise-grade encryption and never use your data to retrain LLMs without explicit consent.
-                </AlertDescription>
-              </Alert>
 
               {/* Error Display */}
               {errors.submit && (
@@ -438,27 +406,22 @@ export default function OnboardingWelcomePage() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                disabled={isLoading}
-                className="w-full bg-brand-primary hover:bg-brand-primary-dark text-white font-medium py-3 rounded-lg transition-colors"
+                disabled={isCreatingProfile}
+                className="w-full bg-brand-primary hover:bg-brand-accent text-white py-3 text-base font-medium"
               >
-                {isLoading ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                {isCreatingProfile ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Setting up your account...
+                  </>
                 ) : (
-                  <ArrowRight className="w-4 h-4 mr-2" />
+                  <>
+                    Complete Setup
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </>
                 )}
-                {isLoading ? 'Creating Account...' : 'Create Account'}
               </Button>
             </form>
-
-            {/* Sign In Link */}
-            <div className="text-center pt-4 border-t border-gray-200">
-              <p className="text-sm text-gray-600">
-                Already have an account?{' '}
-                <Link href="/auth/signin" className="text-brand-primary hover:underline font-medium">
-                  Sign in here
-                </Link>
-              </p>
-            </div>
           </CardContent>
         </Card>
       </motion.div>
