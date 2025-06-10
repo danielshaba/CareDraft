@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { ragQueryPipeline, RAGQueryRequest } from '@/lib/services/rag-query-pipeline'
 import { rateLimit, rateLimitConfigs } from '@/lib/rate-limiter'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     // Apply rate limiting
     const limitResult = await rateLimit(request, rateLimitConfigs.ai)

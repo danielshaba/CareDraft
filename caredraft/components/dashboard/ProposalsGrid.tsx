@@ -64,7 +64,7 @@ const EmptyState: React.FC<{
       {hasFilters && onClearFilters && (
         <button
           onClick={onClearFilters}
-          className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
+          className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500"
           style={{ fontFamily: 'var(--font-open-sans)' }}
         >
           Clear filters
@@ -107,7 +107,7 @@ const ErrorState: React.FC<{ error: string, onRetry?: () => void }> = ({ error, 
       {onRetry && (
         <button
           onClick={onRetry}
-          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
+          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-500 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500"
           style={{ fontFamily: 'var(--font-open-sans)' }}
         >
           Try again
@@ -167,7 +167,7 @@ const GridControls: React.FC<{
             id="status-filter"
             value={statusFilter}
             onChange={(e) => onStatusFilter(e.target.value as StatusFilter)}
-            className="text-sm border-gray-300 rounded-md shadow-sm focus:border-brand-primary focus:ring-brand-primary"
+            className="text-sm border-gray-300 rounded-md shadow-sm focus:border-brand-500 focus:ring-brand-500"
             style={{ fontFamily: 'var(--font-open-sans)' }}
           >
             {statusOptions.map((option) => (
@@ -191,7 +191,7 @@ const GridControls: React.FC<{
             id="sort-field"
             value={sortConfig.field}
             onChange={(e) => onSort({ ...sortConfig, field: e.target.value as SortField })}
-            className="text-sm border-gray-300 rounded-md shadow-sm focus:border-brand-primary focus:ring-brand-primary"
+            className="text-sm border-gray-300 rounded-md shadow-sm focus:border-brand-500 focus:ring-brand-500"
             style={{ fontFamily: 'var(--font-open-sans)' }}
           >
             {sortOptions.map((option) => (
@@ -205,7 +205,7 @@ const GridControls: React.FC<{
               ...sortConfig, 
               direction: sortConfig.direction === 'asc' ? 'desc' : 'asc' 
             })}
-            className="p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-1 rounded"
+            className="p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-1 rounded"
             title={`Sort ${sortConfig.direction === 'asc' ? 'descending' : 'ascending'}`}
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

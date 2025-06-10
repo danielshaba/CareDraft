@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/components/providers/MinimalAuthProvider'
 import { ProtectedComponent } from '@/components/ProtectedComponent'
+import CareDraftLogo from '@/components/ui/CareDraftLogo'
 
 interface NavigationItem {
   id: string
@@ -205,19 +206,19 @@ export function Sidebar({ className = '' }: SidebarProps) {
             <button
               onClick={() => toggleExpand(item.id)}
               className={`
-                w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors
+                w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ease-in-out
                 ${level === 0 ? 'mb-1' : 'mb-0.5'}
                 ${active
-                  ? 'bg-brand-primary-light text-brand-primary-dark border-r-2 border-brand-primary'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-brand-coral-light text-brand-coral border-r-2 border-brand-coral'
+                  : 'text-neutral-600 hover:bg-brand-teal-light hover:text-brand-teal focus:bg-brand-teal-light focus:text-brand-teal focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50'
                 }
               `}
-              style={{ paddingLeft: `${12 + level * 16}px` }}
+              style={{ paddingLeft: `${16 + level * 16}px` }}
             >
               <Icon className="h-5 w-5 mr-3" strokeWidth={2} />
               <span className="flex-1 text-left">{item.label}</span>
               {item.badge && (
-                <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-brand-primary-light text-brand-primary-dark rounded-full">
+                <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-brand-coral text-white rounded-full">
                   {item.badge}
                 </span>
               )}
@@ -230,19 +231,19 @@ export function Sidebar({ className = '' }: SidebarProps) {
             <Link
               href={item.href}
               className={`
-                flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors
+                flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ease-in-out
                 ${level === 0 ? 'mb-1' : 'mb-0.5'}
                 ${active
-                  ? 'bg-brand-primary-light text-brand-primary-dark border-r-2 border-brand-primary'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-brand-coral-light text-brand-coral border-r-2 border-brand-coral'
+                  : 'text-neutral-600 hover:bg-brand-teal-light hover:text-brand-teal focus:bg-brand-teal-light focus:text-brand-teal focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50'
                 }
               `}
-              style={{ paddingLeft: `${12 + level * 16}px` }}
+              style={{ paddingLeft: `${16 + level * 16}px` }}
             >
               <Icon className="h-5 w-5 mr-3" strokeWidth={2} />
               <span className="flex-1">{item.label}</span>
               {item.badge && (
-                <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-brand-primary-light text-brand-primary-dark rounded-full">
+                <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-brand-coral text-white rounded-full">
                   {item.badge}
                 </span>
               )}
@@ -263,28 +264,26 @@ export function Sidebar({ className = '' }: SidebarProps) {
   }
 
   return (
-    <div className={`fixed left-0 top-0 h-full w-60 bg-white border-r border-gray-200 z-30 ${className}`}>
+    <div className={`fixed left-0 top-0 h-full w-sidebar bg-white border-r border-neutral-200 z-30 ${className}`}>
       {/* Logo Section */}
-      <div className="h-16 flex items-center px-4 border-b border-gray-200">
-        <Link href="/dashboard" className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">CD</span>
-          </div>
-          <span className="text-xl font-bold text-gray-900">CareDraft</span>
+      <div className="h-topbar flex items-center px-6 border-b border-neutral-200">
+        <Link href="/dashboard" className="flex items-center space-x-3">
+          <CareDraftLogo size="sm" variant="icon-only" />
+          <span className="text-xl font-semibold text-neutral-900">CareDraft</span>
         </Link>
       </div>
 
       {/* User Info */}
-      <div className="px-4 py-3 border-b border-gray-100">
+      <div className="px-6 py-4 border-b border-neutral-100">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-            <User className="h-4 w-4 text-gray-600" strokeWidth={2} />
+          <div className="w-8 h-8 bg-brand-coral rounded-full flex items-center justify-center">
+            <User className="h-4 w-4 text-white" strokeWidth={2} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate">
+            <p className="text-sm font-medium text-neutral-900 truncate">
               {user?.email?.split('@')[0] || 'User'}
             </p>
-            <p className="text-xs text-gray-500 capitalize">
+            <p className="text-xs text-neutral-500 capitalize">
               {user?.role || 'Member'}
             </p>
           </div>
@@ -292,14 +291,14 @@ export function Sidebar({ className = '' }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
         {navigationItems.map(item => renderNavigationItem(item))}
       </nav>
 
       {/* Footer */}
-      <div className="px-4 py-3 border-t border-gray-100">
-        <div className="text-xs text-gray-500 text-center">
-          <p>CareDraft v1.0</p>
+      <div className="px-6 py-4 border-t border-neutral-100">
+        <div className="text-xs text-neutral-500 text-center">
+          <p className="font-medium">CareDraft v1.0</p>
           <p>© 2024 All rights reserved</p>
         </div>
       </div>

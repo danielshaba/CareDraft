@@ -95,7 +95,7 @@ export default function KnowledgeHubPage() {
         isSearching: false
       }))
       
-    } catch {
+    } catch (error) {
       console.error('Search error:', error)
       setSearchState(prev => ({ ...prev, isSearching: false }))
     }

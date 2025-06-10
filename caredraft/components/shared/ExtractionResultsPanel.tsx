@@ -222,7 +222,7 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
               <textarea
                 value={editedContent}
                 onChange={(e) => handleContentChange(itemId, e.target.value)}
-                className="w-full p-2 border rounded-md text-sm resize-none min-h-[80px] focus:ring-2 focus:ring-blue-500 focus:border-blue-500 force-text-wrap"
+                className="w-full p-2 border rounded-md text-sm resize-none min-h-[80px] focus:ring-2 focus:ring-brand-500 focus:border-brand-500 force-text-wrap"
                 placeholder="Edit the extracted content..."
                 autoFocus
               />
@@ -314,7 +314,7 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
             <Button
               size="sm"
               onClick={() => handleCopyToDraft(item)}
-              className="h-7 px-2 text-xs bg-blue-600 hover:bg-blue-700"
+              className="h-7 px-2 text-xs bg-brand-600 hover:bg-brand-700"
             >
               <FileText className="h-3 w-3 mr-1" />
               Copy to Draft

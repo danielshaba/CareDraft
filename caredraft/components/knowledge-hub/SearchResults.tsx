@@ -132,7 +132,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'document': return 'bg-blue-100 text-blue-800'
+      case 'document': return 'bg-brand-100 text-brand-800'
       case 'policy': case 'compliance': case 'regulatory': return 'bg-red-100 text-red-800'
       case 'template': return 'bg-green-100 text-green-800'
       case 'research': return 'bg-purple-100 text-purple-800'

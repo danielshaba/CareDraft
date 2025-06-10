@@ -94,7 +94,7 @@ export function AnswerBankManagementInterface() {
           isLoading: false
         }))
       }
-    } catch {
+    } catch (error) {
       console.error('Failed to load answers:', error)
       setState(prev => ({ ...prev, isLoading: false }))
     }
@@ -108,7 +108,7 @@ export function AnswerBankManagementInterface() {
       if (data.success) {
         setState(prev => ({ ...prev, categories: data.data || [] }))
       }
-    } catch {
+    } catch (error) {
       console.error('Failed to load categories:', error)
     }
   }
@@ -122,7 +122,7 @@ export function AnswerBankManagementInterface() {
           setState(prev => ({ ...prev, analytics: data.data }))
         }
       }
-    } catch {
+    } catch (error) {
       console.error('Failed to load analytics:', error)
     }
   }
@@ -157,7 +157,7 @@ export function AnswerBankManagementInterface() {
       
       setState(prev => ({ ...prev, selectedAnswers: [] }))
       loadAnswers()
-    } catch {
+    } catch (error) {
       console.error('Failed to delete answers:', error)
     }
   }

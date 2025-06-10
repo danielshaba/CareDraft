@@ -4,10 +4,10 @@ import Link from 'next/link'
 
 export default function SearchPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-brand-50 to-indigo-100">
       <div className="container mx-auto p-6">
         <div className="mb-6">
-          <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+          <Link href="/" className="inline-flex items-center text-brand-600 hover:text-brand-800 transition-colors">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
           </Link>

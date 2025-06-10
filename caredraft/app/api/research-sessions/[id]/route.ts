@@ -3,11 +3,13 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { Database } from '@/lib/database.types'
 
-interface Params {
-  id: string
+interface RouteParams {
+  params: Promise<{
+    id: string
+  }>
 }
 
-export async function GET(_: NextRequest, { params }: { params: Params }) {
+export async function GET(_: NextRequest, { params }: RouteParams) {
   try {
     const supabase = createRouteHandlerClient<Database>({ cookies })
     
@@ -17,7 +19,7 @@ export async function GET(_: NextRequest, { params }: { params: Params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
 
     // Get research session
     const { data: session, error } = await supabase
@@ -43,7 +45,7 @@ export async function GET(_: NextRequest, { params }: { params: Params }) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: Params }) {
+export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
     const supabase = createRouteHandlerClient<Database>({ cookies })
     
@@ -53,7 +55,7 @@ export async function PUT(request: NextRequest, { params }: { params: Params }) 
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
 
     // Check if user has permission to update (must be owner)
     const { data: existingSession, error: fetchError } = await supabase
@@ -79,7 +81,7 @@ export async function PUT(request: NextRequest, { params }: { params: Params }) 
     const { title, query, results, session_metadata } = body
 
     // Build update object with only provided fields
-    const updateData: unknown = {}
+    const updateData: any = {}
     
     if (title !== undefined) {
       if (title.length > 200) {
@@ -128,7 +130,7 @@ export async function PUT(request: NextRequest, { params }: { params: Params }) 
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Params }) {
+export async function DELETE(_request: NextRequest, { params }: RouteParams) {
   try {
     const supabase = createRouteHandlerClient<Database>({ cookies })
     
@@ -138,7 +140,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Params 
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
 
     // Check if user has permission to delete (must be owner)
     const { data: existingSession, error: fetchError } = await supabase

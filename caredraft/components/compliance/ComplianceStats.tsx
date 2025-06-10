@@ -98,7 +98,7 @@ export function ComplianceStats({ stats, className = '' }: ComplianceStatsProps)
             <h4 className="text-sm font-medium text-gray-700">Source Breakdown</h4>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-blue-500 rounded"></div>
+                <div className="w-3 h-3 bg-brand-500 rounded"></div>
                 <span className="text-sm text-gray-600">AI Extracted</span>
               </div>
               <Badge variant="secondary" className="text-xs">

@@ -189,7 +189,7 @@ function DocumentFallback({ fileName, fileType, filePath }: { fileName: string, 
 
   const getFileIcon = () => {
     if (fileType.includes('word') || fileName.endsWith('.docx')) {
-      return <FileText className="h-16 w-16 text-blue-600" />
+      return <FileText className="h-16 w-16 text-brand-600" />
     }
     if (fileName.endsWith('.odt')) {
       return <FileText className="h-16 w-16 text-orange-600" />

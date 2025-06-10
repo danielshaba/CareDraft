@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import { 
   EXPORT_CONFIG, 
-  EXPORT_ERROR_CODES,
+  EXPORT_ERROR_CODES as _EXPORT_ERROR_CODES,
   type ExportFormat,
-  type DocumentTemplate,
-  type QualityPreset 
+  type DocumentTemplate as _DocumentTemplate,
+  type QualityPreset as _QualityPreset 
 } from '@/lib/config/export.config';
 
 // Export options validation schema
@@ -130,12 +130,12 @@ export class ExportValidator {
         data: ExportOptionsSchema.parse(options),
         errors: null,
       };
-    } catch {
+    } catch (error) {
       if (error instanceof z.ZodError) {
         return {
           success: false,
           data: null,
-          errors: error.errors.map(err => ({
+          errors: error.errors.map((err: any) => ({
             field: err.path.join('.'),
             message: err.message,
             code: err.code,
@@ -156,12 +156,12 @@ export class ExportValidator {
         data: ProposalExportDataSchema.parse(data),
         errors: null,
       };
-    } catch {
+    } catch (error) {
       if (error instanceof z.ZodError) {
         return {
           success: false,
           data: null,
-          errors: error.errors.map(err => ({
+          errors: error.errors.map((err: any) => ({
             field: err.path.join('.'),
             message: err.message,
             code: err.code,
@@ -287,9 +287,9 @@ export class ExportValidator {
    * Validate export permissions (placeholder for future implementation)
    */
   static validateExportPermissions(
-    userId: string, 
-    proposalId: string, 
-    organizationId: string
+    _userId: string, 
+    _proposalId: string, 
+    _organizationId: string
   ): {
     canExport: boolean;
     canEmail: boolean;
@@ -308,7 +308,7 @@ export class ExportValidator {
   /**
    * Validate rate limits (placeholder for future implementation)
    */
-  static validateRateLimit(userId: string): {
+  static validateRateLimit(_userId: string): {
     allowed: boolean;
     remainingQuota: number;
     resetTime?: Date;

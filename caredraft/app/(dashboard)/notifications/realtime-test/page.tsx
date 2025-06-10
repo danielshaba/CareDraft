@@ -100,7 +100,7 @@ function NotificationTestContent() {
   const getPriorityColor = (priority: number) => {
     if (priority >= 4) return 'text-red-600 bg-red-50';
     if (priority >= 3) return 'text-orange-600 bg-orange-50';
-    if (priority >= 2) return 'text-blue-600 bg-blue-50';
+    if (priority >= 2) return 'text-brand-600 bg-brand-50';
     return 'text-gray-600 bg-gray-50';
   };
 
@@ -172,7 +172,7 @@ function NotificationTestContent() {
             <div className="flex gap-2">
               <button
                 onClick={reconnect}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center gap-2"
+                className="px-4 py-2 bg-brand-600 text-white rounded-md hover:bg-brand-700 flex items-center gap-2"
               >
                 <RefreshCw className="w-4 h-4" />
                 Reconnect
@@ -196,9 +196,9 @@ function NotificationTestContent() {
           
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
-                <div className="text-2xl font-bold text-blue-600">{unreadCount}</div>
-                <div className="text-sm text-blue-600">Unread</div>
+              <div className="text-center p-3 bg-brand-50 rounded-lg">
+                <div className="text-2xl font-bold text-brand-600">{unreadCount}</div>
+                <div className="text-sm text-brand-600">Unread</div>
               </div>
               <div className="text-center p-3 bg-green-50 rounded-lg">
                 <div className="text-2xl font-bold text-green-600">{realtimeNotifications.length}</div>
@@ -267,8 +267,8 @@ function NotificationTestContent() {
           ))}
         </div>
 
-        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-          <p className="text-blue-700 text-sm">
+        <div className="mt-4 p-3 bg-brand-50 border border-brand-200 rounded-md">
+          <p className="text-brand-700 text-sm">
             <strong>Note:</strong> These test buttons simulate creating notifications that would trigger real-time updates. 
             In development, the API endpoints may not be available, but the real-time system will still demonstrate 
             connection management and UI updates.
@@ -292,7 +292,7 @@ function NotificationTestContent() {
               <div
                 key={notification.id}
                 className={`p-4 border rounded-lg ${
-                  notification.read_status ? 'bg-gray-50 border-gray-200' : 'bg-blue-50 border-blue-200'
+                  notification.read_status ? 'bg-gray-50 border-gray-200' : 'bg-brand-50 border-brand-200'
                 }`}
               >
                 <div className="flex items-start justify-between">
@@ -319,7 +319,7 @@ function NotificationTestContent() {
                     {!notification.read_status && (
                       <button
                         onClick={() => markAsRead(notification.id)}
-                        className="text-xs px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        className="text-xs px-2 py-1 bg-brand-600 text-white rounded hover:bg-brand-700"
                       >
                         Mark Read
                       </button>

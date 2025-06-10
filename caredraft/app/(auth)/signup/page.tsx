@@ -68,7 +68,7 @@ export default function SignupPage() {
   // Show success state after magic link is sent
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-brand-primary-light to-brand-primary-light/50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gradient-to-br from-brand-50 to-brand-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           {/* Logo */}
           <div className="flex justify-center mb-8">
@@ -83,14 +83,14 @@ export default function SignupPage() {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Check your email</h2>
             <p className="text-gray-600 mb-6">
-              We&apos;ve sent a magic link to <span className="font-medium text-brand-primary">{watchedEmail}</span>
+              We&apos;ve sent a magic link to <span className="font-medium text-brand-500">{watchedEmail}</span>
             </p>
             <p className="text-sm text-gray-500 mb-8">
               Click the link in your email to complete your account setup. The link will expire in 1 hour.
             </p>
           </div>
 
-          <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 border border-brand-primary-light">
+          <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 border border-brand-50">
             <div className="space-y-4">
               <button
                 type="button"
@@ -98,7 +98,7 @@ export default function SignupPage() {
                   setSubmitSuccess(false)
                   setSubmitError(null)
                 }}
-                className="w-full flex justify-center py-2 px-4 border border-brand-primary-light rounded-md shadow-sm text-sm font-medium text-brand-primary-dark bg-white hover:bg-brand-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-colors"
+                className="w-full flex justify-center py-2 px-4 border border-brand-50 rounded-md shadow-sm text-sm font-medium text-brand-600 bg-white hover:bg-brand-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors"
               >
                 Try a different email
               </button>
@@ -106,7 +106,7 @@ export default function SignupPage() {
               <div className="text-center">
                 <Link
                   href="/help"
-                  className="text-sm text-brand-primary hover:text-brand-primary-dark transition-colors"
+                  className="text-sm text-brand-500 hover:text-brand-600 transition-colors"
                 >
                   Didn&apos;t receive the email? Get help
                 </Link>
@@ -119,7 +119,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-primary-light to-brand-primary-light/50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-brand-50 to-brand-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Logo */}
         <div className="flex justify-center mb-8">
@@ -127,7 +127,7 @@ export default function SignupPage() {
         </div>
         
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-brand-primary-dark mb-2">
+          <h1 className="text-3xl font-bold text-brand-600 mb-2">
             {inviteToken ? 'Join your team' : 'Create your account'}
           </h1>
           <p className="text-gray-600">
@@ -138,17 +138,17 @@ export default function SignupPage() {
           </p>
         </div>
 
-        <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 border border-brand-primary-light">
+        <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 border border-brand-50">
           {inviteToken && (
-            <div className="mb-6 bg-blue-50 border border-blue-200 rounded-md p-4">
+            <div className="mb-6 bg-brand-50 border border-brand-200 rounded-md p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-blue-800">
+                  <p className="text-sm text-brand-800">
                     You&apos;ve been invited to join an organization. Complete the form below to activate your account.
                   </p>
                 </div>
@@ -167,10 +167,10 @@ export default function SignupPage() {
                   type="text"
                   autoComplete="name"
                   placeholder="Enter your full name"
-                  className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent sm:text-sm transition-colors ${
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent sm:text-sm transition-colors ${
                     errors.fullName
                       ? 'border-red-300 bg-red-50'
-                      : 'border-gray-300 bg-white hover:border-brand-primary'
+                      : 'border-gray-300 bg-white hover:border-brand-500'
                   }`}
                 />
                 {errors.fullName && (
@@ -190,12 +190,12 @@ export default function SignupPage() {
                   autoComplete="email"
                   placeholder="Enter your email address"
                   disabled={!!prefilledEmail}
-                  className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent sm:text-sm transition-colors ${
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent sm:text-sm transition-colors ${
                     errors.email
                       ? 'border-red-300 bg-red-50'
                       : prefilledEmail
                         ? 'border-gray-200 bg-gray-50'
-                        : 'border-gray-300 bg-white hover:border-brand-primary'
+                        : 'border-gray-300 bg-white hover:border-brand-500'
                   }`}
                 />
                 {errors.email && (
@@ -212,7 +212,7 @@ export default function SignupPage() {
                 <div className="mt-1">
                   <select
                     {...register('organizationId')}
-                    className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent sm:text-sm transition-colors ${
+                    className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent sm:text-sm transition-colors ${
                       errors.organizationId
                         ? 'border-red-300 bg-red-50'
                         : 'border-gray-300 bg-white hover:border-gray-400'
@@ -256,7 +256,7 @@ export default function SignupPage() {
                 disabled={!isValid || isSubmitting || authLoading}
                 className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-all duration-200 ${
                   isValid && !isSubmitting && !authLoading
-                    ? 'bg-brand-primary hover:bg-brand-primary-dark focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary'
+                    ? 'bg-brand-500 hover:bg-brand-600 focus:ring-2 focus:ring-offset-2 focus:ring-brand-500'
                     : 'bg-gray-400 cursor-not-allowed'
                 } focus:outline-none`}
               >
@@ -285,7 +285,7 @@ export default function SignupPage() {
             <div className="mt-6">
               <Link
                 href="/login"
-                className="w-full flex justify-center py-2 px-4 border border-brand-primary-light rounded-md shadow-sm text-sm font-medium text-brand-primary-dark bg-white hover:bg-brand-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-colors"
+                className="w-full flex justify-center py-2 px-4 border border-brand-50 rounded-md shadow-sm text-sm font-medium text-brand-600 bg-white hover:bg-brand-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors"
               >
                 Sign in instead
               </Link>
@@ -296,11 +296,11 @@ export default function SignupPage() {
         <div className="mt-8 text-center">
           <p className="text-xs text-gray-500">
             By creating an account, you agree to our{' '}
-            <Link href="/terms" className="text-brand-primary hover:text-brand-primary-dark">
+            <Link href="/terms" className="text-brand-500 hover:text-brand-600">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href="/privacy" className="text-brand-primary hover:text-brand-primary-dark">
+            <Link href="/privacy" className="text-brand-500 hover:text-brand-600">
               Privacy Policy
             </Link>
           </p>

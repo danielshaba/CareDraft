@@ -54,7 +54,7 @@ export default function VersionControlPanel({
 
   const getSaveStatusIcon = () => {
     if (isSaving) {
-      return <Clock className="h-4 w-4 text-blue-500 animate-spin" />
+      return <Clock className="h-4 w-4 text-brand-500 animate-spin" />
     } else if (saveError) {
       return <AlertCircle className="h-4 w-4 text-red-500" />
     } else if (hasUnsavedChanges) {
@@ -80,7 +80,7 @@ export default function VersionControlPanel({
 
   const getSaveStatusColor = () => {
     if (isSaving) {
-      return 'text-blue-600'
+      return 'text-brand-600'
     } else if (saveError) {
       return 'text-red-600'
     } else if (hasUnsavedChanges) {

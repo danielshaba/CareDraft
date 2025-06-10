@@ -33,7 +33,7 @@ export default function DeadlineDashboard({ className = '' }: DeadlineDashboardP
       setUpcomingDeadlines([])
       setDeadlineRules([])
       
-    } catch {
+    } catch (error) {
       console.error('Error loading deadline dashboard:', error)
     } finally {
       setLoading(false)
@@ -57,7 +57,7 @@ export default function DeadlineDashboard({ className = '' }: DeadlineDashboardP
       } else {
         console.error('Manual processing failed')
       }
-    } catch {
+    } catch (error) {
       console.error('Error triggering manual processing:', error)
     } finally {
       setProcessing(false)
@@ -80,7 +80,7 @@ export default function DeadlineDashboard({ className = '' }: DeadlineDashboardP
     if (hours <= 0) return 'text-red-600 bg-red-50 border-red-200'
     if (hours <= 6) return 'text-orange-600 bg-orange-50 border-orange-200'
     if (hours <= 24) return 'text-yellow-600 bg-yellow-50 border-yellow-200'
-    return 'text-blue-600 bg-blue-50 border-blue-200'
+    return 'text-brand-600 bg-brand-50 border-brand-200'
   }
 
   const getDashboardStats = () => {
@@ -178,13 +178,13 @@ export default function DeadlineDashboard({ className = '' }: DeadlineDashboardP
             </div>
           </div>
           
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-brand-50 border border-brand-200 rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-600">Upcoming</p>
-                <p className="text-2xl font-bold text-blue-900">{stats.upcoming}</p>
+                <p className="text-sm font-medium text-brand-600">Upcoming</p>
+                <p className="text-2xl font-bold text-brand-900">{stats.upcoming}</p>
               </div>
-              <Calendar className="h-8 w-8 text-blue-500" />
+              <Calendar className="h-8 w-8 text-brand-500" />
             </div>
           </div>
           

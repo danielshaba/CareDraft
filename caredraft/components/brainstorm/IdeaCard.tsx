@@ -42,8 +42,8 @@ interface IdeaCardsProps {
 const sourceConfig = {
   library: {
     name: 'Library AI',
-    color: 'bg-blue-50 text-blue-700 border-blue-200',
-    iconColor: 'text-blue-600'
+    color: 'bg-brand-50 text-brand-700 border-brand-200',
+    iconColor: 'text-brand-600'
   },
   creative: {
     name: 'Creative AI',
@@ -116,7 +116,7 @@ function IdeaCard({
       setCopied(true)
       onCopy?.(id)
       setTimeout(() => setCopied(false), 2000)
-    } catch {
+    } catch (error) {
       console.error('Failed to copy text:', error)
     }
   }

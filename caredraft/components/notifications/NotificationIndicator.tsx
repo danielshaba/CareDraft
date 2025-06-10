@@ -55,7 +55,7 @@ export function NotificationIndicator({
       <button
         onClick={onClick}
         className={`relative rounded-full hover:bg-gray-100 transition-colors ${buttonSizes[size]} ${
-          unreadCount > 0 ? 'text-brand-primary' : 'text-gray-600'
+          unreadCount > 0 ? 'text-brand-500' : 'text-gray-600'
         }`}
         title={`${unreadCount} unread notifications`}
       >
@@ -67,7 +67,7 @@ export function NotificationIndicator({
         
         {/* Unread Count Badge */}
         {showBadge && unreadCount > 0 && (
-          <span className={`absolute -top-1 -right-1 bg-brand-primary text-white rounded-full min-w-5 h-5 flex items-center justify-center ${badgeSizes[size]} leading-none`}>
+          <span className={`absolute -top-1 -right-1 bg-brand-500 text-white rounded-full min-w-5 h-5 flex items-center justify-center ${badgeSizes[size]} leading-none`}>
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -110,7 +110,7 @@ export function NotificationCounter({
   if (unreadCount === 0) return null;
 
   return (
-    <span className={`bg-brand-primary text-white text-xs rounded-full px-2 py-1 min-w-6 h-6 flex items-center justify-center ${className}`}>
+    <span className={`bg-brand-500 text-white text-xs rounded-full px-2 py-1 min-w-6 h-6 flex items-center justify-center ${className}`}>
       {unreadCount > maxCount ? `${maxCount}+` : unreadCount}
     </span>
   );

@@ -60,7 +60,7 @@ const StatCard: React.FC<StatCardData> = ({
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
       <div className="flex items-center">
         <div className="flex-shrink-0">
-          <div className="h-8 w-8 text-brand-primary">
+          <div className="h-8 w-8 text-brand-500">
             {icon}
           </div>
         </div>

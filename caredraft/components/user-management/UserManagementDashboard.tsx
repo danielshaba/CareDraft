@@ -57,7 +57,7 @@ interface UserManagementState {
 
 const ROLE_COLORS: Record<UserRole, string> = {
   admin: 'bg-red-100 text-red-800',
-  manager: 'bg-blue-100 text-blue-800', 
+  manager: 'bg-brand-100 text-brand-800', 
   writer: 'bg-green-100 text-green-800',
   viewer: 'bg-gray-100 text-gray-800'
 }
@@ -211,7 +211,7 @@ export function UserManagementDashboard() {
             onClick={() => setActiveTab('users')}
             className={`py-2 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'users'
-                ? 'border-blue-500 text-blue-600'
+                ? 'border-brand-500 text-brand-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
@@ -224,7 +224,7 @@ export function UserManagementDashboard() {
             onClick={() => setActiveTab('invitations')}
             className={`py-2 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'invitations'
-                ? 'border-blue-500 text-blue-600'
+                ? 'border-brand-500 text-brand-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
@@ -302,8 +302,8 @@ export function UserManagementDashboard() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Users className="h-5 w-5 text-blue-600" />
+              <div className="p-2 bg-brand-100 rounded-lg">
+                <Users className="h-5 w-5 text-brand-600" />
               </div>
               <div>
                 <p className="text-sm text-gray-600">Total Users</p>

@@ -142,8 +142,8 @@ export function InviteUserModal({ isOpen, onClose, onInviteSent }: InviteUserMod
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Mail className="h-5 w-5 text-blue-600" />
+            <div className="p-2 bg-brand-100 rounded-lg">
+              <Mail className="h-5 w-5 text-brand-600" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-gray-900">Invite New User</h2>
@@ -175,7 +175,7 @@ export function InviteUserModal({ isOpen, onClose, onInviteSent }: InviteUserMod
               placeholder="user@example.com"
               value={form.email}
               onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 ${
                 errors.email ? 'border-red-500' : 'border-gray-300'
               }`}
             />
@@ -195,7 +195,7 @@ export function InviteUserModal({ isOpen, onClose, onInviteSent }: InviteUserMod
                   key={option.value}
                   className={`relative flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
                     form.role === option.value
-                      ? 'border-blue-500 bg-blue-50'
+                      ? 'border-brand-500 bg-brand-50'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
@@ -215,7 +215,7 @@ export function InviteUserModal({ isOpen, onClose, onInviteSent }: InviteUserMod
                     </div>
                   </div>
                   {form.role === option.value && (
-                    <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                    <div className="w-5 h-5 bg-brand-500 rounded-full flex items-center justify-center">
                       <div className="w-2 h-2 bg-white rounded-full" />
                     </div>
                   )}
@@ -235,7 +235,7 @@ export function InviteUserModal({ isOpen, onClose, onInviteSent }: InviteUserMod
               value={form.message}
               onChange={(e) => setForm(prev => ({ ...prev, message: e.target.value }))}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             />
           </div>
 
@@ -251,7 +251,7 @@ export function InviteUserModal({ isOpen, onClose, onInviteSent }: InviteUserMod
               max="30"
               value={form.customExpiryDays}
               onChange={(e) => setForm(prev => ({ ...prev, customExpiryDays: parseInt(e.target.value, 10) || 7 }))}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 ${
                 errors.customExpiryDays ? 'border-red-500' : 'border-gray-300'
               }`}
             />

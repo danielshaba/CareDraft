@@ -4,11 +4,11 @@ import { proposalDeadlineManager, DeadlineProcessingResult } from '@/lib/service
 // This route handles automated proposal deadline processing
 // It can be called by cron jobs, webhooks, or scheduling services like Vercel Cron
 
-export async function GET(request?: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
     
     // Verify the request is authorized (for security)
-    const authHeader = request?.headers.get('authorization')
+    const authHeader = request.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET
     
     if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
@@ -52,8 +52,8 @@ export async function GET(request?: NextRequest) {
 }
 
 // Support POST method as well for webhook integrations
-export async function POST() {
-  return GET()
+export async function POST(request: NextRequest) {
+  return GET(request)
 }
 
 // Export the route configuration

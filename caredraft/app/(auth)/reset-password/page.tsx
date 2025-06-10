@@ -37,7 +37,7 @@ export default function ResetPasswordPage() {
       const result = await resetPassword(data.email)
 
       if (result.error) {
-        setSubmitError(result.error)
+        setSubmitError(result.error.message || 'An error occurred during password reset.')
       } else {
         setSubmitSuccess(true)
       }

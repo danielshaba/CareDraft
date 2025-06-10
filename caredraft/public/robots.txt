@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://caredraft.co.uk/sitemap.xml
+
+# Block sensitive areas
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /dashboard/private/
+Disallow: /auth/
+Disallow: /settings/
+
+# Allow public assets
+Allow: /images/
+Allow: /favicon.ico
+Allow: /manifest.json
+Allow: /*.css
+Allow: /*.js
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1 

@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,89 +11,72 @@ const config: Config = {
     "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
-        // CareDraft Brand Colors - Updated Brand Palette (Accessibility Improved)
+        // CareDraft Brand Colors
         brand: {
-          // Primary Soft Teal - Adjusted for WCAG AA compliance
-          primary: '#2A6F6F', // Darkened for better contrast (was #3B9C9C)
-          'primary-dark': '#1F4949', // Even darker for emphasis
-          'primary-light': '#EAF7F7',
-          // Semantic aliases
-          teal: '#2A6F6F', // Updated to match primary
-          'teal-dark': '#1F4949', 
-          'teal-light': '#EAF7F7',
-          // Full teal scale based on primary color
-          50: '#EAF7F7',
-          100: '#D5F0F0', 
-          200: '#ABE0E0',
-          300: '#81D1D1',
-          400: '#5DB1B1',
-          500: '#2A6F6F', // Primary Teal (darkened for accessibility)
-          600: '#1F4949', // Darker Teal (Accent/Depth)
-          700: '#255C5C',
-          800: '#1F4949',
-          900: '#1A3636',
-          950: '#0F2323',
+          // Primary coral color as specified in requirements
+          coral: "#FF6B6B",
+          "coral-light": "#FFE5E5",
+          "coral-dark": "#E55555",
+          // Secondary teal color as specified in requirements
+          teal: "#4ECDC4",
+          "teal-light": "#E8F9F8",
+          "teal-dark": "#3BA5A0",
+          // Current brand primary (keeping for backwards compatibility)
+          primary: "#2A6F6F",
+          "primary-dark": "#1F4949",
+          "primary-light": "#EAF7F7",
+          // Brand color scale for CareDraft
+          50: "#EAF7F7",
+          100: "#D5F0F0",
+          200: "#ABE0E0",
+          300: "#81D1D1",
+          400: "#5DB1B1",
+          500: "#2A6F6F",
+          600: "#1F4949",
+          700: "#255C5C",
+          800: "#1F4949",
+          900: "#1A3636",
+          950: "#0F1E1E",
         },
-        // Neutral colors for text and backgrounds
+        // Neutral grays for consistency
         neutral: {
-          dark: '#333333',    // For body text and high-contrast accessibility
-          light: '#F5F5F5',   // For subtle borders or page background
-          50: '#FAFAFA',
-          100: '#F5F5F5',
-          200: '#E5E5E5',
-          300: '#D4D4D4',
-          400: '#A3A3A3',
-          500: '#737373',
-          600: '#525252',
-          700: '#404040',
-          800: '#333333',     // Neutral Dark
-          900: '#262626',
-          950: '#171717',
+          50: "#F9FAFB",
+          100: "#F3F4F6",
+          200: "#E5E7EB",
+          300: "#D1D5DB",
+          400: "#9CA3AF",
+          500: "#6B7280",
+          600: "#4B5563",
+          700: "#374151",
+          800: "#1F2937",
+          900: "#111827",
         },
-        // Backward compatibility - keep teal as alias to brand
-        teal: {
-          50: '#EAF7F7',
-          100: '#D5F0F0', 
-          200: '#ABE0E0',
-          300: '#81D1D1',
-          400: '#5DB1B1',
-          500: '#2A6F6F', // Primary Teal (darkened for accessibility)
-          600: '#1F4949', // Darker Teal (Accent/Depth)
-          700: '#255C5C',
-          800: '#1F4949',
-          900: '#1A3636',
-          950: '#0F2323',
-        },
-        // Additional neutral colors for better design
+        // Shadcn/UI color variables
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
         primary: {
-          DEFAULT: "#2A6F6F", // Updated to use accessible brand primary color
-          foreground: "#ffffff",
-          50: '#EAF7F7',
-          100: '#D5F0F0', 
-          200: '#ABE0E0',
-          300: '#81D1D1',
-          400: '#5DB1B1',
-          500: '#2A6F6F',
-          600: '#1F4949',
-          700: '#255C5C',
-          800: '#1F4949',
-          900: '#1A3636',
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -102,62 +86,66 @@ const config: Config = {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
         },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))",
-        },
-      },
-      fontFamily: {
-        sans: ['Poppins', 'Inter', 'ui-sans-serif', 'system-ui'],
-        serif: ['Open Sans', 'ui-serif', 'Georgia'],
-      },
-      fontSize: {
-        '2xs': ['0.6875rem', { lineHeight: '1rem' }],
-      },
-      spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-      },
-      zIndex: {
-        '60': '60',
-        '70': '70',
-        '80': '80',
-        '90': '90',
-        '100': '100',
-      },
-      animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-in': 'slideIn 0.3s ease-out',
-        'bounce-subtle': 'bounceSubtle 2s infinite',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideIn: {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(0)' },
-        },
-        bounceSubtle: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-5px)' },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        sans: ["Inter", "Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Inter", "Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
+      },
+      fontSize: {
+        'xs': ['0.75rem', { lineHeight: '1rem' }],
+        'sm': ['0.875rem', { lineHeight: '1.25rem' }],
+        'base': ['1rem', { lineHeight: '1.5rem' }],
+        'lg': ['1.125rem', { lineHeight: '1.75rem' }],
+        'xl': ['1.25rem', { lineHeight: '1.75rem' }],
+        '2xl': ['1.5rem', { lineHeight: '2rem' }],
+        '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+        '5xl': ['3rem', { lineHeight: '1' }],
+        '6xl': ['3.75rem', { lineHeight: '1' }],
+      },
+      fontWeight: {
+        normal: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+      },
+      spacing: {
+        '4': '1rem',
+        '6': '1.5rem', 
+        '8': '2rem',
+        '12': '3rem',
+        '16': '4rem',
+        '24': '6rem',
+        // Layout specific spacing
+        'sidebar': '240px',
+        'topbar': '64px',
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },

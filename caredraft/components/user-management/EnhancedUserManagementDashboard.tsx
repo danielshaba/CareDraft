@@ -62,8 +62,8 @@ export function EnhancedUserManagementDashboard() {
     title, 
     value, 
     icon: Icon, 
-    color = 'text-blue-600',
-    bgColor = 'bg-blue-50'
+    color = 'text-brand-600',
+    bgColor = 'bg-brand-50'
   }: {
     title: string
     value: number

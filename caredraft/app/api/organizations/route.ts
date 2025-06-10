@@ -25,8 +25,8 @@ export async function GET() {
       success: true,
       data: organizations
     })
-  } catch {
-    console.error('Error listing organizations:', error)
+  } catch (error) {
+    console.error(`Error listing organizations: ${error}`)
     
     const errorResponse = getErrorResponse(error)
     const statusCode = getErrorStatusCode(error)
@@ -66,14 +66,14 @@ export async function POST(request: NextRequest) {
       size,
       billing_email,
       website
-    }, user.id)
+    })
 
     return NextResponse.json({
       success: true,
       data: organization
     }, { status: 201 })
-  } catch {
-    console.error('Error creating organization:', error)
+  } catch (error) {
+    console.error(`Error creating organization: ${error}`)
     
     const errorResponse = getErrorResponse(error)
     const statusCode = getErrorStatusCode(error)

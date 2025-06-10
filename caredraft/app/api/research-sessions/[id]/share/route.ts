@@ -4,11 +4,13 @@ import { cookies } from 'next/headers'
 import { Database } from '@/lib/database.types'
 import { NotificationTriggersService } from '@/lib/services/notification-triggers'
 
-interface Params {
-  id: string
+interface RouteParams {
+  params: Promise<{
+    id: string
+  }>
 }
 
-export async function POST(request: NextRequest, { params }: { params: Params }) {
+export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
     const supabase = createRouteHandlerClient<Database>({ cookies })
     
@@ -18,7 +20,7 @@ export async function POST(request: NextRequest, { params }: { params: Params })
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
 
     // Check if user has permission to share (must be owner)
     const { data: existingSession, error: fetchError } = await supabase
@@ -120,7 +122,7 @@ export async function POST(request: NextRequest, { params }: { params: Params })
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Params }) {
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
     const supabase = createRouteHandlerClient<Database>({ cookies })
     
@@ -130,7 +132,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Params 
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
 
     // Check if user has permission to unshare (must be owner)
     const { data: existingSession, error: fetchError } = await supabase

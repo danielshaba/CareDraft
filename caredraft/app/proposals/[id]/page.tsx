@@ -4,21 +4,21 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, FileText, Calendar, User, Building, CheckCircle, Clock, AlertCircle } from 'lucide-react'
 
 interface ProposalPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
-export default function ProposalPage({ params }: ProposalPageProps) {
+export default async function ProposalPage({ params }: ProposalPageProps) {
   // This would typically fetch proposal data based on params.id
-  const proposalId = params.id
+  const { id: proposalId } = await params
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/dashboard" className="inline-flex items-center text-blue-600 hover:text-blue-500 mb-4">
+          <Link href="/dashboard" className="inline-flex items-center text-brand-600 hover:text-brand-500 mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>
@@ -48,7 +48,7 @@ export default function ProposalPage({ params }: ProposalPageProps) {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <FileText className="w-5 h-5 mr-2 text-blue-600" />
+                  <FileText className="w-5 h-5 mr-2 text-brand-600" />
                   Proposal Overview
                 </CardTitle>
               </CardHeader>
@@ -150,7 +150,7 @@ export default function ProposalPage({ params }: ProposalPageProps) {
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-blue-600 rounded-full mt-2"></div>
+                    <div className="w-2 h-2 bg-brand-600 rounded-full mt-2"></div>
                     <div>
                       <p className="text-sm text-gray-900">Executive summary section completed</p>
                       <p className="text-xs text-gray-500">2 hours ago</p>
@@ -190,7 +190,7 @@ export default function ProposalPage({ params }: ProposalPageProps) {
                   <span className="font-semibold">25%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-blue-600 h-2 rounded-full" style={{ width: '25%' }}></div>
+                  <div className="bg-brand-600 h-2 rounded-full" style={{ width: '25%' }}></div>
                 </div>
                 
                 <div className="flex justify-between items-center pt-2">
@@ -239,7 +239,7 @@ export default function ProposalPage({ params }: ProposalPageProps) {
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                    <div className="w-8 h-8 bg-brand-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
                       JD
                     </div>
                     <div>

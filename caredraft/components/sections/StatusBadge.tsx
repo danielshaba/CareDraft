@@ -43,10 +43,10 @@ export default function StatusBadge({
         return {
           label: 'In Progress',
           icon: Play,
-          bgColor: 'bg-blue-100',
-          textColor: 'text-blue-700',
-          borderColor: 'border-blue-200',
-          hoverBg: 'hover:bg-blue-200'
+          bgColor: 'bg-brand-100',
+          textColor: 'text-brand-700',
+          borderColor: 'border-brand-200',
+          hoverBg: 'hover:bg-brand-200'
         }
       case 'review':
         return {
@@ -265,7 +265,7 @@ export function SectionProgress({
           />
           {/* In Progress */}
           <div
-            className="bg-blue-500 transition-all duration-300"
+            className="bg-brand-500 transition-all duration-300"
             style={{ width: `${(inProgressSections / totalSections) * 100}%` }}
           />
         </div>
@@ -300,7 +300,7 @@ export function SectionProgress({
           )}
           {inProgressSections > 0 && (
             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 bg-blue-500 rounded-full" />
+              <div className="w-2 h-2 bg-brand-500 rounded-full" />
               <span className="text-gray-600">{inProgressSections} in progress</span>
             </div>
           )}

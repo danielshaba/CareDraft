@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { ragService } from '@/lib/services/rag'
 import { DocumentUploadRequest } from '@/types/rag'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')

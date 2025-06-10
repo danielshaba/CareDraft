@@ -205,13 +205,13 @@ export default function SectionStatusDashboard({
           </div>
 
           {/* Assigned Users */}
-          <div className="bg-blue-50 rounded-lg p-4">
+          <div className="bg-brand-50 rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-600">Assigned Users</p>
-                <p className="text-2xl font-bold text-blue-900">{metrics.assignedUsers}</p>
+                <p className="text-sm font-medium text-brand-600">Assigned Users</p>
+                <p className="text-2xl font-bold text-brand-900">{metrics.assignedUsers}</p>
               </div>
-              <Users className="h-8 w-8 text-blue-400" />
+              <Users className="h-8 w-8 text-brand-400" />
             </div>
           </div>
         </div>
@@ -232,7 +232,7 @@ export default function SectionStatusDashboard({
                       className={`h-2 rounded-full transition-all duration-300 ${
                         status === 'complete' ? 'bg-green-500' :
                         status === 'review' ? 'bg-yellow-500' :
-                        status === 'in_progress' ? 'bg-blue-500' :
+                        status === 'in_progress' ? 'bg-brand-500' :
                         'bg-gray-400'
                       }`}
                       style={{ width: `${percentage}%` }}

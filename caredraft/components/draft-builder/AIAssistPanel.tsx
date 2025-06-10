@@ -81,8 +81,8 @@ export default function AIAssistPanel({ editor }: AIAssistPanelProps) {
       className={`
         w-full p-3 text-left rounded-lg border transition-all
         ${isLoading && selectedFunction === functionType
-          ? 'bg-brand-primary-light border-brand-primary text-brand-primary-dark'
-          : 'bg-white border-gray-200 hover:border-brand-primary hover:bg-brand-primary-light'
+          ? 'bg-brand-50 border-brand-500 text-brand-600'
+                      : 'bg-white border-gray-200 hover:border-brand-500 hover:bg-brand-50'
         }
         ${isLoading ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
       `}

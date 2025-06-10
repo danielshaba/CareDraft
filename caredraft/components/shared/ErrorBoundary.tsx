@@ -195,10 +195,10 @@ function DefaultErrorFallback({
           icon: Wifi,
           title: 'Connection Problem',
           description: 'Unable to connect to our servers. Please check your internet connection and try again.',
-          bgColor: 'from-blue-50 to-indigo-50',
-          iconColor: 'text-blue-600',
-          iconBg: 'bg-blue-100',
-          buttonColor: 'bg-blue-600 hover:bg-blue-700',
+          bgColor: 'from-brand-50 to-indigo-50',
+          iconColor: 'text-brand-600',
+          iconBg: 'bg-brand-100',
+          buttonColor: 'bg-brand-600 hover:bg-brand-700',
         }
       case 'auth':
         return {

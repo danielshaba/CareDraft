@@ -95,7 +95,7 @@ export default function ExtractPage() {
   const getStatusIcon = (status: UploadedDocument['status']) => {
     switch (status) {
       case 'uploading':
-        return <Clock className="h-4 w-4 text-blue-500" />
+        return <Clock className="h-4 w-4 text-brand-500" />
       case 'uploaded':
         return <CheckCircle className="h-4 w-4 text-green-500" />
       case 'processing':
@@ -112,7 +112,7 @@ export default function ExtractPage() {
   const getStatusColor = (status: UploadedDocument['status']) => {
     switch (status) {
       case 'uploading':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-brand-100 text-brand-800'
       case 'uploaded':
         return 'bg-green-100 text-green-800'
       case 'processing':
@@ -365,7 +365,7 @@ export default function ExtractPage() {
                   <div
                     key={doc.id}
                     className={`border rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer ${
-                      selectedDocumentForExtraction?.id === doc.id ? 'ring-2 ring-blue-500 bg-blue-50' : ''
+                      selectedDocumentForExtraction?.id === doc.id ? 'ring-2 ring-brand-500 bg-brand-50' : ''
                     }`}
                     onClick={() => {
                       if (doc.status === 'completed' && doc.extractedText) {
@@ -393,7 +393,7 @@ export default function ExtractPage() {
                               {doc.status}
                             </Badge>
                             {selectedDocumentForExtraction?.id === doc.id && (
-                              <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                              <Badge variant="secondary" className="bg-brand-100 text-brand-800">
                                 Selected
                               </Badge>
                             )}
@@ -477,11 +477,11 @@ export default function ExtractPage() {
             ) : (
               <>
                 {selectedDocumentForExtraction ? (
-                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <p className="text-sm font-medium text-blue-900">
+                  <div className="mb-4 p-3 bg-brand-50 border border-brand-200 rounded-lg">
+                    <p className="text-sm font-medium text-brand-900">
                       Selected: {selectedDocumentForExtraction.name}
                     </p>
-                    <p className="text-xs text-blue-700">
+                    <p className="text-xs text-brand-700">
                       Click extraction buttons below to analyze this document
                     </p>
                   </div>

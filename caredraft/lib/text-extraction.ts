@@ -40,13 +40,14 @@ let pdfjsLib: PDFLib | null = null
 let mammoth: MammothLib | null = null
 let JSZip: JSZipLib | null = null
 
-interface TextExtractionResult {
+export interface TextExtractionResult {
   text: string
   metadata: {
     wordCount: number
     characterCount: number
     processingTime: number
     extractionMethod: string
+    pageCount?: number
   }
   error?: string
 }
@@ -349,5 +350,25 @@ async function extractFromTXT(arrayBuffer: ArrayBuffer): Promise<TextExtractionR
       },
       error: error instanceof Error ? error.message : 'Unknown extraction error'
     }
+  }
+}
+
+/**
+ * Get a human-readable name for the extraction method
+ */
+export function getExtractionMethodName(method: string): string {
+  switch (method) {
+    case 'pdf':
+      return 'PDF Text Extraction'
+    case 'docx':
+      return 'Word Document Extraction'
+    case 'odt':
+      return 'OpenDocument Text Extraction'
+    case 'txt':
+      return 'Plain Text Extraction'
+    case 'error':
+      return 'Extraction Failed'
+    default:
+      return 'Unknown Method'
   }
 }

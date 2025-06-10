@@ -12,7 +12,7 @@ export default function ContactPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/dashboard" className="inline-flex items-center text-blue-600 hover:text-blue-500 mb-4">
+          <Link href="/dashboard" className="inline-flex items-center text-brand-600 hover:text-brand-500 mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>
@@ -88,7 +88,7 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center space-x-3">
-                  <Mail className="w-5 h-5 text-blue-600" />
+                  <Mail className="w-5 h-5 text-brand-600" />
                   <div>
                     <p className="font-medium text-gray-900">Email Support</p>
                     <p className="text-gray-600">support@caredraft.com</p>
@@ -121,7 +121,7 @@ export default function ContactPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <Clock className="w-5 h-5 mr-2 text-blue-600" />
+                  <Clock className="w-5 h-5 mr-2 text-brand-600" />
                   Support Hours
                 </CardTitle>
               </CardHeader>
@@ -138,8 +138,8 @@ export default function ContactPage() {
                   <span className="text-gray-600">Sunday</span>
                   <span className="font-medium">Closed</span>
                 </div>
-                <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                  <p className="text-sm text-blue-800">
+                <div className="mt-4 p-3 bg-brand-50 rounded-lg">
+                  <p className="text-sm text-brand-800">
                     <strong>Emergency Support:</strong> Available 24/7 for critical issues
                   </p>
                 </div>
@@ -155,16 +155,16 @@ export default function ContactPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Link href="/help" className="block text-blue-600 hover:text-blue-500">
+                <Link href="/help" className="block text-brand-600 hover:text-brand-500">
                   → Help & Documentation
                 </Link>
-                <Link href="/terms" className="block text-blue-600 hover:text-blue-500">
+                <Link href="/terms" className="block text-brand-600 hover:text-brand-500">
                   → Terms of Service
                 </Link>
-                <Link href="/privacy" className="block text-blue-600 hover:text-blue-500">
+                <Link href="/privacy" className="block text-brand-600 hover:text-brand-500">
                   → Privacy Policy
                 </Link>
-                <a href="#" className="block text-blue-600 hover:text-blue-500">
+                <a href="#" className="block text-brand-600 hover:text-brand-500">
                   → System Status
                 </a>
               </CardContent>

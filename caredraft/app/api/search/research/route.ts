@@ -3,7 +3,7 @@
  * Specialized endpoint for academic research paper searches
  */
 
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { ExaMCPService } from '@/lib/services/exa-mcp-service'
 import { validateExaAIConfig } from '@/lib/config/exa-ai'
 
@@ -11,7 +11,7 @@ import { validateExaAIConfig } from '@/lib/config/exa-ai'
  * POST /api/search/research
  * Search for academic research papers
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     // Check configuration
     const configValidation = validateExaAIConfig()
@@ -55,14 +55,7 @@ export async function GET() {
       searchType: 'research',
       metadata: {
         totalPapers: results.totalResults,
-        averageCredibility: results.results.reduce((sum: number, r: unknown) => sum + (r.metadata?.credibilityScore || 0), 0) / results.results.length,
-        recentPapers: results.results.filter((r: unknown) => {
-          if (!r.metadata?.publishedDate) return false
-          const publishDate = new Date(r.publishedDate)
-          const yearAgo = new Date()
-          yearAgo.setFullYear(yearAgo.getFullYear() - 1)
-          return publishDate > yearAgo
-        }).length
+        resultsCount: results.results.length
       }
     }
     

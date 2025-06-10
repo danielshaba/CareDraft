@@ -52,7 +52,7 @@ export default function StatusTransitionModal({
         title: 'Submit for Review',
         description: 'This proposal will be sent to reviewers for evaluation.',
         icon: <Info className="h-5 w-5" />,
-        iconColor: 'text-blue-500'
+        iconColor: 'text-brand-500'
       },
       'review->draft': {
         title: 'Return to Draft',

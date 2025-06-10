@@ -9,6 +9,17 @@ import Link from 'next/link'
 import GenerateButton from './GenerateButton'
 import IdeaCards from './IdeaCard'
 
+// Type definition for generated ideas
+interface GeneratedIdea {
+  id: string
+  title: string
+  content: string
+  source: AISource
+  rating: number
+  complianceKeywords: string[]
+  timestamp: Date
+}
+
 // Mock data for demonstration - in real app this would come from context/API
 const mockTenderContext = {
   tenderName: 'Residential Care Services for Elderly - East London Borough',
@@ -61,7 +72,7 @@ export function BrainstormInterface() {
   const [isGenerating, setIsGenerating] = useState(false)
   
   // Generated ideas state
-  const [ideas, setIdeas] = useState<unknown[]>([])
+  const [ideas, setIdeas] = useState<GeneratedIdea[]>([])
 
   // Handle prompt submission
   const handlePromptSubmit = async () => {
@@ -84,7 +95,7 @@ export function BrainstormInterface() {
       )
       
       setIdeas(filteredIdeas.length > 0 ? filteredIdeas : [mockIdeasData[0]])
-    } catch {
+    } catch (error) {
       console.error('Error generating ideas:', error)
       throw error // Re-throw to let GenerateButton handle the error state
     } finally {
@@ -141,7 +152,7 @@ export function BrainstormInterface() {
             <div className="flex items-center">
               <Lightbulb className="h-8 w-8 text-brand-primary mr-3" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-poppins)' }}>
+                <h1 className="text-h1">
                   AI Brainstorm
                 </h1>
                 <p className="text-gray-600 mt-1" style={{ fontFamily: 'var(--font-open-sans)' }}>
@@ -166,7 +177,7 @@ export function BrainstormInterface() {
             <div className="lg:col-span-2 space-y-6">
               {/* Input Section */}
               <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-poppins)' }}>
+                <h2 className="text-h3 mb-4">
                   Generate Ideas
                 </h2>
                 

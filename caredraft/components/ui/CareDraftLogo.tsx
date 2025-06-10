@@ -28,7 +28,7 @@ const CareDraftLogo: React.FC<CareDraftLogoProps> = ({
   if (variant === 'text-only') {
     return (
       <div className={`flex items-center ${className}`}>
-        <span className={`font-bold text-brand-primary ${textSizeClasses[size]}`}>
+        <span className={`font-bold text-brand-500 ${textSizeClasses[size]}`}>
           CareDraft
         </span>
       </div>
@@ -50,16 +50,16 @@ const CareDraftLogo: React.FC<CareDraftLogoProps> = ({
             <path
               d="M24 8C19.5817 8 16 11.5817 16 16V24C16 28.4183 19.5817 32 24 32C28.4183 32 32 28.4183 32 24V16C32 11.5817 28.4183 8 24 8Z"
               fill="currentColor"
-              className="text-brand-primary"
+              className="text-brand-500"
             />
             {/* Fingers */}
-            <rect x="20" y="6" width="2" height="8" rx="1" fill="currentColor" className="text-brand-primary" />
-            <rect x="23" y="4" width="2" height="8" rx="1" fill="currentColor" className="text-brand-primary" />
-            <rect x="26" y="6" width="2" height="8" rx="1" fill="currentColor" className="text-brand-primary" />
+            <rect x="20" y="6" width="2" height="8" rx="1" fill="currentColor" className="text-brand-500" />
+            <rect x="23" y="4" width="2" height="8" rx="1" fill="currentColor" className="text-brand-500" />
+            <rect x="26" y="6" width="2" height="8" rx="1" fill="currentColor" className="text-brand-500" />
             {/* Document Lines */}
-            <rect x="12" y="36" width="24" height="2" rx="1" fill="currentColor" className="text-brand-primary-dark" />
-            <rect x="12" y="40" width="20" height="2" rx="1" fill="currentColor" className="text-brand-primary-dark" />
-            <rect x="12" y="44" width="16" height="2" rx="1" fill="currentColor" className="text-brand-primary-dark" />
+            <rect x="12" y="36" width="24" height="2" rx="1" fill="currentColor" className="text-brand-600" />
+            <rect x="12" y="40" width="20" height="2" rx="1" fill="currentColor" className="text-brand-600" />
+            <rect x="12" y="44" width="16" height="2" rx="1" fill="currentColor" className="text-brand-600" />
           </g>
         </svg>
       </div>
@@ -80,19 +80,19 @@ const CareDraftLogo: React.FC<CareDraftLogoProps> = ({
           <path
             d="M24 8C19.5817 8 16 11.5817 16 16V24C16 28.4183 19.5817 32 24 32C28.4183 32 32 28.4183 32 24V16C32 11.5817 28.4183 8 24 8Z"
             fill="currentColor"
-            className="text-brand-primary"
+            className="text-brand-500"
           />
           {/* Fingers */}
-          <rect x="20" y="6" width="2" height="8" rx="1" fill="currentColor" className="text-brand-primary" />
-          <rect x="23" y="4" width="2" height="8" rx="1" fill="currentColor" className="text-brand-primary" />
-          <rect x="26" y="6" width="2" height="8" rx="1" fill="currentColor" className="text-brand-primary" />
+          <rect x="20" y="6" width="2" height="8" rx="1" fill="currentColor" className="text-brand-500" />
+          <rect x="23" y="4" width="2" height="8" rx="1" fill="currentColor" className="text-brand-500" />
+          <rect x="26" y="6" width="2" height="8" rx="1" fill="currentColor" className="text-brand-500" />
           {/* Document Lines */}
-          <rect x="12" y="36" width="24" height="2" rx="1" fill="currentColor" className="text-brand-primary-dark" />
-          <rect x="12" y="40" width="20" height="2" rx="1" fill="currentColor" className="text-brand-primary-dark" />
-          <rect x="12" y="44" width="16" height="2" rx="1" fill="currentColor" className="text-brand-primary-dark" />
+          <rect x="12" y="36" width="24" height="2" rx="1" fill="currentColor" className="text-brand-600" />
+          <rect x="12" y="40" width="20" height="2" rx="1" fill="currentColor" className="text-brand-600" />
+          <rect x="12" y="44" width="16" height="2" rx="1" fill="currentColor" className="text-brand-600" />
         </g>
       </svg>
-      <span className={`font-bold text-brand-primary ${textSizeClasses[size]}`}>
+      <span className={`font-bold text-brand-500 ${textSizeClasses[size]}`}>
         CareDraft
       </span>
     </div>

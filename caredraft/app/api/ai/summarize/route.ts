@@ -117,33 +117,51 @@ Rules:
       fallback: response.fallback,
       tokensUsed: response.tokensUsed
     }
-  } catch {
-    // Fallback: try to extract JSON from response
-    const jsonMatch = response.text.match(/\{[\s\S]*\}/)
-    if (jsonMatch) {
-      const result = JSON.parse(jsonMatch[0])
-      return {
-        summary: result.summary || response.text,
-        metadata: result.metadata || {
-          originalWordCount: text.split(/\s+/).length,
-          summaryWordCount: (result.summary || response.text).split(/\s+/).length,
-          compressionRatio: 0,
-          readingTime: 0,
-          keyTopics: [],
-          sentiment: 'neutral' as const,
-          urgency: 'medium' as const
+  } catch (error) {
+    console.error('Summarize API error:', error)
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Invalid request data',
+          details: error.errors 
         },
-        model: response.model,
-        fallback: response.fallback,
-        tokensUsed: response.tokensUsed
-      }
+        { status: 400 }
+      )
     }
-    throw new AIError('Invalid JSON response from AI model', AIErrorType.VALIDATION)
+
+    if (error instanceof AIError) {
+      let statusCode = 500
+      if (error.type === AIErrorType.AUTHENTICATION) statusCode = 401
+      if (error.type === AIErrorType.RATE_LIMIT) statusCode = 429
+      if (error.type === AIErrorType.VALIDATION) statusCode = 400
+
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: error.message,
+          type: error.type
+        },
+        { 
+          status: statusCode,
+          headers: error.retryAfter ? { 'Retry-After': error.retryAfter.toString() } : {}
+        }
+      )
+    }
+
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: 'Internal server error' 
+      },
+      { status: 500 }
+    )
   }
 }
 
 // POST endpoint
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const body = await request.json()
     
@@ -152,25 +170,30 @@ export async function POST(request: NextRequest) {
     const { text, type, length, targetAudience, focus } = validatedData
 
     // Perform summarization
-    const { summary, metadata, model, fallback, tokensUsed } = await performSummarization(
+    const result = await performSummarization(
       text,
       type,
       length,
       targetAudience,
       focus
     )
+    
+    // Check if result is an error response
+    if (result instanceof NextResponse) {
+      return result
+    }
 
     const response: SummarizeResponse = {
       success: true,
-      summary,
-      metadata,
-      model,
-      fallback,
-      tokensUsed
+      summary: result.summary,
+      metadata: result.metadata,
+      model: result.model,
+      fallback: result.fallback,
+      tokensUsed: result.tokensUsed
     }
 
     return NextResponse.json(response)
-  } catch {
+  } catch (error) {
     console.error('Summarize API error:', error)
 
     if (error instanceof z.ZodError) {

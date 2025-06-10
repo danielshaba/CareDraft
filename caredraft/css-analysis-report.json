@@ -1,0 +1,136 @@
+{
+  "summary": {
+    "totalFiles": 265,
+    "totalClasses": 813,
+    "brandClasses": 71,
+    "deprecatedClasses": 0
+  },
+  "patterns": {
+    "colors": {},
+    "spacing": {},
+    "typography": {},
+    "layout": {},
+    "brand": {},
+    "deprecated": {}
+  },
+  "recommendations": [
+    {
+      "type": "INFO",
+      "title": "High Color Variant Usage",
+      "description": "Consider consolidating these color variants for consistency",
+      "data": [
+        {
+          "base": "text-blue",
+          "count": 6
+        },
+        {
+          "base": "text-gray",
+          "count": 7
+        },
+        {
+          "base": "bg-gray",
+          "count": 8
+        },
+        {
+          "base": "text-red",
+          "count": 6
+        },
+        {
+          "base": "hover:bg-gray",
+          "count": 6
+        },
+        {
+          "base": "text-green",
+          "count": 6
+        },
+        {
+          "base": "text-orange",
+          "count": 6
+        },
+        {
+          "base": "hover:text-gray",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "type": "SUCCESS",
+      "title": "Brand Class Usage",
+      "count": 71,
+      "classes": [
+        "bg-brand-primary",
+        "hover:bg-brand-primary-dark",
+        "focus:ring-brand-primary",
+        "branding",
+        "text-brand-primary",
+        "border-brand-primary",
+        "to-brand-50",
+        "hover:border-teal-400",
+        "bg-teal-600",
+        "hover:bg-teal-700",
+        "from-teal-50",
+        "text-teal-600",
+        "border-teal-200",
+        "bg-teal-50",
+        "bg-teal-100",
+        "to-teal-50",
+        "from-teal-600",
+        "to-brand-600",
+        "hover:from-teal-700",
+        "hover:to-brand-600",
+        "hover:to-brand-100",
+        "border-teal-100",
+        "hover:text-brand-primary-dark",
+        "text-brand-primary-dark",
+        "text-[brand-primary]",
+        "bg-[brand-primary]",
+        "focus:ring-[brand-primary]",
+        "focus:border-[brand-primary]",
+        "from-brand-50",
+        "to-brand-100",
+        "text-brand-500",
+        "border-brand-50",
+        "text-brand-600",
+        "hover:bg-brand-50",
+        "focus:ring-brand-500",
+        "hover:text-brand-600",
+        "to-brand-light",
+        "hover:bg-brand-light",
+        "focus:bg-brand-light",
+        "bg-brand-light/50",
+        "border-brand-primary/30",
+        "bg-brand-light",
+        "hover:bg-brand-primary/90",
+        "hover:bg-brand-dark",
+        "focus:border-brand-500",
+        "bg-brand-500",
+        "hover:bg-brand-600",
+        "focus:ring-brand-500/20",
+        "bg-brand-50",
+        "bg-brand-primary-light",
+        "hover:text-brand-primary",
+        "hover:bg-brand-primary-light",
+        "bg-brand-primary-light0",
+        "focus:border-brand-primary",
+        "peer-focus:ring-brand-500/30",
+        "hover:bg-brand-500",
+        "from-brand-primary-light",
+        "hover:border-brand-primary",
+        "hover:text-brand-500",
+        "border-brand-500/20",
+        "hover:bg-brand-primary",
+        "border-brand-primary/20",
+        "bg-brand-primary/5",
+        "border-brand-500",
+        "hover:border-brand-500",
+        "group-hover:text-brand-primary-dark",
+        "text-brand",
+        "border-t-brand-primary",
+        "focus:ring-brand-primary/20",
+        "from-brand-primary",
+        "to-brand-500"
+      ],
+      "description": "Brand classes are being used consistently"
+    }
+  ]
+}

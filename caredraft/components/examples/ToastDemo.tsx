@@ -155,7 +155,7 @@ export function ToastDemo() {
         <h2 className="text-xl font-semibold mb-4">Toast Position</h2>
         <div className="mb-4">
           <span className="text-sm font-medium text-gray-700">Current Position: </span>
-          <span className="text-sm text-blue-600 font-medium">{position}</span>
+          <span className="text-sm text-brand-600 font-medium">{position}</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
           {positions.map((pos) => (
@@ -167,7 +167,7 @@ export function ToastDemo() {
               }}
               className={`px-3 py-2 text-sm rounded-md border transition-colors ${
                 position === pos
-                  ? 'bg-blue-500 text-white border-blue-500'
+                  ? 'bg-brand-500 text-white border-brand-500'
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
               }`}
             >

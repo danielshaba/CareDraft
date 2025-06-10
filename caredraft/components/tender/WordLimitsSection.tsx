@@ -65,7 +65,7 @@ export function WordLimitsSection({
         <button
           type="button"
           onClick={addSection}
-          className="flex items-center px-4 py-2 text-sm font-medium text-white bg-[brand-primary] rounded-md hover:bg-[brand-primary-dark] focus:outline-none focus:ring-2 focus:ring-brand-primary/20 transition-colors"
+          className="flex items-center px-4 py-2 text-sm font-medium text-white bg-brand-500 rounded-md hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20 transition-colors"
           style={{ fontFamily: 'var(--font-open-sans)' }}
         >
           <Plus className="h-4 w-4 mr-2" />
@@ -150,8 +150,8 @@ export function WordLimitsSection({
 
       {/* Help Text */}
       {wordLimits.length > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
-          <p className="text-sm text-blue-800" style={{ fontFamily: 'var(--font-open-sans)' }}>
+        <div className="bg-brand-50 border border-brand-200 rounded-md p-3">
+          <p className="text-sm text-brand-800" style={{ fontFamily: 'var(--font-open-sans)' }}>
             <strong>Tip:</strong> These word limits will be used when generating your proposal to ensure 
             each section meets the tender requirements. You can add as many sections as needed.
           </p>

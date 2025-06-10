@@ -68,7 +68,7 @@ export default function AdvancedSearchInterface({
 
   const searchInputRef = useRef<HTMLInputElement>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
-  const debounceRef = useRef<NodeJS.Timeout>()
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
   // Debounced autocomplete function
   const debouncedAutocomplete = useCallback(async (searchQuery: string) => {
@@ -98,7 +98,7 @@ export default function AdvancedSearchInterface({
         setSuggestions(result.data.suggestions || [])
         setShowSuggestions(true)
       }
-    } catch {
+    } catch (error) {
       console.error('Autocomplete error:', error)
     } finally {
       setIsLoading(false)
@@ -360,7 +360,7 @@ export default function AdvancedSearchInterface({
                 <Badge 
                   key={tag}
                   variant="secondary"
-                  className="bg-blue-50 text-blue-700 border-blue-200"
+                  className="bg-brand-50 text-brand-700 border-brand-200"
                 >
                   🏷️ {tag}
                   <X 

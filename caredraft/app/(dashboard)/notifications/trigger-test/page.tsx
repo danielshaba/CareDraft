@@ -18,7 +18,7 @@ import {
 interface TestResult {
   success: boolean
   message: string
-  data?: unknown
+  data?: any
 }
 
 export default function NotificationTriggerTestPage() {
@@ -50,7 +50,7 @@ export default function NotificationTriggerTestPage() {
         message: result ? 'Mention notification created successfully' : 'Failed to create mention notification',
         data: result
       })
-    } catch {
+    } catch (error) {
       addResult('mention', {
         success: false,
         message: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -82,7 +82,7 @@ export default function NotificationTriggerTestPage() {
         message: result ? 'Deadline notification created successfully' : 'Failed to create deadline notification',
         data: result
       })
-    } catch {
+    } catch (error) {
       addResult('deadline', {
         success: false,
         message: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -116,7 +116,7 @@ export default function NotificationTriggerTestPage() {
         message: result.length > 0 ? `Created ${result.length} proposal update notification(s)` : 'Failed to create proposal update notifications',
         data: result
       })
-    } catch {
+    } catch (error) {
       addResult('proposal', {
         success: false,
         message: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -149,7 +149,7 @@ export default function NotificationTriggerTestPage() {
         message: result ? 'Review request notification created successfully' : 'Failed to create review request notification',
         data: result
       })
-    } catch {
+    } catch (error) {
       addResult('review', {
         success: false,
         message: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -178,7 +178,7 @@ export default function NotificationTriggerTestPage() {
         message: result.length > 0 ? `Created ${result.length} system announcement(s)` : 'Failed to create system announcement',
         data: result
       })
-    } catch {
+    } catch (error) {
       addResult('system', {
         success: false,
         message: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -195,7 +195,7 @@ export default function NotificationTriggerTestPage() {
       description: 'Create a notification for when someone mentions you in a comment',
       icon: AtSign,
       action: testMentionNotification,
-      color: 'bg-blue-500 hover:bg-blue-600'
+      color: 'bg-brand-500 hover:bg-brand-600'
     },
     {
       key: 'deadline',
@@ -299,9 +299,9 @@ export default function NotificationTriggerTestPage() {
         </div>
 
         {/* Instructions */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-medium text-blue-900 mb-2">How to Test</h3>
-          <ol className="list-decimal list-inside space-y-2 text-blue-800">
+        <div className="mt-8 bg-brand-50 border border-brand-200 rounded-lg p-6">
+          <h3 className="text-lg font-medium text-brand-900 mb-2">How to Test</h3>
+          <ol className="list-decimal list-inside space-y-2 text-brand-800">
             <li>Click any of the test buttons above to create different types of notifications</li>
             <li>Check the notification bell in the top navigation to see the new notifications</li>
             <li>Visit your notification preferences at <code>/settings/notifications</code> to customize settings</li>

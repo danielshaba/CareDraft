@@ -67,7 +67,7 @@ export function AISourceSelector({
     if (isSelected) {
       switch (color) {
         case 'blue':
-          return 'bg-blue-50 border-blue-200 text-blue-900'
+          return 'bg-brand-50 border-brand-200 text-brand-900'
         case 'purple':
           return 'bg-purple-50 border-purple-200 text-purple-900'
         case 'green':
@@ -83,7 +83,7 @@ export function AISourceSelector({
     if (isSelected) {
       switch (color) {
         case 'blue':
-          return 'text-blue-600'
+          return 'text-brand-600'
         case 'purple':
           return 'text-purple-600'
         case 'green':
@@ -150,7 +150,7 @@ export function AISourceSelector({
                       relative inline-flex h-5 w-9 items-center rounded-full transition-colors
                       ${isSelected 
                         ? source.color === 'blue' 
-                          ? 'bg-blue-500' 
+                          ? 'bg-brand-500' 
                           : source.color === 'purple' 
                           ? 'bg-purple-500' 
                           : source.color === 'green' 

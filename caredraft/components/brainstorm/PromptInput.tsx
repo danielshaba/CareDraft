@@ -132,13 +132,13 @@ export default function PromptInput({
     <div className="space-y-4">
       {/* Context Banner */}
       {tenderContext && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-          <div className="flex items-center gap-2 text-sm text-blue-700">
+        <div className="bg-brand-50 border border-brand-200 rounded-lg p-3">
+          <div className="flex items-center gap-2 text-sm text-brand-700">
             <MessageCircle className="w-4 h-4" />
             <span className="font-medium">
               Brainstorming for: {tenderContext.name}
               {tenderContext.currentSection && (
-                <span className="text-blue-600"> • Section: {tenderContext.currentSection}</span>
+                <span className="text-brand-600"> • Section: {tenderContext.currentSection}</span>
               )}
             </span>
           </div>

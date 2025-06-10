@@ -63,10 +63,10 @@ export default function Error({ error, reset }: ErrorProps) {
         return {
           title: 'Connection Problem',
           description: 'Unable to load this page due to a network issue. Please check your connection and try again.',
-          bgColor: 'from-blue-50 to-indigo-50',
-          iconColor: 'text-blue-600',
-          iconBg: 'bg-blue-100',
-          buttonColor: 'bg-blue-600 hover:bg-blue-700',
+          bgColor: 'from-brand-50 to-indigo-50',
+          iconColor: 'text-brand-600',
+          iconBg: 'bg-brand-100',
+          buttonColor: 'bg-brand-600 hover:bg-brand-700',
         }
       case 'notFound':
         return {

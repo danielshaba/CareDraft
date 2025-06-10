@@ -47,7 +47,7 @@ export default function WordCountDisplay({ editor }: WordCountDisplayProps) {
     return (
       <div className="bg-white rounded-lg border border-gray-200 p-4 mt-4">
         <div className="flex items-center space-x-2 mb-2">
-          <FileText className="h-4 w-4 text-brand-primary" />
+          <FileText className="h-4 w-4 text-brand-500" />
           <h3 className="text-sm font-medium text-gray-900">Document Stats</h3>
         </div>
         <div className="text-xs text-gray-400">Loading...</div>
@@ -58,7 +58,7 @@ export default function WordCountDisplay({ editor }: WordCountDisplayProps) {
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-4 mt-4">
       <div className="flex items-center space-x-2 mb-3">
-        <FileText className="h-4 w-4 text-brand-primary" />
+        <FileText className="h-4 w-4 text-brand-500" />
         <h3 className="text-sm font-medium text-gray-900">Document Stats</h3>
       </div>
       
@@ -91,7 +91,7 @@ export default function WordCountDisplay({ editor }: WordCountDisplayProps) {
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div 
-              className="bg-brand-primary h-2 rounded-full transition-all duration-300"
+              className="bg-brand-500 h-2 rounded-full transition-all duration-300"
               style={{ 
                 width: `${Math.min((wordCount / 1000) * 100, 100)}%` 
               }}

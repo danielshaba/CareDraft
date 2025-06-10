@@ -38,7 +38,7 @@ const ROLE_ICONS: Record<UserRole, React.ElementType> = {
 
 const ROLE_COLORS: Record<UserRole, string> = {
   admin: 'bg-red-100 text-red-800 border-red-200',
-  manager: 'bg-blue-100 text-blue-800 border-blue-200',
+  manager: 'bg-brand-100 text-brand-800 border-brand-200',
   writer: 'bg-green-100 text-green-800 border-green-200',
   viewer: 'bg-gray-100 text-gray-800 border-gray-200'
 }
@@ -165,8 +165,8 @@ export function RoleAssignmentModal({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Shield className="h-5 w-5 text-blue-600" />
+            <div className="p-2 bg-brand-100 rounded-lg">
+              <Shield className="h-5 w-5 text-brand-600" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-gray-900">Assign Role</h2>
@@ -222,7 +222,7 @@ export function RoleAssignmentModal({
                     className={`
                       relative border rounded-lg p-4 cursor-pointer transition-all
                       ${isSelected 
-                        ? 'border-blue-500 bg-blue-50' 
+                        ? 'border-brand-500 bg-brand-50' 
                         : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                       }
                       ${isCurrent ? 'opacity-75' : ''}
@@ -244,7 +244,7 @@ export function RoleAssignmentModal({
                             </Badge>
                           )}
                           {isSelected && !isCurrent && (
-                            <Check className="h-4 w-4 text-blue-600" />
+                            <Check className="h-4 w-4 text-brand-600" />
                           )}
                         </div>
                         <p className="text-sm text-gray-600 mb-3">

@@ -109,7 +109,7 @@ export default function CategoryManager({
       if (result.success) {
         setCategories(buildCategoryTree(result.data || []))
       }
-    } catch {
+    } catch (error) {
       console.error('Error loading categories:', error)
     } finally {
       setLoading(false)
@@ -124,7 +124,7 @@ export default function CategoryManager({
       if (result.success) {
         setStats(result.data)
       }
-    } catch {
+    } catch (error) {
       console.error('Error loading stats:', error)
     }
   }
@@ -194,7 +194,7 @@ export default function CategoryManager({
         setShowCreateForm(false)
         resetForm()
       }
-    } catch {
+    } catch (error) {
       console.error('Error creating category:', error)
     }
   }
@@ -213,7 +213,7 @@ export default function CategoryManager({
         loadCategories()
         setEditingCategory(null)
       }
-    } catch {
+    } catch (error) {
       console.error('Error updating category:', error)
     }
   }
@@ -233,7 +233,7 @@ export default function CategoryManager({
       if (result.success) {
         loadCategories()
       }
-    } catch {
+    } catch (error) {
       console.error('Error deleting category:', error)
     }
   }
@@ -255,7 +255,7 @@ export default function CategoryManager({
         <div 
           className={`flex items-center space-x-2 py-2 px-3 rounded-lg cursor-pointer transition-colors ${
             selectedCategoryId === category.id 
-              ? 'bg-brand-primary bg-opacity-10 border-brand-primary' 
+              ? 'bg-brand-500 bg-opacity-10 border-brand-500' 
               : 'hover:bg-gray-50'
           }`}
           style={{ marginLeft: `${level * 20}px` }}
@@ -349,7 +349,7 @@ export default function CategoryManager({
                   e.stopPropagation()
                   setEditingCategory(category.id)
                 }}
-                className="text-gray-400 hover:text-blue-600 p-1"
+                className="text-gray-400 hover:text-brand-600 p-1"
               >
                 <Edit2 className="h-3 w-3" />
               </button>
@@ -389,11 +389,11 @@ export default function CategoryManager({
         
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <div className="text-2xl font-bold text-brand-primary">{stats.total_categories}</div>
+            <div className="text-2xl font-bold text-brand-500">{stats.total_categories}</div>
             <div className="text-xs text-gray-600">Categories</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-blue-600">{stats.total_answers}</div>
+            <div className="text-2xl font-bold text-brand-600">{stats.total_answers}</div>
             <div className="text-xs text-gray-600">Total Answers</div>
           </div>
           <div>
@@ -416,7 +416,7 @@ export default function CategoryManager({
   if (loading) {
     return (
       <div className="flex items-center justify-center h-32">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
       </div>
     )
   }
@@ -438,7 +438,7 @@ export default function CategoryManager({
                 placeholder="Category name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-brand-primary text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm"
                 required
               />
             </div>
@@ -448,7 +448,7 @@ export default function CategoryManager({
                 placeholder="Description (optional)"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-brand-primary text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm"
                 rows={2}
               />
             </div>
@@ -485,7 +485,7 @@ export default function CategoryManager({
               <Button
                 type="submit"
                 size="sm"
-                className="bg-brand-primary hover:bg-brand-primary-dark text-white"
+                className="bg-brand-500 hover:bg-brand-600 text-white"
               >
                 <Save className="h-3 w-3 mr-1" />
                 Create
@@ -507,7 +507,7 @@ export default function CategoryManager({
             <Button
               size="sm"
               onClick={() => setShowCreateForm(!showCreateForm)}
-              className="bg-brand-primary hover:bg-brand-primary-dark text-white"
+              className="bg-brand-500 hover:bg-brand-600 text-white"
             >
               <Plus className="h-3 w-3 mr-1" />
               Add
@@ -524,7 +524,7 @@ export default function CategoryManager({
               {mode === 'management' && (
                 <button
                   onClick={() => setShowCreateForm(true)}
-                  className="text-brand-primary hover:text-red-600 text-sm mt-1"
+                  className="text-brand-500 hover:text-red-600 text-sm mt-1"
                 >
                   Create your first category
                 </button>

@@ -45,11 +45,11 @@ const ERROR_ICONS = {
 
 const ERROR_COLORS = {
   low: {
-    bg: 'from-blue-50 to-blue-100',
-    border: 'border-blue-200',
-    icon: 'text-blue-600',
-    iconBg: 'bg-blue-100',
-    button: 'bg-blue-600 hover:bg-blue-700'
+    bg: 'from-brand-50 to-brand-100',
+    border: 'border-brand-200',
+    icon: 'text-brand-600',
+    iconBg: 'bg-brand-100',
+    button: 'bg-brand-600 hover:bg-brand-700'
   },
   medium: {
     bg: 'from-yellow-50 to-yellow-100',

@@ -54,13 +54,13 @@ export const CreateProposalButton: React.FC<CreateProposalButtonProps> = ({
   const baseStyles = `
     inline-flex items-center justify-center
     font-medium rounded-lg
-    bg-brand-primary hover:bg-brand-primary-dark 
+    bg-brand-500 hover:bg-brand-600 
     text-white
     border border-transparent
     shadow-lg hover:shadow-xl
     transition-all duration-200 ease-in-out
-    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary
-    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-brand-primary
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-brand-500
     group
   `
 

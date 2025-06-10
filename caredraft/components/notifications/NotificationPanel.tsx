@@ -112,7 +112,7 @@ export function NotificationPanel({
     
     switch (type) {
       case 'mention':
-        return 'text-blue-600 bg-blue-50 border-blue-200';
+        return 'text-brand-600 bg-brand-50 border-brand-200';
       case 'deadline':
         return 'text-amber-600 bg-orange-50 border-orange-200';
       case 'proposal_update':
@@ -124,7 +124,7 @@ export function NotificationPanel({
       case 'team_invitation':
         return 'text-indigo-600 bg-indigo-50 border-indigo-200';
       case 'document_shared':
-        return 'text-brand-primary bg-brand-primary-light border-brand-primary';
+        return 'text-brand-500 bg-brand-50 border-brand-500';
       case 'research_session_shared':
         return 'text-emerald-600 bg-emerald-50 border-emerald-200';
       default:
@@ -205,7 +205,7 @@ export function NotificationPanel({
               <Bell className="w-5 h-5 text-gray-600" />
               <h3 className="font-semibold text-gray-900">Notifications</h3>
               {unreadCount > 0 && (
-                <span className="bg-brand-primary text-white text-xs px-2 py-1 rounded-full">
+                <span className="bg-brand-500 text-white text-xs px-2 py-1 rounded-full">
                   {unreadCount}
                 </span>
               )}
@@ -240,7 +240,7 @@ export function NotificationPanel({
               onClick={() => setFilter('all')}
               className={`px-3 py-1 text-sm rounded-full transition-colors ${
                 filter === 'all' 
-                  ? 'bg-brand-primary text-white' 
+                  ? 'bg-brand-500 text-white' 
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
@@ -250,7 +250,7 @@ export function NotificationPanel({
               onClick={() => setFilter('unread')}
               className={`px-3 py-1 text-sm rounded-full transition-colors ${
                 filter === 'unread' 
-                  ? 'bg-brand-primary text-white' 
+                  ? 'bg-brand-500 text-white' 
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
@@ -302,7 +302,7 @@ export function NotificationPanel({
                   className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors border-l-4 ${
                     notification.read_status 
                       ? 'border-l-transparent' 
-                      : 'border-l-brand-primary'
+                      : 'border-l-brand-500'
                   }`}
                   onClick={() => handleNotificationClick(notification)}
                 >
@@ -358,8 +358,8 @@ export function NotificationPanel({
 
                       {notification.action_url && (
                         <div className="flex items-center gap-1 mt-2">
-                          <ExternalLink className="w-3 h-3 text-brand-primary" />
-                          <span className="text-xs text-brand-primary">View details</span>
+                          <ExternalLink className="w-3 h-3 text-brand-500" />
+                          <span className="text-xs text-brand-500">View details</span>
                         </div>
                       )}
                     </div>

@@ -63,7 +63,7 @@ export default function DraftBuilderInterface({ proposalId }: DraftBuilderInterf
     `,
     editorProps: {
       attributes: {
-        class: 'prose prose-lg max-w-none focus:outline-none p-6 min-h-[500px] text-gray-900',
+        class: 'prose prose-lg max-w-none focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 p-6 min-h-[500px] text-gray-900',
       },
     },
     immediatelyRender: false,
@@ -89,7 +89,7 @@ export default function DraftBuilderInterface({ proposalId }: DraftBuilderInterf
         await new Promise(resolve => setTimeout(resolve, 1000))
         return { message: 'Draft saved successfully' }
       })
-    } catch {
+    } catch (error) {
       // Error is already handled by the loading state hook
       console.error('Save failed:', error)
     }
@@ -103,7 +103,7 @@ export default function DraftBuilderInterface({ proposalId }: DraftBuilderInterf
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary mx-auto mb-2"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500 mx-auto mb-2"></div>
           <div className="text-gray-500">Loading Draft Builder...</div>
         </div>
       </div>
@@ -119,15 +119,15 @@ export default function DraftBuilderInterface({ proposalId }: DraftBuilderInterf
             <div className="flex items-center space-x-4">
               <Link
                 href="/dashboard"
-                className="flex items-center space-x-2 text-gray-600 hover:text-brand-primary transition-colors group"
+                className="flex items-center space-x-2 text-gray-600 hover:text-brand-500 transition-colors group"
               >
                 <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
                 <span className="text-sm font-medium">Back to Dashboard</span>
               </Link>
               <div className="h-6 w-px bg-gray-300" />
               <div className="flex items-center space-x-3">
-                <div className="flex items-center justify-center w-10 h-10 bg-brand-primary-light rounded-lg">
-                  <PenTool className="h-5 w-5 text-brand-primary" />
+                <div className="flex items-center justify-center w-10 h-10 bg-brand-50 rounded-lg">
+                  <PenTool className="h-5 w-5 text-brand-500" />
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-gray-900">Draft Builder</h1>
@@ -167,7 +167,7 @@ export default function DraftBuilderInterface({ proposalId }: DraftBuilderInterf
               </LoadingButton>
               <button 
                 onClick={handleExport}
-                className="px-4 py-2 text-sm font-medium text-white bg-brand-primary rounded-lg hover:bg-brand-primary-dark transition-colors flex items-center space-x-2"
+                className="px-4 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 transition-colors flex items-center space-x-2"
               >
                 <Download className="h-4 w-4" />
                 <span>Export & Actions</span>
@@ -222,7 +222,7 @@ export default function DraftBuilderInterface({ proposalId }: DraftBuilderInterf
               <div className="relative">
                 <EditorContent 
                   editor={editor}
-                  className="min-h-[600px] focus:outline-none"
+                  className="min-h-[600px] focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
                 />
                 
                 {/* Status bar */}
@@ -239,10 +239,10 @@ export default function DraftBuilderInterface({ proposalId }: DraftBuilderInterf
                     )}
                   </div>
                   <div>
-                    {saveStatus === 'saved' && (
+                    {saveState.data && (
                       <span className="text-green-600">Document saved</span>
                     )}
-                    {saveStatus === 'error' && (
+                    {saveState.error && (
                       <span className="text-red-600">Save failed</span>
                     )}
                   </div>

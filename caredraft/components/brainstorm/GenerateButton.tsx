@@ -90,6 +90,9 @@ export default function GenerateButton({
 
       return () => clearTimeout(timeout)
     }
+    
+    // Return empty cleanup function for other code paths
+    return () => {}
   }, [isLoading, generationState])
 
   const handleGenerate = async () => {
@@ -98,7 +101,7 @@ export default function GenerateButton({
     
     try {
       await onGenerate()
-    } catch {
+    } catch (err) {
       setGenerationState('error')
       setError(err instanceof Error ? err.message : 'Failed to generate ideas')
       setCurrentMessage('Generation failed')
@@ -147,7 +150,7 @@ export default function GenerateButton({
     
     switch (generationState) {
       case 'generating':
-        return 'bg-blue-500 text-white cursor-wait'
+        return 'bg-brand-500 text-white cursor-wait'
       case 'success':
         return 'bg-green-500 text-white'
       case 'error':
@@ -179,7 +182,7 @@ export default function GenerateButton({
           {generationState === 'generating' && (
             <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
               <div 
-                className="h-full bg-gradient-to-r from-brand-primary to-blue-500 transition-all duration-500 ease-out"
+                className="h-full bg-gradient-to-r from-brand-primary to-brand-500 transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>

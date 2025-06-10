@@ -94,7 +94,7 @@ export const GET = withCache(
   },
   {
     ...CACHE_STRATEGIES.researchSession,
-    tags: ['research_sessions', `session_${request.url.split('/').pop()}`]
+    tags: ['research_sessions']
   }
 );
 
@@ -143,7 +143,7 @@ export async function PUT(request: NextRequest) {
       data: updatedSession,
       timestamp: new Date().toISOString()
     });
-  } catch {
+  } catch (error) {
     console.error('Error updating research session:', error);
     return Response.json(
       { error: 'Internal server error' },

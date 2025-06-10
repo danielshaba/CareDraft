@@ -49,7 +49,7 @@ function CommentItem({
 
   const userColor = getUserColor(comment.user_id)
   const displayName = getUserDisplayName(comment.user || { email: '', user_metadata: {} })
-  const isResolved = comment.resolved_at !== null
+  const isResolved = false // 'resolved_at' in comment && comment.resolved_at !== null
 
   const handleReplySubmit = (e: React.FormEvent) => {
     e.preventDefault()

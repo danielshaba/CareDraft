@@ -3,7 +3,7 @@ import { ragService } from '@/lib/services/rag'
 // import { documentProcessor } from '@/lib/services/document-processor'
 import { DocumentUploadRequest, DocumentType } from '@/types/rag'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File
@@ -61,7 +61,7 @@ export async function GET() {
           { status: 400 }
         )
       }
-    } catch {
+    } catch (error) {
       return NextResponse.json(
         {
           success: false,
@@ -123,7 +123,7 @@ export async function GET() {
       timestamp: new Date().toISOString()
     })
 
-  } catch {
+  } catch (error) {
     console.error('Error uploading file:', error)
     return NextResponse.json(
       {
@@ -190,7 +190,7 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString()
     })
 
-  } catch {
+  } catch (error) {
     console.error('Error getting upload status:', error)
     return NextResponse.json(
       {

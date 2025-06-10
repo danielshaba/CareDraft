@@ -16,10 +16,10 @@ export const EXTRACTION_CATEGORIES: ExtractionCategory[] = [
     description: 'Extract key priorities, objectives, and strategic goals outlined by the commissioning organization',
     icon: Target,
     color: {
-      background: 'bg-blue-50',
-      text: 'text-blue-900',
-      icon: 'text-blue-600',
-      hover: 'hover:bg-blue-50 hover:border-blue-300'
+      background: 'bg-brand-50',
+      text: 'text-brand-900',
+      icon: 'text-brand-600',
+      hover: 'hover:bg-brand-50 hover:border-brand-300'
     }
   },
   {

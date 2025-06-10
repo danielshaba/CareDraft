@@ -9,7 +9,7 @@ export default function SettingsPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/dashboard" className="inline-flex items-center text-blue-600 hover:text-blue-500 mb-4">
+          <Link href="/dashboard" className="inline-flex items-center text-brand-600 hover:text-brand-500 mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>
@@ -24,7 +24,7 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <Settings className="w-5 h-5 mr-2 text-blue-600" />
+                <Settings className="w-5 h-5 mr-2 text-brand-600" />
                 General
               </CardTitle>
               <CardDescription>
@@ -100,7 +100,7 @@ export default function SettingsPage() {
                   <p className="text-sm text-gray-600">How the sidebar should behave</p>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-12 h-6 bg-blue-600 rounded-full relative">
+                  <div className="w-12 h-6 bg-brand-600 rounded-full relative">
                     <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
                   </div>
                   <span className="ml-2 text-sm text-gray-600">Auto-collapse</span>
@@ -187,7 +187,7 @@ export default function SettingsPage() {
                   <p className="text-sm text-gray-600">Help improve CareDraft by sharing usage data</p>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-12 h-6 bg-blue-600 rounded-full relative">
+                  <div className="w-12 h-6 bg-brand-600 rounded-full relative">
                     <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
                   </div>
                 </div>

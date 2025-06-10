@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { ServiceType, UK_COUNCILS } from '@/types/tender'
+import { ServiceType as _ServiceType, UK_COUNCILS } from '@/types/tender'
 
 // Word Limit Section Schema
-const wordLimitSectionSchema = z.object({
+const _wordLimitSectionSchema = z.object({
   id: z.string(),
   sectionName: z.string().min(1, 'Section name is required').max(100, 'Section name must be 100 characters or less'),
   wordLimit: z.number().min(1, 'Word limit must be at least 1').max(10000, 'Word limit cannot exceed 10,000 words'),

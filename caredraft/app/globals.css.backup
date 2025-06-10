@@ -1,0 +1,270 @@
+@import "./browser-compatibility.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  /* Typography Base Styles */
+  html {
+    font-family: 'Poppins', Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Typography Hierarchy */
+  h1, .text-h1 {
+    @apply font-sans font-bold text-3xl md:text-4xl lg:text-5xl leading-tight tracking-tight text-gray-900;
+  }
+
+  h2, .text-h2 {
+    @apply font-sans font-semibold text-2xl md:text-3xl lg:text-4xl leading-tight tracking-tight text-gray-900;
+  }
+
+  h3, .text-h3 {
+    @apply font-sans font-semibold text-xl md:text-2xl lg:text-3xl leading-snug tracking-tight text-gray-900;
+  }
+
+  h4, .text-h4 {
+    @apply font-sans font-semibold text-lg md:text-xl lg:text-2xl leading-snug text-gray-900;
+  }
+
+  h5, .text-h5 {
+    @apply font-sans font-medium text-base md:text-lg lg:text-xl leading-normal text-gray-900;
+  }
+
+  h6, .text-h6 {
+    @apply font-sans font-medium text-sm md:text-base lg:text-lg leading-normal text-gray-900;
+  }
+
+  /* Body Text Styles */
+  p, .text-body {
+    @apply font-serif text-base leading-relaxed text-gray-700;
+  }
+
+  .text-body-large {
+    @apply font-serif text-lg leading-relaxed text-gray-700;
+  }
+
+  .text-body-small {
+    @apply font-serif text-sm leading-relaxed text-gray-600;
+  }
+
+  /* Caption and UI Text */
+  .text-caption {
+    @apply font-sans text-xs leading-normal text-gray-500 uppercase tracking-wide;
+  }
+
+  .text-ui {
+    @apply font-sans text-sm leading-normal text-gray-700;
+  }
+
+  .text-ui-small {
+    @apply font-sans text-xs leading-normal text-gray-600;
+  }
+
+  /* Interactive Text */
+  .text-link {
+    @apply font-sans text-brand-500 hover:text-brand-600 underline underline-offset-2 transition-colors;
+  }
+
+  .text-button {
+    @apply font-sans font-medium text-sm leading-none tracking-wide;
+  }
+
+  /* Brand Text */
+  .text-brand {
+    @apply font-sans font-bold text-brand-500;
+  }
+
+  .text-brand-accent {
+    @apply font-sans font-semibold text-brand-600;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Poppins', Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Typography Component Classes */
+  .prose-caredraft {
+    @apply text-gray-700 leading-relaxed;
+  }
+
+  .prose-caredraft h1 {
+    @apply text-h1 text-gray-900 mb-6;
+  }
+
+  .prose-caredraft h2 {
+    @apply text-h2 text-gray-900 mb-4 mt-8;
+  }
+
+  .prose-caredraft h3 {
+    @apply text-h3 text-gray-900 mb-3 mt-6;
+  }
+
+  .prose-caredraft h4 {
+    @apply text-h4 text-gray-900 mb-2 mt-4;
+  }
+
+  .prose-caredraft p {
+    @apply text-body mb-4;
+  }
+
+  .prose-caredraft ul, .prose-caredraft ol {
+    @apply text-body mb-4 pl-6;
+  }
+
+  .prose-caredraft li {
+    @apply mb-2;
+  }
+
+  .prose-caredraft a {
+    @apply text-link;
+  }
+
+  /* Button Typography Variants */
+  .btn-text-primary {
+    @apply text-button text-white;
+  }
+
+  .btn-text-secondary {
+    @apply text-button text-gray-700;
+  }
+
+  .btn-text-outline {
+    @apply text-button text-brand-500;
+  }
+}
+
+@layer utilities {
+  .word-wrap-break-word {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+  
+  .text-container-safe {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .force-text-wrap {
+    word-break: break-all !important;
+    overflow-wrap: anywhere !important;
+    word-wrap: break-word !important;
+    white-space: pre-wrap !important;
+    overflow: hidden !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Font Family Utilities */
+  .font-heading {
+    font-family: 'Poppins', Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
+  .font-body {
+    font-family: 'Open Sans', ui-serif, Georgia, serif;
+  }
+
+  .font-ui {
+    font-family: 'Poppins', Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
+  .font-mono {
+    font-family: ui-monospace, SFMono-Regular, 'Courier New', monospace;
+  }
+
+  .font-sans {
+    font-family: 'Poppins', Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
+  .font-serif {
+    font-family: 'Open Sans', ui-serif, Georgia, serif;
+  }
+
+  /* Display Utilities */
+  .text-display {
+    @apply font-sans font-bold text-4xl md:text-5xl lg:text-6xl leading-none tracking-tight;
+  }
+
+  .text-hero {
+    @apply font-sans font-bold text-5xl md:text-6xl lg:text-7xl leading-none tracking-tight;
+  }
+
+  /* Reading Utilities */
+  .reading-optimal {
+    max-width: 65ch;
+    line-height: 1.6;
+  }
+
+  /* CareDraft Brand Utility Classes */
+  .text-brand-primary {
+    @apply text-brand-500;
+  }
+  
+  .bg-brand-primary {
+    @apply bg-brand-500;
+  }
+  
+  .border-brand-primary {
+    @apply border-brand-500;
+  }
+}

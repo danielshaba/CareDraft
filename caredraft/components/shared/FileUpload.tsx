@@ -24,7 +24,7 @@ interface FileUploadAreaProps {
 function FileUploadArea({ isDragActive, disabled, children, onClick }: FileUploadAreaProps) {
   const baseClasses = "relative border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer"
   const activeClasses = isDragActive 
-    ? "border-blue-400 bg-blue-50" 
+    ? "border-brand-400 bg-brand-50" 
     : "border-gray-300 hover:border-gray-400"
   const disabledClasses = disabled 
     ? "opacity-50 cursor-not-allowed" 
@@ -49,7 +49,7 @@ function UploadProgressItem({ upload, onRemove }: UploadProgressItemProps) {
   const getStatusIcon = () => {
     switch (upload.status) {
       case 'uploading':
-        return <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
+        return <Loader2 className="h-4 w-4 animate-spin text-brand-600" />
       case 'completed':
         return <CheckCircle className="h-4 w-4 text-green-600" />
       case 'error':
@@ -62,7 +62,7 @@ function UploadProgressItem({ upload, onRemove }: UploadProgressItemProps) {
   const getStatusColor = () => {
     switch (upload.status) {
       case 'uploading':
-        return 'bg-blue-600'
+        return 'bg-brand-600'
       case 'completed':
         return 'bg-green-600'
       case 'error':

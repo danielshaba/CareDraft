@@ -137,7 +137,7 @@ const formatFileSize = (bytes: number): string => {
 
 const getFileIcon = (fileType: string) => {
   if (fileType.includes('pdf')) return <FileText className="h-5 w-5 text-red-500" />
-  if (fileType.includes('word') || fileType.includes('doc')) return <FileText className="h-5 w-5 text-blue-500" />
+  if (fileType.includes('word') || fileType.includes('doc')) return <FileText className="h-5 w-5 text-brand-500" />
   return <File className="h-5 w-5 text-gray-500" />
 }
 
@@ -348,7 +348,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
           {document.category}
         </span>
         {document.careSpecificMetadata && (
-          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-brand-100 text-brand-800 border border-brand-200">
             {document.careSpecificMetadata.documentType.replace('_', ' ')}
           </span>
         )}
@@ -383,7 +383,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div 
-            className="bg-blue-600 h-2 rounded-full transition-all" 
+            className="bg-brand-600 h-2 rounded-full transition-all" 
             style={{ width: `${document.sourceReliability * 100}%` }}
           ></div>
         </div>

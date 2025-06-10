@@ -167,7 +167,7 @@ export function EvaluationCriteriaSliders({
           type="button"
           onClick={handleReset}
           disabled={disabled}
-          className="text-sm text-brand-primary hover:text-brand-primary-dark font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          className="text-sm text-brand-500 hover:text-brand-600 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ fontFamily: 'var(--font-open-sans)' }}
         >
           Reset to Defaults
@@ -224,7 +224,7 @@ export function EvaluationCriteriaSliders({
             error={!isValid && lastChangedKey === criteria.key ? 'Adjust to balance total' : undefined}
             className={cn(
               "transition-all duration-200",
-              lastChangedKey === criteria.key && "ring-2 ring-brand-primary/20 rounded-lg p-3 -m-3"
+              lastChangedKey === criteria.key && "ring-2 ring-brand-500/20 rounded-lg p-3 -m-3"
             )}
           />
         ))}
@@ -241,11 +241,11 @@ export function EvaluationCriteriaSliders({
       )}
 
       {/* Help Text */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="text-sm font-medium text-blue-800 mb-2" style={{ fontFamily: 'var(--font-poppins)' }}>
+      <div className="bg-brand-50 border border-brand-200 rounded-lg p-4">
+        <h4 className="text-sm font-medium text-brand-800 mb-2" style={{ fontFamily: 'var(--font-poppins)' }}>
           How it works:
         </h4>
-        <ul className="text-xs text-blue-700 space-y-1" style={{ fontFamily: 'var(--font-open-sans)' }}>
+        <ul className="text-xs text-brand-700 space-y-1" style={{ fontFamily: 'var(--font-open-sans)' }}>
           <li>• When you adjust one slider, the others automatically rebalance to maintain 100% total</li>
           <li>• The system proportionally adjusts other criteria based on their current values</li>
           <li>• Use "Reset to Defaults" to return to recommended weightings (Quality 40%, Price 30%, Social Value 20%, Experience 10%)</li>

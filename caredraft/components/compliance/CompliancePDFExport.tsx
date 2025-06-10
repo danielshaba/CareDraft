@@ -113,7 +113,7 @@ export function CompliancePDFExport({
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <FileText className="h-5 w-5 text-blue-600" />
+              <FileText className="h-5 w-5 text-brand-600" />
               <h3 className="font-medium text-gray-900">Export Compliance PDF</h3>
             </div>
             <Badge variant="secondary" className="text-xs">

@@ -10,19 +10,20 @@ import {
 } from '@/lib/utils/errors'
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 /**
  * GET /api/invitations/[id] - Get invitation details
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: RouteParams
 ) {
   try {
+    const { id } = await params
     const supabase = createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -49,7 +50,7 @@ export async function GET(
     // Get invitation - will work once migration is applied
     // For now, return a mock response since table doesn't exist yet
     const invitation = {
-      id: params.id,
+      id: id,
       email: 'test@example.com',
       role: 'viewer',
       status: 'pending',
@@ -67,7 +68,7 @@ export async function GET(
     })
 
   } catch (error) {
-    console.error(`Error getting invitation ${params.id}:`, error)
+    console.error(`Error getting invitation:`, error)
     
     const errorResponse = getErrorResponse(error)
     const statusCode = getErrorStatusCode(error)
@@ -84,6 +85,7 @@ export async function PATCH(
   { params }: RouteParams
 ) {
   try {
+    const { id } = await params
     const supabase = createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -115,10 +117,10 @@ export async function PATCH(
      
      switch (action) {
        case 'resend':
-         result = await invitationService.resendInvitation(params.id, user.id)
+         result = await invitationService.resendInvitation(id, user.id)
          break
        case 'cancel':
-         result = await invitationService.cancelInvitation(params.id)
+         result = await invitationService.cancelInvitation(id)
          break
        default:
          return NextResponse.json(
@@ -140,7 +142,7 @@ export async function PATCH(
      })
 
   } catch (error) {
-    console.error(`Error updating invitation ${params.id}:`, error)
+    console.error(`Error updating invitation:`, error)
     
     const errorResponse = getErrorResponse(error)
     const statusCode = getErrorStatusCode(error)
@@ -153,10 +155,11 @@ export async function PATCH(
  * DELETE /api/invitations/[id] - Delete invitation
  */
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: RouteParams
 ) {
   try {
+    const { id } = await params
     const supabase = createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -182,7 +185,7 @@ export async function DELETE(
 
     // Delete invitation - will work once migration is applied
     // For now, simulate successful deletion
-    console.log(`Would delete invitation ${params.id} for organization ${userDetails.organization_id}`)
+    console.log(`Would delete invitation ${id} for organization ${userDetails.organization_id}`)
 
     return NextResponse.json({
       success: true,
@@ -190,7 +193,7 @@ export async function DELETE(
     })
 
   } catch (error) {
-    console.error(`Error deleting invitation ${params.id}:`, error)
+    console.error(`Error deleting invitation:`, error)
     
     const errorResponse = getErrorResponse(error)
     const statusCode = getErrorStatusCode(error)

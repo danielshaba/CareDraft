@@ -113,7 +113,7 @@ export function NotificationBell({ userId, className = '' }: NotificationBellPro
       case 'mention':
         return <AtSign className="w-4 h-4 text-brand-primary" />
       case 'comment':
-        return <MessageCircle className="w-4 h-4 text-blue-500" />
+        return <MessageCircle className="w-4 h-4 text-brand-500" />
       default:
         return <Bell className="w-4 h-4 text-gray-500" />
     }
@@ -178,7 +178,7 @@ export function NotificationBell({ userId, className = '' }: NotificationBellPro
                 <div
                   key={notification.id}
                   className={`group p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors ${
-                    !notification.read_at ? 'bg-blue-50' : ''
+                    !notification.read_at ? 'bg-brand-50' : ''
                   }`}
                 >
                   <div className="flex items-start gap-3">

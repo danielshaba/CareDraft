@@ -163,7 +163,7 @@ export default function UtilityPanel({ editor }: UtilityPanelProps) {
           <div className="flex items-center space-x-2 mb-1">
             <div className="font-medium text-gray-900 truncate">{answer.title}</div>
             {answer.is_template && (
-              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-brand-100 text-brand-800">
                 Template
               </span>
             )}

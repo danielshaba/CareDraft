@@ -208,7 +208,7 @@ export function TenderDetailsForm({
       <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-8">
         {/* Form Header */}
         <div className="border-b border-gray-200 pb-6">
-          <h2 className="text-xl font-semibold text-gray-900" style={{ fontFamily: 'var(--font-poppins)' }}>
+          <h2 className="text-h3">
             Basic Tender Information
           </h2>
           <p className="mt-1 text-sm text-gray-500" style={{ fontFamily: 'var(--font-open-sans)' }}>
@@ -363,7 +363,7 @@ export function TenderDetailsForm({
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <FileText className="h-5 w-5 text-brand-primary mr-2" />
+                <FileText className="h-5 w-5 text-brand-500 mr-2" />
                 <div>
                   <p className="font-medium text-gray-900">Compliance Checklist</p>
                   <p className="text-sm text-gray-600">
@@ -374,7 +374,7 @@ export function TenderDetailsForm({
               
               <Link
                 href={`/tender-details/compliance?proposalId=${encodeURIComponent('temp-proposal-id')}&tenderName=${encodeURIComponent(watchedValues.tenderName || '')}&organizationName=${encodeURIComponent(watchedValues.issuingAuthority || '')}`}
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary hover:bg-brand-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
+                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500"
               >
                 <CheckCircle2 className="h-4 w-4 mr-2" />
                 Manage Compliance
@@ -408,7 +408,7 @@ export function TenderDetailsForm({
               type="button"
               onClick={handleSave}
               disabled={!isDirty || isLoading || isSubmitting}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSaving ? (
                 <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -438,7 +438,7 @@ export function TenderDetailsForm({
             <button
               type="submit"
               disabled={!isFormCompletelyValid || isLoading || isSubmitting}
-              className="inline-flex items-center px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary hover:bg-brand-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

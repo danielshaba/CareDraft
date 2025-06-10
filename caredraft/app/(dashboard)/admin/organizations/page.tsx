@@ -64,8 +64,8 @@ export default function OrganizationsPage() {
           <Card key={org.id} className="cursor-pointer hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
-                <div className="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Building2 className="h-5 w-5 text-blue-600" />
+                <div className="h-10 w-10 bg-brand-100 rounded-lg flex items-center justify-center">
+                  <Building2 className="h-5 w-5 text-brand-600" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold">{org.name}</h3>
@@ -104,7 +104,7 @@ export default function OrganizationsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center">
-              <Building2 className="h-8 w-8 text-blue-500" />
+              <Building2 className="h-8 w-8 text-brand-500" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Organizations</p>
                 <p className="text-2xl font-bold">3</p>

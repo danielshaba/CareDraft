@@ -210,8 +210,8 @@ export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: A
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
             <div className="flex items-center space-x-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-brand-primary-light rounded-lg">
-                <Clipboard className="h-5 w-5 text-brand-primary" />
+              <div className="flex items-center justify-center w-10 h-10 bg-brand-50 rounded-lg">
+                <Clipboard className="h-5 w-5 text-brand-500" />
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">Answer Bank</h3>
@@ -254,7 +254,7 @@ export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: A
             <div className="flex-1 overflow-y-auto p-4">
               {loading ? (
                 <div className="flex items-center justify-center h-32">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
                 </div>
               ) : answers.length === 0 ? (
                 <div className="text-center py-8">
@@ -272,7 +272,7 @@ export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: A
                   {answers.map((answer) => (
                     <div
                       key={answer.id}
-                      className="border border-gray-200 rounded-lg p-4 hover:border-brand-primary hover:bg-brand-primary-light transition-colors cursor-pointer"
+                      className="border border-gray-200 rounded-lg p-4 hover:border-brand-500 hover:bg-brand-50 transition-colors cursor-pointer"
                       onClick={() => setPreviewAnswer(answer)}
                     >
                       <div className="flex items-start justify-between">
@@ -282,7 +282,7 @@ export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: A
                               {answer.title}
                             </h4>
                             {answer.is_template && (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-brand-100 text-brand-800">
                                 Template
                               </span>
                             )}
@@ -334,7 +334,7 @@ export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: A
                               e.stopPropagation()
                               handleInsert(answer)
                             }}
-                            className="px-3 py-1 bg-brand-primary text-white text-xs rounded hover:bg-brand-primary-dark transition-colors"
+                            className="px-3 py-1 bg-brand-500 text-white text-xs rounded hover:bg-brand-600 transition-colors"
                           >
                             Insert
                           </button>
@@ -394,7 +394,7 @@ export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: A
                     
                     <button
                       onClick={() => handleInsert(previewAnswer)}
-                      className="w-full px-3 py-2 bg-brand-primary text-white text-sm rounded hover:bg-brand-primary-dark transition-colors"
+                      className="w-full px-3 py-2 bg-brand-500 text-white text-sm rounded hover:bg-brand-600 transition-colors"
                     >
                       Insert into Document
                     </button>

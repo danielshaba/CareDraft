@@ -112,7 +112,7 @@ export function OrganizationManager({ organizationId, onClose }: OrganizationMan
     return (
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600 mx-auto"></div>
           <p className="mt-2 text-gray-600">Loading organization...</p>
         </div>
       </div>
@@ -150,7 +150,7 @@ export function OrganizationManager({ organizationId, onClose }: OrganizationMan
           onClick={() => setActiveTab('details')}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-t-lg transition-colors ${
             activeTab === 'details'
-              ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
+              ? 'text-brand-600 border-b-2 border-brand-600 bg-brand-50'
               : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
           }`}
         >
@@ -163,7 +163,7 @@ export function OrganizationManager({ organizationId, onClose }: OrganizationMan
             onClick={() => setActiveTab('settings')}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-t-lg transition-colors ${
               activeTab === 'settings'
-                ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
+                ? 'text-brand-600 border-b-2 border-brand-600 bg-brand-50'
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
@@ -176,7 +176,7 @@ export function OrganizationManager({ organizationId, onClose }: OrganizationMan
           onClick={() => setActiveTab('members')}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-t-lg transition-colors ${
             activeTab === 'members'
-              ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
+              ? 'text-brand-600 border-b-2 border-brand-600 bg-brand-50'
               : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
           }`}
         >
@@ -191,8 +191,8 @@ export function OrganizationManager({ organizationId, onClose }: OrganizationMan
           {/* Organization Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="h-16 w-16 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Building2 className="h-8 w-8 text-blue-600" />
+              <div className="h-16 w-16 bg-brand-100 rounded-lg flex items-center justify-center">
+                <Building2 className="h-8 w-8 text-brand-600" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold">{organization.name}</h2>

@@ -35,13 +35,13 @@ const toastVariants = {
     progress: 'bg-yellow-500'
   },
   info: {
-    bg: 'bg-white border-blue-200',
-    iconBg: 'bg-blue-100',
+    bg: 'bg-white border-brand-200',
+    iconBg: 'bg-brand-100',
     icon: Info,
-    iconColor: 'text-blue-600',
-    title: 'text-blue-900',
-    description: 'text-blue-700',
-    progress: 'bg-blue-500'
+    iconColor: 'text-brand-600',
+    title: 'text-brand-900',
+    description: 'text-brand-700',
+    progress: 'bg-brand-500'
   },
 };
 

@@ -1,0 +1,403 @@
+/**
+ * Cross-Browser Compatibility Enhancements for CareDraft
+ * Ensures consistent behavior across Chrome, Firefox, Safari, and Edge
+ */
+
+/* ==========================================================================
+   CSS Reset and Normalization
+   ========================================================================== */
+
+/* Ensure consistent box-sizing across all browsers */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margins and padding for consistent spacing */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   Font Rendering Optimizations
+   ========================================================================== */
+
+/* Improve font rendering across browsers */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1;
+  font-kerning: normal;
+}
+
+/* Ensure consistent line height calculation */
+html {
+  line-height: 1.15; /* Normalize default line-height */
+  -webkit-text-size-adjust: 100%; /* Prevent iOS font size changes */
+  -ms-text-size-adjust: 100%; /* Prevent Windows Phone font size changes */
+}
+
+/* ==========================================================================
+   Form Element Compatibility
+   ========================================================================== */
+
+/* Normalize form elements across browsers */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* Remove default button styling in Safari */
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+  appearance: button;
+}
+
+/* Fix button focus outline in Firefox */
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+/* Restore focus outline for accessibility */
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+/* Normalize input appearance across browsers */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="url"],
+input[type="tel"],
+input[type="number"],
+textarea,
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border-radius: 0;
+}
+
+/* Fix search input styling in Safari */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/* ==========================================================================
+   Flexbox and Grid Compatibility
+   ========================================================================== */
+
+/* Ensure flexbox works consistently */
+.flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.inline-flex {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+/* Fix flex-shrink in IE11 */
+.flex > * {
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+}
+
+/* ==========================================================================
+   Touch and Mobile Optimizations
+   ========================================================================== */
+
+/* Improve touch scrolling on iOS */
+.overflow-auto,
+.overflow-scroll,
+.overflow-y-auto,
+.overflow-y-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent zoom on input focus in iOS Safari */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="url"],
+input[type="tel"],
+input[type="number"],
+textarea,
+select {
+  font-size: 16px; /* Minimum font size to prevent zoom */
+}
+
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="url"],
+  input[type="tel"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px; /* Ensure 16px minimum on mobile */
+  }
+}
+
+/* Improve tap targets for touch devices */
+.btn,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+  min-height: 44px; /* Apple's recommended minimum touch target */
+  min-width: 44px;
+}
+
+/* Remove tap highlight on mobile */
+a,
+button,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================================================================
+   Image and Media Compatibility
+   ========================================================================== */
+
+/* Ensure images are responsive by default */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix object-fit support for older browsers */
+.object-cover {
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.object-contain {
+  -o-object-fit: contain;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   Animation and Transform Compatibility
+   ========================================================================== */
+
+/* Improve animation performance */
+.animate-spin,
+.animate-pulse,
+.animate-bounce {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Ensure transforms work consistently */
+.transform {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* ==========================================================================
+   Focus and Accessibility Enhancements
+   ========================================================================== */
+
+/* Ensure focus indicators are visible across browsers */
+:focus {
+  outline: 2px solid var(--color-brand-500, #2a6f6f);
+  outline-offset: 2px;
+}
+
+/* Remove outline for mouse users, keep for keyboard users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-500, #2a6f6f);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  /* Ensure proper printing across browsers */
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+  abbr[title]::after {
+    content: " (" attr(title) ")";
+  }
+
+  /* Don't show links that are fragment identifiers or javascript: */
+  a[href^="#"]::after,
+  a[href^="javascript:"]::after {
+    content: "";
+  }
+
+  pre {
+    white-space: pre-wrap !important;
+  }
+
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}
+
+/* ==========================================================================
+   Browser-Specific Fixes
+   ========================================================================== */
+
+/* Firefox-specific fixes */
+@-moz-document url-prefix() {
+  /* Fix button padding in Firefox */
+  button {
+    padding: 0.375rem 0.75rem;
+  }
+  
+  /* Fix select dropdown arrow in Firefox */
+  select {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 8px 10px;
+  }
+}
+
+/* Safari-specific fixes */
+@supports (-webkit-appearance: none) {
+  /* Fix input styling in Safari */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="url"],
+  input[type="tel"],
+  input[type="number"] {
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+}
+
+/* Edge-specific fixes */
+@supports (-ms-ime-align: auto) {
+  /* Fix flexbox issues in older Edge versions */
+  .flex {
+    display: -ms-flexbox;
+    display: flex;
+  }
+  
+  .flex-1 {
+    -ms-flex: 1 1 0%;
+    flex: 1 1 0%;
+  }
+}
+
+/* ==========================================================================
+   High Contrast Mode Support
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  /* Enhance contrast for accessibility */
+  .bg-brand-50 {
+    background-color: #ffffff;
+  }
+  
+  .text-brand-500 {
+    color: #000000;
+  }
+  
+  .border-brand-500 {
+    border-color: #000000;
+  }
+}
+
+/* ==========================================================================
+   Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Disable animations for users who prefer reduced motion */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+} 

@@ -44,9 +44,9 @@ const STATUS_CONFIG: Record<ProposalStatus, {
   },
   review: {
     label: 'In Review',
-    bgColor: 'bg-blue-100',
-    textColor: 'text-blue-800',
-    dotColor: 'bg-blue-400'
+    bgColor: 'bg-brand-100',
+    textColor: 'text-brand-800',
+    dotColor: 'bg-brand-400'
   },
   submitted: {
     label: 'Submitted',
@@ -131,7 +131,7 @@ const ProgressBar: React.FC<{ progress: number }> = ({ progress }) => {
   return (
     <div className="w-full bg-gray-200 rounded-full h-1.5">
       <div 
-        className="bg-brand-primary h-1.5 rounded-full transition-all duration-300 ease-in-out"
+        className="bg-brand-500 h-1.5 rounded-full transition-all duration-300 ease-in-out"
         style={{ width: `${clampedProgress}%` }}
       ></div>
     </div>

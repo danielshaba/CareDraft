@@ -1,0 +1,86 @@
+{
+  "timestamp": "2025-06-09T23:02:21.851Z",
+  "overallScore": 96,
+  "grade": "A+",
+  "results": {
+    "brandConsistency": {
+      "score": 100,
+      "issues": [
+        "❌ 1 deprecated blue color usages found"
+      ],
+      "successes": [
+        "✅ 652 brand color usages found",
+        "✅ 246 logo references found"
+      ]
+    },
+    "componentStyling": {
+      "score": 100,
+      "issues": [],
+      "successes": [
+        "✅ 124 styled components found",
+        "✅ 1910 consistent spacing classes",
+        "✅ 105 modern shadow implementations"
+      ]
+    },
+    "typography": {
+      "score": 100,
+      "issues": [],
+      "successes": [
+        "✅ Both Poppins and Open Sans fonts configured",
+        "✅ Font CSS variables properly defined",
+        "✅ 5892 typography classes found"
+      ]
+    },
+    "assetOptimization": {
+      "score": 100,
+      "issues": [],
+      "successes": [
+        "✅ Modern image formats (AVIF, WebP) configured",
+        "✅ CSS optimization enabled",
+        "✅ Compression enabled",
+        "✅ Optimized image component available",
+        "✅ Responsive image component available",
+        "✅ CSS minification configured"
+      ]
+    },
+    "crossBrowserCompatibility": {
+      "score": 100,
+      "issues": [],
+      "successes": [
+        "✅ Browser compatibility CSS file exists",
+        "✅ Vendor prefixes implemented",
+        "✅ Viewport configuration found",
+        "✅ Autoprefixer configured"
+      ]
+    },
+    "accessibility": {
+      "score": 100,
+      "issues": [
+        "❌ 2 critical accessibility issues"
+      ],
+      "successes": [
+        "✅ Accessibility score: 100% (A+)",
+        "✅ 1640 accessibility features found"
+      ]
+    },
+    "responsiveDesign": {
+      "score": 100,
+      "issues": [],
+      "successes": [
+        "✅ 384 responsive design classes",
+        "✅ 1005 mobile optimization classes"
+      ]
+    },
+    "performance": {
+      "score": 70,
+      "issues": [],
+      "successes": [
+        "✅ Experimental Next.js features enabled",
+        "✅ Package import optimization enabled",
+        "✅ Turbopack configuration found",
+        "✅ 2 lazy loading implementations"
+      ]
+    }
+  },
+  "totalFiles": 0
+}

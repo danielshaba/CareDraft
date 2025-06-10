@@ -1,260 +1,211 @@
 'use client'
 
-import Image from 'next/image'
-import { useState, forwardRef } from 'react'
+import React, { useState, useCallback } from 'react'
+import Image, { ImageProps } from 'next/image'
+import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-interface OptimizedImageProps {
-  src: string
-  alt: string
-  width?: number
-  height?: number
-  className?: string
-  fill?: boolean
-  sizes?: string
-  priority?: boolean
-  quality?: number
-  placeholder?: 'blur' | 'empty'
-  blurDataURL?: string
-  loading?: 'lazy' | 'eager'
-  objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down'
-  objectPosition?: string
-  onLoad?: () => void
-  onError?: () => void
+interface OptimizedImageProps extends Omit<ImageProps, 'onLoad' | 'onError'> {
   fallbackSrc?: string
-  aspectRatio?: 'square' | '4/3' | '16/9' | '21/9' | 'auto'
-  responsive?: boolean
+  showLoading?: boolean
+  loadingClassName?: string
+  errorClassName?: string
+  containerClassName?: string
+  onLoadComplete?: () => void
+  onLoadError?: (error: Error) => void
 }
 
-export const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
-  ({
-    src,
-    alt,
-    width,
-    height,
-    className,
-    fill = false,
-    sizes,
-    priority = false,
-    quality = 80,
-    placeholder = 'empty',
-    blurDataURL,
-    loading = 'lazy',
-    objectFit = 'cover',
-    objectPosition = 'center',
-    onLoad,
-    onError,
-    fallbackSrc = '/images/placeholder.svg',
-    aspectRatio = 'auto',
-    responsive = false,
-    ...props
-  }, ref) => {
-    const [imgSrc, setImgSrc] = useState(src)
-    const [isLoading, setIsLoading] = useState(true)
-    const [hasError, setHasError] = useState(false)
+export function OptimizedImage({
+  src,
+  alt,
+  fallbackSrc = '/images/placeholder.svg',
+  showLoading = true,
+  loadingClassName,
+  errorClassName,
+  containerClassName,
+  className,
+  onLoadComplete,
+  onLoadError,
+  priority = false,
+  quality = 90,
+  placeholder = 'blur',
+  blurDataURL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjZjNmNGY2Ii8+Cjwvc3ZnPg==',
+  ...props
+}: OptimizedImageProps) {
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  const [currentSrc, setCurrentSrc] = useState(src)
 
-    const handleLoad = () => {
-      setIsLoading(false)
-      onLoad?.()
+  const handleLoad = useCallback(() => {
+    setIsLoading(false)
+    setHasError(false)
+    onLoadComplete?.()
+  }, [onLoadComplete])
+
+  const handleError = useCallback(() => {
+    setIsLoading(false)
+    setHasError(true)
+    
+    // Try fallback if main image fails and we haven't tried fallback yet
+    if (currentSrc !== fallbackSrc) {
+      setCurrentSrc(fallbackSrc)
+      setIsLoading(true)
+      setHasError(false)
+    } else {
+      const error = new Error(`Failed to load image: ${src}`)
+      onLoadError?.(error)
     }
+  }, [src, fallbackSrc, currentSrc, onLoadError])
 
-    const handleError = () => {
-      setHasError(true)
-      setIsLoading(false)
-      if (imgSrc !== fallbackSrc) {
-        setImgSrc(fallbackSrc)
-      }
-      onError?.()
-    }
-
-    // Responsive sizes based on common breakpoints
-    const responsiveSizes = responsive 
-      ? '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
-      : sizes
-
-    // Aspect ratio classes
-    const aspectRatioClasses = {
-      'square': 'aspect-square',
-      '4/3': 'aspect-[4/3]',
-      '16/9': 'aspect-video',
-      '21/9': 'aspect-[21/9]',
-      'auto': ''
-    }
-
-    const imageClassName = cn(
-      'transition-opacity duration-200',
-      aspectRatioClasses[aspectRatio],
-      {
-        'opacity-0': isLoading,
-        'opacity-100': !isLoading,
-      },
-      className
-    )
-
-    const imageProps = {
-      src: imgSrc,
-      alt,
-      className: imageClassName,
-      onLoad: handleLoad,
-      onError: handleError,
-      priority,
-      quality,
-      placeholder,
-      blurDataURL,
-      sizes: responsiveSizes,
-      style: {
-        objectFit,
-        objectPosition,
-      },
-      ...props,
-    }
-
-    if (fill) {
-      return (
-        <div className={cn('relative overflow-hidden', aspectRatioClasses[aspectRatio])}>
-          <Image
-            fill
-            {...imageProps}
-            ref={ref as any}
-          />
-          {isLoading && (
-            <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+  return (
+    <div className={cn('relative', containerClassName)}>
+      {/* Loading State */}
+      {isLoading && showLoading && (
+        <div
+          className={cn(
+            'absolute inset-0 flex items-center justify-center bg-gray-100',
+            'rounded-md animate-pulse',
+            loadingClassName
           )}
+        >
+          <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
         </div>
-      )
-    }
+      )}
 
-    return (
-      <div className="relative">
-        <Image
-          width={width}
-          height={height}
-          {...imageProps}
-          ref={ref as any}
-        />
-        {isLoading && width && height && (
-          <div 
-            className="absolute inset-0 bg-gray-200 animate-pulse"
-            style={{ width, height }}
-          />
+      {/* Error State */}
+      {hasError && currentSrc === fallbackSrc && (
+        <div
+          className={cn(
+            'absolute inset-0 flex items-center justify-center bg-gray-100',
+            'rounded-md text-gray-500 text-sm',
+            errorClassName
+          )}
+        >
+          <span>Failed to load image</span>
+        </div>
+      )}
+
+      {/* Optimized Image */}
+      <Image
+        {...props}
+        src={currentSrc}
+        alt={alt || 'Optimized image'}
+        onLoad={handleLoad}
+        onError={handleError}
+        priority={priority}
+        quality={quality}
+        placeholder={placeholder}
+        blurDataURL={blurDataURL}
+        className={cn(
+          'transition-opacity duration-300',
+          isLoading ? 'opacity-0' : 'opacity-100',
+          hasError && currentSrc === fallbackSrc ? 'opacity-0' : '',
+          className
         )}
+        // Performance optimizations
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+      />
+    </div>
+  )
+}
+
+// Avatar component with optimized loading
+interface OptimizedAvatarProps {
+  src?: string
+  alt: string
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+  fallback?: string
+  className?: string
+}
+
+export function OptimizedAvatar({
+  src,
+  alt,
+  size = 'md',
+  fallback,
+  className,
+}: OptimizedAvatarProps) {
+  const sizeClasses = {
+    sm: 'h-8 w-8',
+    md: 'h-10 w-10',
+    lg: 'h-12 w-12',
+    xl: 'h-16 w-16',
+  }
+
+  const fallbackInitials = fallback || alt.charAt(0).toUpperCase()
+
+  if (!src) {
+    return (
+      <div
+        className={cn(
+          'flex items-center justify-center rounded-full bg-brand-100 text-brand-600 font-medium',
+          sizeClasses[size],
+          className
+        )}
+      >
+        {fallbackInitials}
       </div>
     )
   }
-)
 
-OptimizedImage.displayName = 'OptimizedImage'
-
-// Preset component variations for common use cases
-export const AvatarImage = forwardRef<HTMLImageElement, Omit<OptimizedImageProps, 'aspectRatio'>>(
-  (props, ref) => (
+  return (
     <OptimizedImage
-      {...props}
-      aspectRatio="square"
-      objectFit="cover"
-      className={cn('rounded-full', props.className)}
-      ref={ref}
+      src={src}
+      alt={alt}
+      width={size === 'sm' ? 32 : size === 'md' ? 40 : size === 'lg' ? 48 : 64}
+      height={size === 'sm' ? 32 : size === 'md' ? 40 : size === 'lg' ? 48 : 64}
+      className={cn('rounded-full object-cover', sizeClasses[size], className)}
+      containerClassName="relative"
+      fallbackSrc={`https://ui-avatars.com/api/?name=${encodeURIComponent(alt)}&background=eaf7f7&color=2a6f6f&size=128`}
+      priority={false}
+      quality={85}
     />
   )
-)
+}
 
-AvatarImage.displayName = 'AvatarImage'
-
-export const CardImage = forwardRef<HTMLImageElement, Omit<OptimizedImageProps, 'aspectRatio'>>(
-  (props, ref) => (
-    <OptimizedImage
-      {...props}
-      aspectRatio="16/9"
-      objectFit="cover"
-      responsive
-      ref={ref}
-    />
-  )
-)
-
-CardImage.displayName = 'CardImage'
-
-export const ThumbnailImage = forwardRef<HTMLImageElement, Omit<OptimizedImageProps, 'aspectRatio' | 'loading'>>(
-  (props, ref) => (
-    <OptimizedImage
-      {...props}
-      aspectRatio="4/3"
-      objectFit="cover"
-      loading="lazy"
-      quality={60}
-      ref={ref}
-    />
-  )
-)
-
-ThumbnailImage.displayName = 'ThumbnailImage'
-
-export const HeroImage = forwardRef<HTMLImageElement, Omit<OptimizedImageProps, 'priority' | 'loading'>>(
-  (props, ref) => (
-    <OptimizedImage
-      {...props}
-      priority
-      loading="eager"
-      quality={90}
-      responsive
-      ref={ref}
-    />
-  )
-)
-
-HeroImage.displayName = 'HeroImage'
-
-// Image grid component for galleries
-interface ImageGridProps {
-  images: Array<{
-    src: string
-    alt: string
-    caption?: string
-  }>
-  columns?: 2 | 3 | 4
-  gap?: 'sm' | 'md' | 'lg'
+// Logo component with brand-specific optimizations
+interface OptimizedLogoProps {
+  variant?: 'full' | 'icon' | 'text'
+  size?: 'sm' | 'md' | 'lg'
   className?: string
 }
 
-export function ImageGrid({ 
-  images, 
-  columns = 3, 
-  gap = 'md',
-  className 
-}: ImageGridProps) {
-  const gridCols = {
-    2: 'grid-cols-2',
-    3: 'grid-cols-3',
-    4: 'grid-cols-4'
+export function OptimizedLogo({
+  variant = 'full',
+  size = 'md',
+  className,
+}: OptimizedLogoProps) {
+  const sizeClasses = {
+    sm: variant === 'icon' ? 'h-6 w-6' : 'h-6',
+    md: variant === 'icon' ? 'h-8 w-8' : 'h-8',
+    lg: variant === 'icon' ? 'h-12 w-12' : 'h-12',
   }
 
-  const gapClasses = {
-    sm: 'gap-2',
-    md: 'gap-4',
-    lg: 'gap-6'
+  if (variant === 'text') {
+    return (
+      <span
+        className={cn(
+          'font-bold text-brand-600',
+          size === 'sm' ? 'text-lg' : size === 'md' ? 'text-xl' : 'text-2xl',
+          className
+        )}
+      >
+        CareDraft
+      </span>
+    )
   }
 
   return (
-    <div className={cn(
-      'grid',
-      gridCols[columns],
-      gapClasses[gap],
-      className
-    )}>
-      {images.map((image, index) => (
-        <div key={index} className="group">
-          <ThumbnailImage
-            src={image.src}
-            alt={image.alt}
-            width={300}
-            height={200}
-            className="w-full h-auto transition-transform group-hover:scale-105"
-          />
-          {image.caption && (
-            <p className="mt-2 text-sm text-gray-600">{image.caption}</p>
-          )}
-        </div>
-      ))}
-    </div>
+    <OptimizedImage
+      src="/caredraft-logo.svg"
+      alt="CareDraft Logo"
+      width={variant === 'icon' ? (size === 'sm' ? 24 : size === 'md' ? 32 : 48) : undefined}
+      height={variant === 'icon' ? (size === 'sm' ? 24 : size === 'md' ? 32 : 48) : undefined}
+      className={cn(sizeClasses[size], className)}
+      priority={true}
+      quality={100}
+      fallbackSrc="/favicon.ico"
+    />
   )
 } 

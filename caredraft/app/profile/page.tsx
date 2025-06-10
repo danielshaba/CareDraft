@@ -9,7 +9,7 @@ export default function ProfilePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/dashboard" className="inline-flex items-center text-blue-600 hover:text-blue-500 mb-4">
+          <Link href="/dashboard" className="inline-flex items-center text-brand-600 hover:text-brand-500 mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>
@@ -24,7 +24,7 @@ export default function ProfilePage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <User className="w-5 h-5 mr-2 text-blue-600" />
+                <User className="w-5 h-5 mr-2 text-brand-600" />
                 Personal Information
               </CardTitle>
               <CardDescription>
@@ -180,7 +180,7 @@ export default function ProfilePage() {
                   <p className="text-sm text-gray-600">Receive updates via email</p>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-12 h-6 bg-blue-600 rounded-full relative">
+                  <div className="w-12 h-6 bg-brand-600 rounded-full relative">
                     <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export default function ProfilePage() {
                   <p className="text-sm text-gray-600">Summary of your weekly activity</p>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-12 h-6 bg-blue-600 rounded-full relative">
+                  <div className="w-12 h-6 bg-brand-600 rounded-full relative">
                     <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
                   </div>
                 </div>

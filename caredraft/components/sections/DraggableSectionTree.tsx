@@ -66,7 +66,7 @@ export default function DraggableSectionTree({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`space-y-1 ${snapshot.isDraggingOver ? 'bg-blue-50' : ''}`}
+            className={`space-y-1 ${snapshot.isDraggingOver ? 'bg-brand-50' : ''}`}
           >
             {sections.map((section, index) => (
               <Draggable key={section.id} draggableId={section.id} index={index}>

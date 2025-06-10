@@ -7,9 +7,10 @@ export const metadata: Metadata = {
 }
 
 interface DraftBuilderPageProps {
-  searchParams: { proposalId?: string }
+  searchParams: Promise<{ proposalId?: string }>
 }
 
-export default function DraftBuilderPage({ searchParams }: DraftBuilderPageProps) {
-  return <LazyDraftBuilder proposalId={searchParams.proposalId} />
+export default async function DraftBuilderPage({ searchParams }: DraftBuilderPageProps) {
+  const resolvedSearchParams = await searchParams
+  return <LazyDraftBuilder proposalId={resolvedSearchParams.proposalId} />
 } 

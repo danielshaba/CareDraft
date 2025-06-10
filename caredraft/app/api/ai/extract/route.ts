@@ -169,7 +169,7 @@ async function handlePOST(request: NextRequest) {
     }
 
     return NextResponse.json(response)
-  } catch {
+  } catch (error) {
     console.error('Extract API error:', error)
 
     if (error instanceof z.ZodError) {

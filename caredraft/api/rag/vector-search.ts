@@ -3,7 +3,7 @@ import { vectorStorage } from '@/lib/services/vector-storage'
 import { embeddingService } from '@/lib/services/embedding-service'
 import { SearchOptions } from '@/types/rag'
 
-export async function GET() {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { 
@@ -65,7 +65,7 @@ export async function GET() {
       }
     })
 
-  } catch {
+  } catch (error) {
     console.error('Vector search API error:', error)
     return NextResponse.json(
       { 
@@ -77,7 +77,7 @@ export async function GET() {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const action = searchParams.get('action')
@@ -118,7 +118,7 @@ export async function GET() {
               test_search_results: testResults.length
             }
           })
-        } catch {
+        } catch (error) {
           return NextResponse.json({
             success: false,
             data: {
@@ -136,7 +136,7 @@ export async function GET() {
         )
     }
 
-  } catch {
+  } catch (error) {
     console.error('Vector search GET API error:', error)
     return NextResponse.json(
       { 

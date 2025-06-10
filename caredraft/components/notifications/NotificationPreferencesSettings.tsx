@@ -355,7 +355,7 @@ export function NotificationPreferencesSettings({ className }: NotificationPrefe
               <select
                 value={preferences.email_digest_frequency || 'immediate'}
                 onChange={(e) => updatePreference('email_digest_frequency', e.target.value)}
-                className="block w-full max-w-xs px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary"
+                className="block w-full max-w-xs px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-500 focus:border-brand-500"
               >
                 <option value="immediate">Immediate</option>
                 <option value="hourly">Hourly Digest</option>
@@ -377,7 +377,7 @@ export function NotificationPreferencesSettings({ className }: NotificationPrefe
                   type="time"
                   value={preferences.quiet_hours_start || ''}
                   onChange={(e) => updatePreference('quiet_hours_start', e.target.value || null)}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-500 focus:border-brand-500"
                 />
               </div>
               <div>
@@ -388,7 +388,7 @@ export function NotificationPreferencesSettings({ className }: NotificationPrefe
                   type="time"
                   value={preferences.quiet_hours_end || ''}
                   onChange={(e) => updatePreference('quiet_hours_end', e.target.value || null)}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-500 focus:border-brand-500"
                 />
               </div>
             </div>
@@ -408,7 +408,7 @@ export function NotificationPreferencesSettings({ className }: NotificationPrefe
             <select
               value={preferences.timezone || 'UTC'}
               onChange={(e) => updatePreference('timezone', e.target.value)}
-              className="block w-full max-w-sm px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-primary focus:border-brand-primary"
+              className="block w-full max-w-sm px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-500 focus:border-brand-500"
             >
               <option value="UTC">UTC</option>
               <option value="America/New_York">Eastern Time</option>
@@ -434,7 +434,7 @@ export function NotificationPreferencesSettings({ className }: NotificationPrefe
         <button
           onClick={savePreferences}
           disabled={preferences.saving}
-          className="inline-flex items-center px-4 py-2 bg-brand-primary-light0 text-white text-sm font-medium rounded-md hover:bg-brand-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center px-4 py-2 bg-brand-50 text-white text-sm font-medium rounded-md hover:bg-brand-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {preferences.saving ? (
             <>
@@ -471,8 +471,8 @@ function PreferenceToggle({ label, description, checked, onChange }: PreferenceT
         <button
           type="button"
           onClick={() => onChange(!checked)}
-          className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 ${
-            checked ? 'bg-brand-primary-light0' : 'bg-gray-200'
+          className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 ${
+            checked ? 'bg-brand-50' : 'bg-gray-200'
           }`}
           role="switch"
           aria-checked={checked}

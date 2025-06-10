@@ -45,7 +45,7 @@ export function CollaborativeCursors({
               color: getUserColor(presence.user_id)
             })
           }
-        } catch {
+        } catch (error) {
           console.warn('Error calculating cursor position:', error)
         }
       })
@@ -99,7 +99,7 @@ export function CollaborativeCursors({
             y: rect.top - editorRect.top
           }
         }
-      } catch {
+      } catch (error) {
         console.warn('Error in getTextPosition:', error)
       }
 

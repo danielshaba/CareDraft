@@ -1,0 +1,67 @@
+{
+  "timestamp": "2025-06-09T22:47:40.491Z",
+  "summary": {
+    "totalOptimizations": 6,
+    "totalIssues": 1,
+    "responsiveScore": 86
+  },
+  "breakpoints": {
+    "mobile": {
+      "min": 320,
+      "max": 639,
+      "name": "Mobile"
+    },
+    "tablet": {
+      "min": 640,
+      "max": 1023,
+      "name": "Tablet (sm)"
+    },
+    "desktop": {
+      "min": 1024,
+      "max": 1279,
+      "name": "Desktop (lg)"
+    },
+    "wide": {
+      "min": 1280,
+      "max": 1535,
+      "name": "Wide (xl)"
+    },
+    "ultrawide": {
+      "min": 1536,
+      "max": 9999,
+      "name": "Ultra-wide (2xl)"
+    }
+  },
+  "responsiveClasses": 82,
+  "optimizations": [
+    "82 responsive classes implemented",
+    "Balanced responsive design across mobile, tablet, and desktop",
+    "Mobile-first responsive design implemented",
+    "Touch-friendly target sizes implemented",
+    "Responsive typography scaling configured",
+    "Mobile font size optimization implemented"
+  ],
+  "issues": [
+    "Consider making more images responsive"
+  ],
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "title": "Fix Responsive Design Issues",
+      "description": "Address issues that may affect mobile user experience",
+      "actions": [
+        "Consider making more images responsive"
+      ]
+    },
+    {
+      "priority": "LOW",
+      "title": "Excellent Responsive Design",
+      "description": "Your application has good responsive design implementation",
+      "actions": [
+        "Test on real devices",
+        "Monitor mobile analytics",
+        "Consider progressive enhancement"
+      ]
+    }
+  ]
+}

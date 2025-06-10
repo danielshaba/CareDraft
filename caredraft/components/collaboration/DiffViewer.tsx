@@ -67,7 +67,7 @@ export default function DiffViewer({
                   +{stats.added}
                 </span>
                 {stats.modified > 0 && (
-                  <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded">
+                  <span className="px-2 py-1 bg-brand-100 text-brand-700 rounded">
                     ~{stats.modified}
                   </span>
                 )}
@@ -168,7 +168,7 @@ export default function DiffViewer({
                 <div className="flex-1 px-3 py-1 whitespace-pre-wrap break-words">
                   {line.type === 'added' && <span className="text-green-600 mr-1">+</span>}
                   {line.type === 'removed' && <span className="text-red-600 mr-1">-</span>}
-                  {line.type === 'modified' && <span className="text-blue-600 mr-1">~</span>}
+                  {line.type === 'modified' && <span className="text-brand-600 mr-1">~</span>}
                   {line.content}
                 </div>
               </div>
@@ -287,7 +287,7 @@ function getDiffLineClassName(type: DiffLine['type']): string {
     case 'removed':
       return 'bg-red-50 border-l-4 border-red-400'
     case 'modified':
-      return 'bg-blue-50 border-l-4 border-blue-400'
+      return 'bg-brand-50 border-l-4 border-brand-400'
     case 'unchanged':
     default:
       return 'bg-white hover:bg-gray-50'

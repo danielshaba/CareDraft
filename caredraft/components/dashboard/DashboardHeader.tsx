@@ -24,7 +24,7 @@ export function DashboardHeader() {
           {/* Logo/Brand */}
           <div className="flex items-center">
             <Link href="/dashboard" className="flex items-center">
-              <h1 className="text-xl font-bold text-blue-600">CareDraft</h1>
+              <h1 className="text-brand font-heading text-xl">CareDraft</h1>
             </Link>
           </div>
 
@@ -32,10 +32,10 @@ export function DashboardHeader() {
           <div className="relative">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500"
             >
               <div className="flex items-center space-x-3">
-                <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
+                <div className="h-8 w-8 rounded-full bg-brand-600 flex items-center justify-center text-white">
                   {user?.email?.charAt(0).toUpperCase() || 'U'}
                 </div>
                 <span className="hidden md:block text-gray-700">{user?.email || 'User'}</span>

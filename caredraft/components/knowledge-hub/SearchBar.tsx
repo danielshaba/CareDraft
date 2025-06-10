@@ -191,7 +191,7 @@ export function SearchBar({
             onFocus={handleFocus}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
-            className="flex-1 text-gray-900 placeholder-gray-500 focus:outline-none text-lg"
+            className="flex-1 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 text-lg"
             style={{ fontFamily: 'var(--font-open-sans)' }}
           />
 
@@ -275,7 +275,7 @@ export function SearchBar({
                 />
                 <div className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg border transition-all ${
                   useInternetAI 
-                    ? 'bg-blue-50 border-blue-200 text-blue-700' 
+                    ? 'bg-brand-50 border-brand-200 text-brand-700' 
                     : 'bg-gray-50 border-gray-200 text-gray-600'
                 }`}>
                   <Globe className="w-4 h-4" />

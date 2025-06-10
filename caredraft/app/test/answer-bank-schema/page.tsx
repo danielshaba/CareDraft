@@ -52,7 +52,7 @@ export default function AnswerBankSchemaTestPage() {
       )
       setTestResults(results)
       setLastRunTime(new Date().toLocaleString())
-    } catch {
+    } catch (error) {
       console.error('Test execution failed:', error)
       // Set error state
       setTestResults({
@@ -106,12 +106,12 @@ export default function AnswerBankSchemaTestPage() {
         <p className="text-gray-600">
           Validate the AnswerBank database schema, RLS policies, indexes, and constraints.
         </p>
-        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <div className="flex items-center gap-2 text-blue-700">
+        <div className="mt-4 p-4 bg-brand-50 border border-brand-200 rounded-lg">
+          <div className="flex items-center gap-2 text-brand-700">
             <AlertCircle className="h-5 w-5" />
             <span className="font-medium">Database Migration Required</span>
           </div>
-          <p className="text-blue-600 mt-1 text-sm">
+          <p className="text-brand-600 mt-1 text-sm">
             Before running tests, apply the AnswerBank migration SQL to your Supabase project.
           </p>
           <div className="mt-3 flex gap-2">
@@ -333,8 +333,8 @@ export default function AnswerBankSchemaTestPage() {
                   <h4 className="font-medium mb-2">RLS Test Results:</h4>
                   <div className="space-y-2">
                     {testResults.details.rls.tests.map((test, index) => (
-                      <div key={index} className="p-2 bg-blue-50 border border-blue-200 rounded text-blue-700 text-sm">
-                        {test}
+                      <div key={index} className="p-2 bg-brand-50 border border-brand-200 rounded text-brand-700 text-sm">
+                        {typeof test === 'string' ? test : JSON.stringify(test)}
                       </div>
                     ))}
                   </div>
@@ -372,7 +372,7 @@ export default function AnswerBankSchemaTestPage() {
                   <div className="space-y-2">
                     {testResults.details.functions.tests.map((test, index) => (
                       <div key={index} className="p-2 bg-purple-50 border border-purple-200 rounded text-purple-700 text-sm">
-                        {test}
+                        {typeof test === 'string' ? test : JSON.stringify(test)}
                       </div>
                     ))}
                   </div>
@@ -410,7 +410,7 @@ export default function AnswerBankSchemaTestPage() {
                   <div className="space-y-2">
                     {testResults.details.indexes.tests.map((test, index) => (
                       <div key={index} className="p-2 bg-yellow-50 border border-yellow-200 rounded text-yellow-700 text-sm">
-                        {test}
+                        {typeof test === 'string' ? test : JSON.stringify(test)}
                       </div>
                     ))}
                   </div>
@@ -448,7 +448,7 @@ export default function AnswerBankSchemaTestPage() {
                   <div className="space-y-2">
                     {testResults.details.constraints.tests.map((test, index) => (
                       <div key={index} className="p-2 bg-indigo-50 border border-indigo-200 rounded text-indigo-700 text-sm">
-                        {test}
+                        {typeof test === 'string' ? test : JSON.stringify(test)}
                       </div>
                     ))}
                   </div>
@@ -473,19 +473,19 @@ export default function AnswerBankSchemaTestPage() {
               <h4 className="font-medium mb-3">Core Tables</h4>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
-                  <Database className="h-4 w-4 text-blue-500" />
+                  <Database className="h-4 w-4 text-brand-500" />
                   <code>answer_bank_categories</code> - Content categories
                 </li>
                 <li className="flex items-center gap-2">
-                  <Database className="h-4 w-4 text-blue-500" />
+                  <Database className="h-4 w-4 text-brand-500" />
                   <code>answer_bank</code> - Main answer content
                 </li>
                 <li className="flex items-center gap-2">
-                  <Database className="h-4 w-4 text-blue-500" />
+                  <Database className="h-4 w-4 text-brand-500" />
                   <code>answer_bank_usage_tracking</code> - Usage analytics
                 </li>
                 <li className="flex items-center gap-2">
-                  <Database className="h-4 w-4 text-blue-500" />
+                  <Database className="h-4 w-4 text-brand-500" />
                   <code>answer_bank_ratings</code> - User ratings
                 </li>
               </ul>
@@ -506,7 +506,7 @@ export default function AnswerBankSchemaTestPage() {
                   Automated popularity scoring
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-blue-500" />
+                  <CheckCircle className="h-4 w-4 text-brand-500" />
                   Data integrity constraints
                 </li>
               </ul>

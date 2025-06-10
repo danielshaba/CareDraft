@@ -447,7 +447,7 @@ export default function ExportActionsModal({ isOpen, onClose, editor }: ExportAc
                 <button
                   onClick={() => handleExport('submit-review')}
                   disabled={exportProgress.status === 'generating'}
-                  className="flex items-center justify-center space-x-2 px-4 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="flex items-center justify-center space-x-2 px-4 py-3 text-sm font-medium text-white bg-brand-600 rounded-lg hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <SendHorizontal className="h-4 w-4" />
                   <span>Submit for Review</span>
@@ -615,7 +615,7 @@ export default function ExportActionsModal({ isOpen, onClose, editor }: ExportAc
                   </div>
 
                   {/* Email Templates Info */}
-                  <div className="text-xs text-gray-500 bg-blue-50 p-2 rounded">
+                  <div className="text-xs text-gray-500 bg-brand-50 p-2 rounded">
                     💡 The email will include a professional template with download link and document preview.
                   </div>
                 </div>

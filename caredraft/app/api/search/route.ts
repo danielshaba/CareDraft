@@ -113,8 +113,8 @@ function performSearch(query: string, filters: Record<string, unknown> = {}) {
     // Apply filters
     if (category && doc.category !== category) return false;
     if (type && doc.type !== type) return false;
-    if (tags && !tags.some((tag: string) => doc.tags.includes(tag))) return false;
-    if (doc.relevance < minRelevance) return false;
+    if (Array.isArray(tags) && !tags.some((tag: string) => doc.tags.includes(tag))) return false;
+    if (typeof minRelevance === 'number' && doc.relevance < minRelevance) return false;
     
     return true;
   });
@@ -124,15 +124,17 @@ function performSearch(query: string, filters: Record<string, unknown> = {}) {
   
   // Apply pagination
   const total = results.length;
-  results = results.slice(offset, offset + limit);
+  const safeOffset = typeof offset === 'number' ? offset : 0;
+  const safeLimit = typeof limit === 'number' ? limit : 10;
+  results = results.slice(safeOffset, safeOffset + safeLimit);
   
   return {
     results,
     pagination: {
       total,
-      limit,
-      offset,
-      hasMore: offset + limit < total
+      limit: safeLimit,
+      offset: safeOffset,
+      hasMore: safeOffset + safeLimit < total
     },
     query,
     filters,

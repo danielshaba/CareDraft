@@ -8,19 +8,20 @@ import {
 } from '@/lib/utils/errors'
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 /**
  * GET /api/organizations/[id]/members - Get organization members
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: RouteParams
 ) {
   try {
+    const { id } = await params
     const supabase = createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -28,7 +29,7 @@ export async function GET(
       throw new AuthenticationError('Authentication required')
     }
 
-    const members = await organizationService.getOrganizationMembers(params.id, user.id)
+    const members = await organizationService.getMembers(id)
 
     return NextResponse.json({
       success: true,
@@ -52,6 +53,7 @@ export async function POST(
   { params }: RouteParams
 ) {
   try {
+    const { id } = await params
     const supabase = createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -69,11 +71,10 @@ export async function POST(
       )
     }
 
-    await organizationService.addMemberToOrganization(
-      params.id,
+    await organizationService.addMember(
+      id,
       userId,
-      role,
-      user.id
+      role
     )
 
     return NextResponse.json({

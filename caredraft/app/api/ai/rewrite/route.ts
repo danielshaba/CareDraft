@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { generateWithFallback, AIError, AIErrorType, clientConfig } from '@/lib/api-client'
 
@@ -162,7 +162,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(response)
-  } catch {
+  } catch (error) {
     console.error('Rewrite API error:', error)
 
     if (error instanceof z.ZodError) {

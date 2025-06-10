@@ -8,19 +8,20 @@ import {
 } from '@/lib/utils/errors'
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 /**
  * GET /api/organizations/[id] - Get organization details
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: RouteParams
 ) {
   try {
+    const { id } = await params
     const supabase = createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -28,13 +29,13 @@ export async function GET(
       throw new AuthenticationError('Authentication required')
     }
 
-    const organization = await organizationService.getOrganization(params.id, user.id)
+    const organization = await organizationService.getOrganization(id)
 
     return NextResponse.json({
       success: true,
       data: organization
     })
-  } catch {
+  } catch (error) {
     console.error('Error fetching organization:', error)
     
     const errorResponse = getErrorResponse(error)
@@ -52,6 +53,7 @@ export async function PUT(
   { params }: RouteParams
 ) {
   try {
+    const { id } = await params
     const supabase = createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -62,16 +64,15 @@ export async function PUT(
     const body = await request.json()
 
     const organization = await organizationService.updateOrganization(
-      params.id, 
-      body, 
-      user.id
+      id, 
+      body
     )
 
     return NextResponse.json({
       success: true,
       data: organization
     })
-  } catch {
+  } catch (error) {
     console.error('Error updating organization:', error)
     
     const errorResponse = getErrorResponse(error)
@@ -85,10 +86,11 @@ export async function PUT(
  * DELETE /api/organizations/[id] - Delete organization
  */
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: RouteParams
 ) {
   try {
+    const { id } = await params
     const supabase = createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -96,13 +98,13 @@ export async function DELETE(
       throw new AuthenticationError('Authentication required')
     }
 
-    await organizationService.deleteOrganization(params.id, user.id)
+    await organizationService.deleteOrganization(id)
 
     return NextResponse.json({
       success: true,
       message: 'Organization deleted successfully'
     })
-  } catch {
+  } catch (error) {
     console.error('Error deleting organization:', error)
     
     const errorResponse = getErrorResponse(error)

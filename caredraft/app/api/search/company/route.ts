@@ -3,7 +3,7 @@
  * Specialized endpoint for company information searches
  */
 
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { ExaMCPService } from '@/lib/services/exa-mcp-service'
 import { validateExaAIConfig } from '@/lib/config/exa-ai'
 
@@ -11,7 +11,7 @@ import { validateExaAIConfig } from '@/lib/config/exa-ai'
  * POST /api/search/company
  * Search for company information
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     // Check configuration
     const configValidation = validateExaAIConfig()
@@ -54,13 +54,11 @@ export async function GET() {
       metadata: {
         totalSources: results.totalResults,
         officialSources: results.results.filter(r => 
-          r.metadata.domain.includes('gov.uk') || 
-          r.metadata.domain.includes('companieshouse.gov.uk') ||
-          r.metadata.domain.includes('cqc.org.uk')
+          r.metadata?.domain?.includes('gov.uk') || 
+          r.metadata?.domain?.includes('companieshouse.gov.uk') ||
+          r.metadata?.domain?.includes('cqc.org.uk')
         ).length,
-        careIndustryRelevance: results.results.reduce((sum, r) => 
-          sum + (r.careIndustryRelevance || 0), 0) / results.results.length,
-        sources: [...new Set(results.results.map(r => r.metadata.domain))]
+        sources: [...new Set(results.results.map(r => r.metadata?.domain).filter(Boolean))]
       }
     }
     

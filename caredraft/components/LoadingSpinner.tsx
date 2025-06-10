@@ -20,7 +20,7 @@ export function LoadingSpinner({
   }
 
   const colorClasses = {
-    primary: 'border-blue-600 border-t-transparent',
+    primary: 'border-brand-500 border-t-transparent',
     secondary: 'border-gray-600 border-t-transparent', 
     white: 'border-white border-t-transparent'
   }

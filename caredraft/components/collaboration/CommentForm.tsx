@@ -212,8 +212,8 @@ export function CommentForm({
 
       {/* Selected text preview */}
       {textRange && (
-        <div className="px-4 py-2 bg-blue-50 border-b border-gray-200">
-          <div className="text-xs text-blue-600 font-medium mb-1">Selected text:</div>
+        <div className="px-4 py-2 bg-brand-50 border-b border-gray-200">
+          <div className="text-xs text-brand-600 font-medium mb-1">Selected text:</div>
           <div className="text-sm text-gray-700 italic">&quot;{textRange.selectedText}&quot;</div>
         </div>
       )}

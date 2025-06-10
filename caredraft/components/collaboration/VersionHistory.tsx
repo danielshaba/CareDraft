@@ -216,8 +216,8 @@ export default function VersionHistory({
       </div>
 
       {selectedVersions.length > 0 && (
-        <div className="mb-3 p-2 bg-blue-50 border border-blue-200 rounded-md">
-          <p className="text-sm text-blue-700">
+        <div className="mb-3 p-2 bg-brand-50 border border-brand-200 rounded-md">
+          <p className="text-sm text-brand-700">
             {selectedVersions.length === 1 
               ? '1 version selected. Select another to compare.'
               : '2 versions selected. Click "Compare Selected" to view differences.'

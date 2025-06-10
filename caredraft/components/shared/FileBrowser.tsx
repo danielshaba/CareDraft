@@ -86,7 +86,7 @@ function FileItem({
         return <FileText className="h-5 w-5 text-red-600" />
       case 'doc':
       case 'docx':
-        return <FileText className="h-5 w-5 text-blue-600" />
+        return <FileText className="h-5 w-5 text-brand-600" />
       case 'txt':
       case 'md':
         return <FileText className="h-5 w-5 text-gray-600" />
@@ -105,7 +105,7 @@ function FileItem({
         <div className="flex items-center justify-between">
           <button
             onClick={() => onSelect?.(file)}
-            className="text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors truncate"
+            className="text-sm font-medium text-gray-900 hover:text-brand-600 transition-colors truncate"
           >
             {file.name}
           </button>
@@ -318,7 +318,7 @@ export function FileBrowser({
           placeholder="Search files..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors"
         />
       </div>
 
@@ -332,7 +332,7 @@ export function FileBrowser({
           <p className="text-red-600 mb-2">{error}</p>
           <button
             onClick={loadFiles}
-            className="text-blue-600 hover:text-blue-700 transition-colors"
+            className="text-brand-600 hover:text-brand-700 transition-colors"
           >
             Try again
           </button>

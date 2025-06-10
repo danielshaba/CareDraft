@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, use } from 'react'
 import { ChevronLeft, FileText, BarChart3 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -19,15 +19,15 @@ import {
 // import { documentUploadService } from '@/lib/services/document-upload'
 
 interface CompliancePageProps {
-  searchParams: {
+  searchParams: Promise<{
     proposalId?: string
     tenderName?: string
     organizationName?: string
-  }
+  }>
 }
 
 export default function CompliancePage({ searchParams }: CompliancePageProps) {
-  const { proposalId, tenderName, organizationName } = searchParams
+  const { proposalId, tenderName, organizationName } = use(searchParams)
   // TODO: These will be used when document integration is implemented
   // const [extractedText, setExtractedText] = useState<string>('')
   // const [sourceDocumentId, setSourceDocumentId] = useState<string>('')
@@ -231,8 +231,8 @@ export default function CompliancePage({ searchParams }: CompliancePageProps) {
                   {/* Compliance Checklist */}
                   <ComplianceChecklist
                     proposalId={proposalId}
-                    extractedText={extractedText}
-                    sourceDocumentId={sourceDocumentId}
+                    // extractedText={extractedText}
+                    // sourceDocumentId={sourceDocumentId}
                     onStatsUpdate={handleStatsUpdate}
                     className="min-h-[400px]"
                   />

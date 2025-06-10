@@ -155,7 +155,7 @@ export function NetworkStatus({
               <button
                 onClick={handleRetryAll}
                 disabled={queuedActions.length === 0}
-                className="p-1 text-blue-600 hover:text-blue-800 disabled:text-gray-400"
+                className="p-1 text-brand-600 hover:text-brand-800 disabled:text-gray-400"
                 title="Retry all actions"
               >
                 <RefreshCw className="h-4 w-4" />
@@ -177,7 +177,7 @@ export function NetworkStatus({
                 {isOnline && (
                   <button
                     onClick={handleRetryAll}
-                    className="text-xs text-blue-600 hover:text-blue-800"
+                    className="text-xs text-brand-600 hover:text-brand-800"
                   >
                     Retry All
                   </button>
@@ -205,7 +205,7 @@ export function NetworkStatus({
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2">
                         {isRetrying ? (
-                          <RefreshCw className="h-4 w-4 text-blue-500 animate-spin" />
+                          <RefreshCw className="h-4 w-4 text-brand-500 animate-spin" />
                         ) : (
                           <Clock className="h-4 w-4 text-yellow-500" />
                         )}
@@ -227,7 +227,7 @@ export function NetworkStatus({
                       {isOnline && !isRetrying && (
                         <button
                           onClick={() => handleRetryAction(action.id)}
-                          className="p-1 text-blue-600 hover:text-blue-800"
+                          className="p-1 text-brand-600 hover:text-brand-800"
                           title="Retry now"
                         >
                           <RefreshCw className="h-3 w-3" />
@@ -248,7 +248,7 @@ export function NetworkStatus({
                     <div className="mt-2">
                       <div className="w-full bg-gray-200 rounded-full h-1">
                         <div
-                          className="bg-blue-600 h-1 rounded-full transition-all duration-300"
+                          className="bg-brand-600 h-1 rounded-full transition-all duration-300"
                           style={{
                             width: `${(action.retryCount / action.maxRetries) * 100}%`
                           }}
@@ -302,7 +302,7 @@ export function NetworkIndicator({ className }: { className?: string }) {
       )}
       
       {hasQueuedActions && (
-        <div className="flex items-center space-x-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
+        <div className="flex items-center space-x-1 px-2 py-1 bg-brand-50 text-brand-700 rounded text-xs">
           <Clock className="h-3 w-3" />
           <span>{queuedActions.length}</span>
         </div>

@@ -27,6 +27,12 @@ interface CacheMonitorProps {
   showDemoData?: boolean;
 }
 
+interface SearchResult {
+  id: string;
+  title: string;
+  relevance: number;
+}
+
 export function CacheMonitor({ showDemoData = false }: CacheMonitorProps) {
   const { stats } = useCacheStats();
   const { invalidateByTag, invalidateKey, clearAllCache } = useCacheInvalidation();
@@ -35,7 +41,10 @@ export function CacheMonitor({ showDemoData = false }: CacheMonitorProps) {
 
   // Demo search functionality
   const [searchQuery, setSearchQuery] = useState('');
-  const { results: searchResults, loading: searchLoading } = useCachedSearchResults(searchQuery);
+  const { results: searchResults, loading: searchLoading } = useCachedSearchResults(searchQuery) as { 
+    results: SearchResult[], 
+    loading: boolean 
+  };
 
   // Demo data fetching
   const { data: demoData, loading: demoLoading, refresh: refreshDemo } = useCachedData(
@@ -99,12 +108,12 @@ export function CacheMonitor({ showDemoData = false }: CacheMonitorProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-blue-50 rounded-lg">
+            <div className="p-4 bg-brand-50 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Database className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-medium text-blue-900">Cache Size</span>
+                <Database className="h-4 w-4 text-brand-600" />
+                <span className="text-sm font-medium text-brand-900">Cache Size</span>
               </div>
-              <div className="text-2xl font-bold text-blue-700">
+              <div className="text-2xl font-bold text-brand-700">
                 {stats.size} / {stats.max}
               </div>
               <Progress value={cacheUsagePercentage} className="mt-2" />
@@ -239,7 +248,7 @@ export function CacheMonitor({ showDemoData = false }: CacheMonitorProps) {
                   <div className="text-sm font-medium">
                     Found {searchResults.length} results (cached)
                   </div>
-                  {searchResults.slice(0, 3).map((result: unknown) => (
+                  {searchResults.slice(0, 3).map((result) => (
                     <div key={result.id} className="p-3 bg-gray-50 rounded-lg text-sm">
                       <div className="font-medium">{result.title}</div>
                       <div className="text-gray-600 text-xs mt-1">
@@ -316,7 +325,7 @@ export function CacheMonitor({ showDemoData = false }: CacheMonitorProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="p-4 border rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Search className="h-4 w-4 text-blue-600" />
+                <Search className="h-4 w-4 text-brand-600" />
                 <span className="font-medium">Search Results</span>
               </div>
               <div className="text-sm text-gray-600">
