@@ -5,7 +5,7 @@ import Sidebar from './Sidebar'
 import TopBar from './TopBar'
 import { AuthErrorBoundary } from '@/components/auth/AuthErrorBoundary'
 import { RealtimeNotificationProvider } from '@/components/notifications/RealtimeNotificationProvider'
-import { useAuth } from '@/components/providers/MinimalAuthProvider'
+import { useAuth } from '@/components/providers/AuthProvider'
 
 interface LayoutProps {
   children: React.ReactNode
