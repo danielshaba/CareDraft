@@ -44,7 +44,6 @@ export function TenderDetailsForm({
     register,
     handleSubmit,
     watch,
-    setValue,
     formState: { errors, isDirty, isValid }
   } = useForm<TenderDetailsFormData>({
     resolver: zodResolver(tenderDetailsSchema),
@@ -57,7 +56,6 @@ export function TenderDetailsForm({
       estimatedContractValue: initialData?.estimatedContractValue || null,
       contractDuration: initialData?.contractDuration || DEFAULT_TENDER_DETAILS.contractDuration,
       serviceType: initialData?.serviceType || DEFAULT_TENDER_DETAILS.serviceType,
-      wordLimits: initialData?.wordLimits || DEFAULT_TENDER_DETAILS.wordLimits || [],
     },
     mode: 'onChange'
   })
@@ -131,7 +129,7 @@ export function TenderDetailsForm({
       
       await onSubmit?.(formattedData)
       
-    } catch {
+    } catch (error) {
       console.error('Form submission error:', error)
       setSubmitError(error instanceof Error ? error.message : 'An error occurred while submitting the form')
     } finally {
@@ -159,7 +157,7 @@ export function TenderDetailsForm({
       // Clear saved status after 3 seconds
       setTimeout(() => setSaveStatus('idle'), 3000)
       
-    } catch {
+    } catch (error) {
       console.error('Draft save error:', error)
       setSaveStatus('error')
     } finally {

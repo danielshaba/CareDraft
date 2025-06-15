@@ -1,5 +1,11 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+
+
+
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -25,12 +31,14 @@ import {
   Zap
 } from 'lucide-react'
 
+
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import CareDraftLogo from '@/components/ui/CareDraftLogo'
+import { Logo } from '@/components/ui/Logo'
 import { useOnboardingStore } from '@/lib/stores/onboarding-store'
 
 // Tutorial step icons
@@ -207,7 +215,7 @@ export default function OnboardingTutorialPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <Link href="/dashboard" className="inline-block mb-6">
-              <CareDraftLogo />
+              <Logo size="lg" variant="full" />
             </Link>
             
             {/* Progress indicator */}

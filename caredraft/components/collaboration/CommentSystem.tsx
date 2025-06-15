@@ -45,7 +45,6 @@ export function CommentSystem({
   const [commentMarkers, setCommentMarkers] = useState<CommentMarker[]>([])
   
   const contentRef = useRef<HTMLDivElement>(null)
-  const commentsService = new CommentsService()
 
   // Group comments by text range to create markers
   useEffect(() => {
@@ -138,12 +137,12 @@ export function CommentSystem({
   // Handle comment creation
   const handleCreateComment = async (commentData: CreateCommentInput) => {
     try {
-      const newComment = await commentsService.createComment(commentData)
+      const newComment = await CommentsService.createComment(commentData)
       const updatedComments = [...comments, newComment]
       onCommentsUpdate(updatedComments)
       setShowCommentForm(false)
       setSelectedText(null)
-    } catch {
+    } catch (error) {
       console.error('Error creating comment:', error)
       throw error
     }
@@ -155,62 +154,60 @@ export function CommentSystem({
       const replyData: CreateCommentInput = {
         section_id: sectionId,
         content,
-        parent_id: parentId,
+        parent_comment_id: parentId,
         text_range_start: null,
-        text_range_end: null,
-        selected_text: null
+        text_range_end: null
       }
-      
-      const newReply = await commentsService.createComment(replyData)
+      const newReply = await CommentsService.createComment(replyData)
       const updatedComments = [...comments, newReply]
       onCommentsUpdate(updatedComments)
-    } catch {
+    } catch (error) {
       console.error('Error creating reply:', error)
     }
   }
 
   const handleEdit = async (commentId: string, content: string) => {
     try {
-      const updatedComment = await commentsService.updateComment(commentId, { content })
+      const updatedComment = await CommentsService.updateComment(commentId, content)
       const updatedComments = comments.map(c => 
         c.id === commentId ? updatedComment : c
       )
       onCommentsUpdate(updatedComments)
-    } catch {
+    } catch (error) {
       console.error('Error updating comment:', error)
     }
   }
 
   const handleDelete = async (commentId: string) => {
     try {
-      await commentsService.deleteComment(commentId)
+      await CommentsService.deleteComment(commentId)
       const updatedComments = comments.filter(c => c.id !== commentId)
       onCommentsUpdate(updatedComments)
-    } catch {
+    } catch (error) {
       console.error('Error deleting comment:', error)
     }
   }
 
   const handleResolve = async (commentId: string) => {
     try {
-      const updatedComment = await commentsService.resolveComment(commentId)
+      const updatedComment = await CommentsService.toggleCommentResolution(commentId, true)
       const updatedComments = comments.map(c => 
         c.id === commentId ? updatedComment : c
       )
       onCommentsUpdate(updatedComments)
-    } catch {
+    } catch (error) {
       console.error('Error resolving comment:', error)
     }
   }
 
   const handleUnresolve = async (commentId: string) => {
     try {
-      const updatedComment = await commentsService.unresolveComment(commentId)
+      const updatedComment = await CommentsService.toggleCommentResolution(commentId, false)
       const updatedComments = comments.map(c => 
         c.id === commentId ? updatedComment : c
       )
       onCommentsUpdate(updatedComments)
-    } catch {
+    } catch (error) {
       console.error('Error unresolving comment:', error)
     }
   }
@@ -238,7 +235,7 @@ export function CommentSystem({
 
       // Add highlighted text with comment marker
       const highlightedText = content.slice(marker.start, marker.end)
-      const unresolvedCount = marker.comments.filter(c => c.resolved_at === null).length
+      const unresolvedCount = marker.comments.filter(c => !c.is_resolved).length
       
       elements.push(
         <span

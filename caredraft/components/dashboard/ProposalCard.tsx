@@ -50,9 +50,9 @@ const STATUS_CONFIG: Record<ProposalStatus, {
   },
   submitted: {
     label: 'Submitted',
-    bgColor: 'bg-green-100',
-    textColor: 'text-green-800',
-    dotColor: 'bg-green-400'
+    bgColor: 'bg-teal-100',
+    textColor: 'text-teal-800',
+    dotColor: 'bg-teal-600'
   },
   archived: {
     label: 'Archived',

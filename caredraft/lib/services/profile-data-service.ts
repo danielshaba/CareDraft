@@ -425,14 +425,14 @@ export class ProfileDataService {
    * Merge data resolving conflicts based on resolution strategy
    */
   mergeData(existingData: ProfileData, newData: ProfileData, conflicts: DataConflictResolution[]): ProfileData {
-    const merged = { ...existingData }
+    const merged: any = { ...existingData }
 
     // Apply non-conflicting new data
     Object.keys(newData).forEach(key => {
       const field = key as keyof ProfileData
       if (!conflicts.find(c => c.field === field)) {
         if (newData[field] !== undefined && newData[field] !== null && newData[field] !== '') {
-          merged[field] = newData[field] as any
+          merged[field] = newData[field]
         }
       }
     })
@@ -442,7 +442,7 @@ export class ProfileDataService {
       const field = conflict.field as keyof ProfileData
       switch (conflict.resolution) {
         case 'use_new':
-          merged[field] = conflict.newValue as any
+          merged[field] = conflict.newValue
           break
         case 'keep_existing':
           // Already has existing value
@@ -450,7 +450,7 @@ export class ProfileDataService {
         case 'merge':
           // For arrays, merge them
           if (Array.isArray(conflict.existingValue) && Array.isArray(conflict.newValue)) {
-            merged[field] = [...conflict.existingValue, ...conflict.newValue] as any
+            merged[field] = [...conflict.existingValue, ...conflict.newValue]
           }
           break
         case 'manual_review':
@@ -464,7 +464,7 @@ export class ProfileDataService {
     merged.lastSyncedAt = new Date()
     merged.onboardingCompleted = true
 
-    return merged
+    return merged as ProfileData
   }
 
   /**

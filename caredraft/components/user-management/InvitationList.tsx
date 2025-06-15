@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { 
@@ -108,7 +108,7 @@ export function InvitationList({ onInviteUser }: InvitationListProps) {
       } else {
         throw new Error(data.error || 'Failed to fetch invitations')
       }
-    } catch {
+    } catch (error) {
       console.error('Error fetching invitations:', error)
       toast.error(
         'Failed to load invitations',
@@ -142,7 +142,7 @@ export function InvitationList({ onInviteUser }: InvitationListProps) {
 
       toast.success('Invitation resent', 'The invitation has been sent again')
       fetchInvitations()
-    } catch {
+    } catch (error) {
       console.error('Error resending invitation:', error)
       toast.error(
         'Failed to resend invitation',
@@ -172,7 +172,7 @@ export function InvitationList({ onInviteUser }: InvitationListProps) {
 
       toast.success('Invitation cancelled', 'The invitation has been cancelled')
       fetchInvitations()
-    } catch {
+    } catch (error) {
       console.error('Error cancelling invitation:', error)
       toast.error(
         'Failed to cancel invitation',

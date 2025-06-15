@@ -3,7 +3,6 @@ import {
   cacheService, 
   researchCacheManager, 
   documentCacheManager,
-  CacheKeyGenerator,
   CACHE_PRESETS,
   type CacheConfig
 } from '@/lib/services/cache-service';
@@ -61,11 +60,12 @@ export function useCachedData<T>(
       setData(result);
       
       return result;
-    } catch {
+    } catch (error) {
       if (!abortControllerRef.current.signal.aborted) {
-        const error = err instanceof Error ? err : new Error('Unknown error');
-        setError(error);
+        const errorObj = error instanceof Error ? error : new Error('Unknown error');
+        setError(errorObj);
       }
+      return undefined;
     } finally {
       if (!abortControllerRef.current.signal.aborted) {
         setLoading(false);
@@ -124,7 +124,7 @@ export function useCachedResearchSession(sessionId: string) {
           await researchCacheManager.cacheResearchSession(sessionId, sessionData);
           setData(sessionData);
         }
-      } catch {
+      } catch (error) {
         console.error('Error fetching research session:', error);
       } finally {
         setLoading(false);
@@ -137,7 +137,8 @@ export function useCachedResearchSession(sessionId: string) {
   const updateSession = useCallback(async (updates: unknown) => {
     try {
       // Optimistically update cache
-      const updatedData = { ...data, ...updates };
+      const currentData = data || {};
+      const updatedData = { ...currentData, ...(updates as Record<string, unknown>) };
       await researchCacheManager.cacheResearchSession(sessionId, updatedData);
       setData(updatedData);
 
@@ -147,7 +148,7 @@ export function useCachedResearchSession(sessionId: string) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates),
       });
-    } catch {
+    } catch (error) {
       console.error('Error updating research session:', error);
       // Invalidate cache on error
       researchCacheManager.invalidateResearchSession(sessionId);
@@ -190,7 +191,7 @@ export function useCachedDocumentMetadata(documentId: string) {
           await documentCacheManager.cacheDocumentMetadata(documentId, metadataData);
           setMetadata(metadataData);
         }
-      } catch {
+      } catch (error) {
         console.error('Error fetching document metadata:', error);
       } finally {
         setLoading(false);
@@ -218,8 +219,6 @@ export function useCachedSearchResults(query: string, filters: unknown = {}) {
   const [loading, setLoading] = useState(true);
   const [lastQuery, setLastQuery] = useState<string>('');
 
-  const searchKey = CacheKeyGenerator.generateKey('search_results', { query, filters });
-
   useEffect(() => {
     if (!query.trim() || query === lastQuery) {
       return;
@@ -230,9 +229,9 @@ export function useCachedSearchResults(query: string, filters: unknown = {}) {
         setLoading(true);
         
         // Try cache first
-        const cached = researchCacheManager.getCachedSearchResults(query, filters);
+        const cached = researchCacheManager.getCachedSearchResults(query, filters as Record<string, unknown>);
         if (cached) {
-          setResults(cached);
+          setResults(Array.isArray(cached) ? cached : []);
           setLoading(false);
           setLastQuery(query);
           return;
@@ -247,11 +246,11 @@ export function useCachedSearchResults(query: string, filters: unknown = {}) {
 
         if (response.ok) {
           const searchResults = await response.json();
-          await researchCacheManager.cacheSearchResults(query, filters, searchResults);
+          await researchCacheManager.cacheSearchResults(query, filters as Record<string, unknown>, searchResults);
           setResults(searchResults);
           setLastQuery(query);
         }
-      } catch {
+      } catch (error) {
         console.error('Error performing search:', error);
         setResults([]);
       } finally {
@@ -345,7 +344,7 @@ export function usePrefetch() {
       };
       
       cacheService.set(key, data, finalConfig);
-    } catch {
+    } catch (error) {
       console.warn('Prefetch failed for key:', key, error);
     }
   }, []);

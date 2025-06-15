@@ -182,3 +182,5 @@ export default function HelpPage() {
     </div>
   )
 } 
+// Disable static generation for this page since it has interactive elements
+export const dynamic = 'force-dynamic'

@@ -43,14 +43,14 @@ async function globalSetup(config: FullConfig) {
         await page.goto(route);
         await page.waitForLoadState('networkidle', { timeout: 10000 });
         await page.waitForTimeout(1000); // Allow time for animations to settle
-      } catch {
+      } catch (error) {
         console.warn(`⚠️  Could not preload route ${route}:`, error);
       }
     }
     
     console.log('✅ Visual test environment setup complete');
     
-  } catch {
+  } catch (error) {
     console.error('❌ Visual setup failed:', error);
     throw error;
   } finally {

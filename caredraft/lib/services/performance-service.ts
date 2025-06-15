@@ -49,9 +49,10 @@ export class PerformanceService {
     if ('PerformanceObserver' in window) {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: unknown) => {
-          this.metrics.set('FID', entry.processingStart - entry.startTime)
-          this.reportMetric('FID', entry.processingStart - entry.startTime)
+        entries.forEach((entry) => {
+          const fidEntry = entry as any // Type assertion for first-input entries
+          this.metrics.set('FID', fidEntry.processingStart - fidEntry.startTime)
+          this.reportMetric('FID', fidEntry.processingStart - fidEntry.startTime)
         })
       })
       
@@ -66,9 +67,10 @@ export class PerformanceService {
       
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: unknown) => {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value
+        entries.forEach((entry) => {
+          const clsEntry = entry as any // Type assertion for layout-shift entries
+          if (!clsEntry.hadRecentInput) {
+            clsValue += clsEntry.value
             this.metrics.set('CLS', clsValue)
             this.reportMetric('CLS', clsValue)
           }
@@ -84,7 +86,7 @@ export class PerformanceService {
     if ('PerformanceObserver' in window) {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry: unknown) => {
+        entries.forEach((entry) => {
           if (entry.name === 'first-contentful-paint') {
             this.metrics.set('FCP', entry.startTime)
             this.reportMetric('FCP', entry.startTime)

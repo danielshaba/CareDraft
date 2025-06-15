@@ -260,19 +260,31 @@ export const ProposalsGrid: React.FC<ProposalsGridProps> = ({
     // Apply sorting
     filtered.sort((a, b) => {
       const { field, direction } = sortConfig
-      let aValue: unknown = a[field]
-      let bValue: unknown = b[field]
+      let aValue: string | number = 0
+      let bValue: string | number = 0
+      
+      const aRaw: unknown = a[field]
+      const bRaw: unknown = b[field]
 
       // Handle special cases for different field types
       if (field === 'deadline' || field === 'lastUpdated') {
-        aValue = aValue ? new Date(aValue).getTime() : 0
-        bValue = bValue ? new Date(bValue).getTime() : 0
+        // Safely convert to date, handling invalid values
+        const getDateValue = (value: unknown): number => {
+          if (!value || typeof value === 'object') return 0
+          if (typeof value === 'string' || typeof value === 'number' || value instanceof Date) {
+            const date = new Date(value)
+            return isNaN(date.getTime()) ? 0 : date.getTime()
+          }
+          return 0
+        }
+        aValue = getDateValue(aRaw)
+        bValue = getDateValue(bRaw)
       } else if (field === 'title') {
-        aValue = (aValue || '').toLowerCase()
-        bValue = (bValue || '').toLowerCase()
+        aValue = (typeof aRaw === 'string' ? aRaw : '').toLowerCase()
+        bValue = (typeof bRaw === 'string' ? bRaw : '').toLowerCase()
       } else if (field === 'progress' || field === 'estimatedValue') {
-        aValue = aValue || 0
-        bValue = bValue || 0
+        aValue = (typeof aRaw === 'number' ? aRaw : 0)
+        bValue = (typeof bRaw === 'number' ? bRaw : 0)
       }
 
       if (aValue < bValue) return direction === 'asc' ? -1 : 1

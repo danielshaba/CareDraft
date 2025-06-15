@@ -1,16 +1,17 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState, useMemo } from 'react'
-import { User, Session, AuthError } from '@supabase/supabase-js'
+import { User, Session } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase'
+import type { AuthError } from '@/lib/auth.types'
 
 // Types for our auth context
 interface AuthContextType {
   user: User | null
   session: Session | null
   loading: boolean
-  signIn: (email: string, password?: string) => Promise<{ error: AuthError | null }>
-  signUp: (email: string, password?: string) => Promise<{ error: AuthError | null }>
+  signIn: (email: string) => Promise<{ error: AuthError | null }>
+  signUp: (email: string) => Promise<{ error: AuthError | null }>
   signOut: () => Promise<{ error: AuthError | null }>
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>
 }
@@ -83,64 +84,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // The middleware handles session refresh automatically
   }, [])
 
-  // Sign in function (supports both password and magic link)
-  const signIn = async (email: string, password?: string) => {
+  // Sign in function (OTP only)
+  const signIn = async (email: string) => {
     try {
       setLoading(true)
-      if (password) {
-        // Password-based sign in
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        })
-        return { error }
-      } else {
-        // Magic link sign in
-        const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/api/auth/callback` : 'http://localhost:3000/api/auth/callback'
-        const { error } = await supabase.auth.signInWithOtp({
-          email,
-          options: {
-            emailRedirectTo: redirectUrl,
-          },
-        })
-        return { error }
+      const response = await fetch('/api/auth/otp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: email, type: 'email' })
+      })
+      const result = await response.json()
+      if (!result.success) {
+        return { error: { message: result.error?.message || 'Failed to send OTP', code: undefined, status: undefined } }
       }
+      return { error: null }
     } catch (err) {
       console.error('Error in signIn:', err)
-      return { error: err as AuthError }
+      return { error: { message: 'An unexpected error occurred', code: undefined, status: undefined } }
     } finally {
       setLoading(false)
     }
   }
 
-  // Sign up function (supports both password and magic link)
-  const signUp = async (email: string, password?: string) => {
-    try {
-      setLoading(true)
-      if (password) {
-        // Password-based sign up
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        })
-        return { error }
-      } else {
-        // Magic link sign up (same as sign in for magic link)
-        const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/api/auth/callback` : 'http://localhost:3000/api/auth/callback'
-        const { error } = await supabase.auth.signInWithOtp({
-          email,
-          options: {
-            emailRedirectTo: redirectUrl,
-          },
-        })
-        return { error }
-      }
-    } catch (err) {
-      console.error('Error in signUp:', err)
-      return { error: err as AuthError }
-    } finally {
-      setLoading(false)
-    }
+  // Sign up function (OTP only)
+  const signUp = async (email: string) => {
+    return signIn(email)
   }
 
   // Sign out function
@@ -157,14 +125,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Reset password function
   const resetPassword = async (email: string) => {
     try {
-      const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/auth/reset-password` : 'http://localhost:3000/auth/reset-password'
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: redirectUrl,
+      setLoading(true)
+      const response = await fetch('/api/auth/otp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: email, type: 'email' })
       })
-      return { error }
+      const result = await response.json()
+      if (!result.success) {
+        return { error: { message: result.error?.message || 'Failed to send OTP for password reset', code: undefined, status: undefined } }
+      }
+      return { error: null }
     } catch (err) {
       console.error('Error in resetPassword:', err)
-      return { error: err as AuthError }
+      return { error: { message: 'An unexpected error occurred', code: undefined, status: undefined } }
+    } finally {
+      setLoading(false)
     }
   }
 

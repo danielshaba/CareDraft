@@ -309,7 +309,7 @@ export function canAccessBucket(
 /**
  * Get the folder path for a user's files in a bucket
  */
-export function getUserFolder(userId: string, bucket: string): string {
+export function getUserFolder(userId: string, _bucket: string): string {
   return `${userId}/`
 }
 

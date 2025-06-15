@@ -2,7 +2,6 @@ import { createClient } from './supabase'
 import { 
   UserProfile, 
   AuthError, 
-  MagicLinkResponse, 
   PasswordResetResponse,
   UserRole,
   Permission,
@@ -35,52 +34,48 @@ export const generateOrganizationId = (): string => {
  * Authentication operations
  */
 
-// Send magic link for sign in
-export const sendMagicLink = async (email: string): Promise<MagicLinkResponse> => {
+// Send OTP code for sign in
+export const sendOtpCode = async (identifier: string, type: 'email' | 'phone'): Promise<{ success: boolean; error?: AuthError; message?: string }> => {
   try {
-    const normalizedEmail = normalizeEmail(email)
-    
-    if (!isValidEmail(normalizedEmail)) {
-      return {
-        success: false,
-        error: {
-          message: 'Please enter a valid email address',
-          code: 'invalid_email'
-        }
-      }
-    }
-
     const supabase = createClient()
-    const { error } = await supabase.auth.signInWithOtp({
-      email: normalizedEmail,
-      options: {
-        emailRedirectTo: `${window.location.origin}/api/auth/callback`,
-      },
-    })
-
-    if (error) {
-      return {
-        success: false,
-        error: {
-          message: error.message,
-          code: error.name,
-          status: error.status
+    let result
+    if (type === 'email') {
+      if (!isValidEmail(identifier)) {
+        return {
+          success: false,
+          error: { message: 'Please enter a valid email address', code: 'invalid_email' }
         }
       }
+      result = await supabase.auth.signInWithOtp({ email: normalizeEmail(identifier) })
+    } else {
+      // phone
+      result = await supabase.auth.signInWithOtp({ phone: identifier })
     }
-
-    return {
-      success: true,
-      message: 'Check your email for the magic link to sign in.'
+    if (result.error) {
+      return { success: false, error: { message: result.error.message, code: result.error.name, status: result.error.status } }
     }
+    return { success: true, message: 'OTP sent successfully.' }
   } catch {
-    return {
-      success: false,
-      error: {
-        message: 'An unexpected error occurred. Please try again.',
-        code: 'unexpected_error'
-      }
+    return { success: false, error: { message: 'An unexpected error occurred. Please try again.', code: 'unexpected_error' } }
+  }
+}
+
+// Verify OTP code for sign in
+export const verifyOtpCode = async (identifier: string, token: string, type: 'email' | 'phone'): Promise<{ success: boolean; error?: AuthError; message?: string; session?: unknown }> => {
+  try {
+    const supabase = createClient()
+    let result
+    if (type === 'email') {
+      result = await supabase.auth.verifyOtp({ email: normalizeEmail(identifier), token, type: 'email' })
+    } else {
+      result = await supabase.auth.verifyOtp({ phone: identifier, token, type: 'sms' })
     }
+    if (result.error) {
+      return { success: false, error: { message: result.error.message, code: result.error.name, status: result.error.status } }
+    }
+    return { success: true, message: 'OTP verified successfully.', session: result.data.session }
+  } catch {
+    return { success: false, error: { message: 'An unexpected error occurred. Please try again.', code: 'unexpected_error' } }
   }
 }
 
@@ -186,7 +181,7 @@ export const getUserProfile = async (authUserId: string): Promise<UserProfile | 
       auth_id: authUserId,
       email_confirmed: true // If we got here, email is confirmed
     }
-  } catch {
+  } catch (error) {
     console.error('Error in getUserProfile:', error)
     return null
   }
@@ -225,7 +220,7 @@ export const createUserProfile = async (
       auth_id: authUserId,
       email_confirmed: true
     }
-  } catch {
+  } catch (error) {
     console.error('Error in createUserProfile:', error)
     return null
   }
@@ -256,7 +251,7 @@ export const updateUserProfile = async (
       auth_id: userId,
       email_confirmed: true
     }
-  } catch {
+  } catch (error) {
     console.error('Error in updateUserProfile:', error)
     return null
   }
@@ -340,16 +335,20 @@ export const shouldRedirectToSignup = (error: AuthError): boolean => {
 
 // Check if session is expired
 export const isSessionExpired = (session: unknown): boolean => {
-  if (!session?.expires_at) return true
-  return new Date(session.expires_at * 1000) < new Date()
+  if (!session || typeof session !== 'object' || !('expires_at' in session)) return true
+  const expiresAt = (session as any).expires_at
+  if (typeof expiresAt !== 'number') return true
+  return new Date(expiresAt * 1000) < new Date()
 }
 
 // Get time until session expires (in minutes)
 export const getSessionTimeRemaining = (session: unknown): number => {
-  if (!session?.expires_at) return 0
-  const expiresAt = new Date(session.expires_at * 1000)
+  if (!session || typeof session !== 'object' || !('expires_at' in session)) return 0
+  const expiresAt = (session as any).expires_at
+  if (typeof expiresAt !== 'number') return 0
+  const expiresAtDate = new Date(expiresAt * 1000)
   const now = new Date()
-  const diffMs = expiresAt.getTime() - now.getTime()
+  const diffMs = expiresAtDate.getTime() - now.getTime()
   return Math.max(0, Math.floor(diffMs / (1000 * 60)))
 }
 

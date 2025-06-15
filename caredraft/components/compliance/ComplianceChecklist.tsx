@@ -65,7 +65,7 @@ export function ComplianceChecklist({
         }
         onStatsUpdate(stats)
       }
-    } catch {
+    } catch (error) {
       toast.error('Failed to load compliance items', String(error))
     } finally {
       setIsLoading(false)
@@ -95,7 +95,7 @@ export function ComplianceChecklist({
        )
       
       await loadItems() // Reload to get fresh data
-    } catch {
+    } catch (error) {
       toast.error('Failed to extract compliance items', String(error))
     } finally {
       setIsExtracting(false)
@@ -118,7 +118,7 @@ export function ComplianceChecklist({
       await loadItems()
       
       toast.success('Requirement added', 'Manual compliance requirement has been added')
-    } catch {
+    } catch (error) {
       toast.error('Failed to add requirement', String(error))
     } finally {
       setIsLoading(false)
@@ -137,7 +137,7 @@ export function ComplianceChecklist({
       
       const status = !item.completed ? 'completed' : 'pending'
       toast.success('Status updated', `Requirement marked as ${status}`)
-    } catch {
+    } catch (error) {
       toast.error('Failed to update status', String(error))
     } finally {
       setIsLoading(false)
@@ -152,7 +152,7 @@ export function ComplianceChecklist({
       await loadItems()
       
       toast.success('Requirement removed', 'Compliance requirement has been deleted')
-    } catch {
+    } catch (error) {
       toast.error('Failed to delete requirement', String(error))
     } finally {
       setIsLoading(false)

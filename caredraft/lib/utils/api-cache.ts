@@ -218,8 +218,8 @@ export function withCache<T = any>(
         etag,
         new Date()
       );
-    } catch {
-      console.error('API handler error:', error);
+    } catch (error: unknown) {
+      console.error('API handler error:', error instanceof Error ? error.message : 'Unknown error');
       return NextResponse.json(
         { error: 'Internal server error' },
         { status: 500 }

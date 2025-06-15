@@ -12,8 +12,6 @@ import {
   Gavel,
   TrendingUp,
   MoreVertical,
-  Download,
-  Share2
 } from 'lucide-react'
 
 interface SearchResult {
@@ -62,7 +60,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   onSaveToAnswerBank
 }) => {
   const [activeTab, setActiveTab] = useState<string>('all')
-  const [selectedResults, setSelectedResults] = useState<Set<string>>(new Set())
   const [showActionModal, setShowActionModal] = useState(false)
   const [actionType, setActionType] = useState<'copy' | 'save' | null>(null)
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(null)
@@ -106,16 +103,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     setShowActionModal(false)
     setActionType(null)
     setSelectedResult(null)
-  }
-
-  const toggleResultSelection = (resultId: string) => {
-    const newSelected = new Set(selectedResults)
-    if (newSelected.has(resultId)) {
-      newSelected.delete(resultId)
-    } else {
-      newSelected.add(resultId)
-    }
-    setSelectedResults(newSelected)
   }
 
   const getTypeIcon = (type: string) => {
@@ -225,7 +212,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
             </p>
           </div>
         ) : (
-          currentResults.map((result, index) => (
+          currentResults.map((result) => (
             <div
               key={result.id}
               className="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-md transition-shadow"

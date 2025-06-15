@@ -28,7 +28,7 @@ interface ContextMenuProps {
 }
 
 export const ContextMenu: React.FC<ContextMenuProps> = ({ className }) => {
-  const { state, actions, hideMenu, setActiveCategory, executeAction } = useContextMenu()
+  const { state, actions, hideMenu, executeAction } = useContextMenu()
   const menuRef = useRef<HTMLDivElement>(null)
 
   // Group actions by category

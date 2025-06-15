@@ -1,4 +1,4 @@
-import { chromium, FullConfig } from '@playwright/test';
+import { chromium, FullConfig, Page } from '@playwright/test';
 import path from 'path';
 
 /**
@@ -26,7 +26,7 @@ async function globalSetup(config: FullConfig) {
     await setupTestData(page);
 
     console.log('✅ Global setup completed successfully');
-  } catch {
+  } catch (error) {
     console.error('❌ Global setup failed:', error);
     throw error;
   } finally {
@@ -37,7 +37,7 @@ async function globalSetup(config: FullConfig) {
 /**
  * Setup test user authentication
  */
-async function setupTestAuthentication(page: unknown, baseURL: string | undefined) {
+async function setupTestAuthentication(page: Page, baseURL: string | undefined) {
   console.log('🔐 Setting up test authentication...');
   
   try {
@@ -68,7 +68,7 @@ async function setupTestAuthentication(page: unknown, baseURL: string | undefine
     });
     
     console.log('✅ Authentication state saved');
-  } catch {
+  } catch (error) {
     console.log('⚠️ Authentication setup skipped (sign-in page not available)');
   }
 }
@@ -76,15 +76,15 @@ async function setupTestAuthentication(page: unknown, baseURL: string | undefine
 /**
  * Setup test data
  */
-async function setupTestData(page: unknown) {
+async function setupTestData(_page: Page) {
   console.log('📊 Setting up test data...');
   
   try {
     // Add any test data setup here
     // This could include creating test organizations, documents, etc.
     console.log('✅ Test data setup completed');
-  } catch {
-    console.log('⚠️ Test data setup skipped:', error.message);
+  } catch (error) {
+    console.log('⚠️ Test data setup skipped:', error instanceof Error ? error.message : 'Unknown error');
   }
 }
 

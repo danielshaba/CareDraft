@@ -247,7 +247,7 @@ export async function testResponsiveDesign(page: Page) {
 /**
  * Performance measurement helper
  */
-export async function measurePerformance(page: Page, action: () => Promise<void>) {
+export async function measurePerformance(_page: Page, action: () => Promise<void>) {
   const startTime = Date.now();
   await action();
   const endTime = Date.now();

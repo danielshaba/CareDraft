@@ -169,7 +169,7 @@ export function reorderDraftItems(itemIds: string[]): boolean {
     
     draftItems = reorderedItems
     return true
-  } catch {
+  } catch (error) {
     console.error('Failed to reorder draft items:', error)
     return false
   }

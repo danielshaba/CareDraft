@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { X, Calendar, User, FileText } from 'lucide-react'
+import { X, Calendar, FileText } from 'lucide-react'
 import { SectionStatus } from '@/types/database'
 
 interface AddSectionModalProps {
@@ -63,6 +63,8 @@ export default function AddSectionModal({
       document.addEventListener('keydown', handleEscape)
       return () => document.removeEventListener('keydown', handleEscape)
     }
+    
+    return undefined
   }, [isOpen, onClose])
 
   const validateForm = () => {
@@ -108,7 +110,14 @@ export default function AddSectionModal({
       return
     }
 
-    const submitData: unknown = {
+    const submitData: {
+      title: string
+      description?: string
+      wordCountLimit?: number
+      status?: SectionStatus
+      ownerId?: string
+      dueDate?: string
+    } = {
       title: formData.title.trim(),
       status: formData.status
     }

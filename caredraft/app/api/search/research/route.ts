@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     const searchService = ExaMCPService.createWithDefaults()
     const results = await searchService.searchResearchPapers(
       body.query,
-      { maxResults: body.maxResults || 10 }
+      { numResults: body.maxResults || 10 }
     )
     
     // Add research-specific metadata

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareDraft Open Graph Template</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #F0F9F9 0%, #E8F5F5 100%);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .logo {
+            margin-bottom: 40px;
+        }
+
+        .icon {
+            width: 120px;
+            height: 120px;
+            background: #2A6F6F;
+            border-radius: 16px;
+            margin: 0 auto 20px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(42, 111, 111, 0.2);
+        }
+
+        .icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 24px;
+            height: 24px;
+            background: #1F4F4F;
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
+        }
+
+        .icon-lines {
+            position: absolute;
+            top: 24px;
+            left: 20px;
+            right: 20px;
+        }
+
+        .line {
+            height: 4px;
+            background: #E8F5F5;
+            border-radius: 2px;
+            margin-bottom: 8px;
+        }
+
+        .line:nth-child(1) { width: 100%; }
+        .line:nth-child(2) { width: 75%; }
+        .line:nth-child(3) { width: 90%; }
+        .line:nth-child(4) { width: 60%; }
+
+        .sparkle {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 20px;
+            height: 20px;
+            background: #F0F9F9;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .title {
+            font-size: 64px;
+            font-weight: 700;
+            color: #2A6F6F;
+            margin: 0 0 16px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 28px;
+            color: #1F4F4F;
+            margin: 0 0 32px;
+            font-weight: 400;
+        }
+
+        .description {
+            font-size: 20px;
+            color: #4A5568;
+            margin: 0;
+            max-width: 600px;
+            line-height: 1.4;
+        }
+
+        .pattern {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            border: 2px solid rgba(42, 111, 111, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .pattern::before {
+            content: '';
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(42, 111, 111, 0.05);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="pattern"></div>
+    <div class="container">
+        <div class="logo">
+            <div class="icon">
+                <div class="icon-lines">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                <div class="sparkle"></div>
+            </div>
+        </div>
+        <h1 class="title">CareDraft</h1>
+        <p class="subtitle">AI-Powered Care Proposal Platform</p>
+        <p class="description">Create winning care proposals with AI-powered assistance. Streamline your tender response process.</p>
+    </div>
+</body>
+</html> 

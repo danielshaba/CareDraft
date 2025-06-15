@@ -1,7 +1,7 @@
 import { LRUCache } from 'lru-cache';
 
 // Cache configuration interface
-interface CacheConfig {
+export interface CacheConfig {
   ttl: number; // Time to live in milliseconds
   maxSize: number; // Maximum cache size
   staleWhileRevalidate?: boolean; // Allow stale data while revalidating
@@ -320,7 +320,7 @@ export class ResearchCacheManager {
   }
 
   // Cache search results
-  async cacheSearchResults(query: string, filters: unknown, results: unknown): Promise<void> {
+  async cacheSearchResults(query: string, filters: Record<string, unknown>, results: unknown): Promise<void> {
     const key = CacheKeyGenerator.generateKey('search_results', { query, filters });
     this.cacheService.set(key, results, {
       ...CACHE_PRESETS.research,
@@ -329,7 +329,7 @@ export class ResearchCacheManager {
   }
 
   // Get cached search results
-  getCachedSearchResults(query: string, filters: unknown): unknown | null {
+  getCachedSearchResults(query: string, filters: Record<string, unknown>): unknown | null {
     const key = CacheKeyGenerator.generateKey('search_results', { query, filters });
     return this.cacheService.get(key);
   }
@@ -369,7 +369,7 @@ export class DocumentCacheManager {
   }
 
   // Cache document list
-  async cacheDocumentList(filters: unknown, documents: unknown[]): Promise<void> {
+  async cacheDocumentList(filters: Record<string, unknown>, documents: unknown[]): Promise<void> {
     const key = CacheKeyGenerator.generateKey('document_list', filters);
     this.cacheService.set(key, documents, {
       ...CACHE_PRESETS.documents,
@@ -378,7 +378,7 @@ export class DocumentCacheManager {
   }
 
   // Get cached document list
-  getCachedDocumentList(filters: unknown): unknown[] | null {
+  getCachedDocumentList(filters: Record<string, unknown>): unknown[] | null {
     const key = CacheKeyGenerator.generateKey('document_list', filters);
     return this.cacheService.get(key);
   }

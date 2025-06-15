@@ -26,8 +26,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   
   // Initialize auth state on mount
   useEffect(() => {
-    let mounted = true
-    
     const initAuth = async () => {
       try {
         const { data: { user }, error } = await supabase.auth.getUser()
@@ -44,10 +42,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     
     initAuth()
-    
-    return () => {
-      mounted = false
-    }
   }, [supabase])
   
   const signIn = async (email: string) => {
@@ -68,19 +62,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
   
+  // Sign up function (OTP only)
   const signUp = async (email: string) => {
     try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${window.location.origin}/api/auth/callback`,
-          data: {
-            isNewUser: true
-          }
-        },
+      const response = await fetch('/api/auth/otp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: email, type: 'email' })
       })
-      if (error) {
-        return { error: { message: error.message } }
+      const result = await response.json()
+      if (!result.success) {
+        return { error: { message: result.error?.message || 'Failed to send OTP', code: undefined, status: undefined } }
       }
       return { error: null }
     } catch (error) {
@@ -104,13 +96,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
   
+  // Reset password function (OTP only)
   const resetPassword = async (email: string) => {
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
+      const response = await fetch('/api/auth/otp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: email, type: 'email' })
       })
-      if (error) {
-        return { error: error.message }
+      const result = await response.json()
+      if (!result.success) {
+        return { error: result.error?.message || 'Failed to send OTP for password reset' }
       }
       return { error: null }
     } catch (error) {

@@ -16,7 +16,7 @@ interface SearchResultsProps {
 
 export function SearchResults({ 
   results, 
-  searchType, 
+  searchType: _searchType, 
   onResultClick,
   className = '' 
 }: SearchResultsProps) {
@@ -81,7 +81,7 @@ export function SearchResults({
     }
   }
 
-  const renderResultCard = (result: SearchResult, index: number) => {
+  const renderResultCard = (result: SearchResult, _index: number) => {
     const SourceIcon = getSourceIcon(result.source)
     
     return (

@@ -143,7 +143,7 @@ export function ToastDemo() {
           </div>
         )}
         
-        {saveState.data && (
+        {saveState.data !== null && saveState.data !== undefined && (
           <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
             <p className="text-green-700 text-sm">Success: Data saved!</p>
           </div>

@@ -3,6 +3,7 @@
 import { create } from 'zustand'
 import { persist, devtools } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
+import { markOnboardingStepCompleted, checkOnboardingStatus } from '@/lib/utils/onboarding-status'
 
 // Types for onboarding data
 export interface CompanyBasicInfo {
@@ -108,6 +109,11 @@ export interface OnboardingActions {
   setCompletedSteps: (steps: number[]) => void
   nextStep: () => void
   previousStep: () => void
+  
+  // Database sync methods
+  syncWithDatabase: (userId: string) => Promise<void>
+  markStepCompletedInDatabase: (userId: string, step: number) => Promise<boolean>
+  loadCompletionStatus: (userId: string) => Promise<void>
   
   // Company Basic Info
   updateCompanyBasicInfo: (data: Partial<CompanyBasicInfo>) => void
@@ -238,7 +244,7 @@ const initialState: OnboardingState = {
 export const useOnboardingStore = create<OnboardingStore>()(
   devtools(
     persist(
-      immer((set, get) => ({
+      immer((set, _get) => ({
         ...initialState,
         
         // Navigation
@@ -272,6 +278,61 @@ export const useOnboardingStore = create<OnboardingStore>()(
           set((state) => {
             state.currentStep = Math.max(state.currentStep - 1, 1)
           }),
+
+        // Database sync methods
+        syncWithDatabase: async (userId: string) => {
+          try {
+            const status = await checkOnboardingStatus(userId)
+            set((state) => {
+              state.completedSteps = status.completedSteps
+              state.currentStep = status.nextStep?.id || 1
+            })
+          } catch (error) {
+            console.error('Failed to sync onboarding status with database:', error)
+          }
+        },
+
+        markStepCompletedInDatabase: async (userId: string, step: number) => {
+          try {
+            const result = await markOnboardingStepCompleted(userId, step)
+            if (result) {
+              // Update local state to match database
+              set((state) => {
+                if (!state.completedSteps.includes(step)) {
+                  state.completedSteps.push(step)
+                }
+              })
+              return true
+            } else {
+              console.error('Failed to mark step completed in database')
+              return false
+            }
+          } catch (error) {
+            console.error('Exception marking step completed in database:', error)
+            return false
+          }
+        },
+
+        loadCompletionStatus: async (userId: string) => {
+          try {
+            set((state) => {
+              state.isLoading = true
+            })
+            
+            const status = await checkOnboardingStatus(userId)
+            
+            set((state) => {
+              state.completedSteps = status.completedSteps
+              state.currentStep = status.nextStep?.id || 1
+              state.isLoading = false
+            })
+          } catch (error) {
+            console.error('Failed to load onboarding completion status:', error)
+            set((state) => {
+              state.isLoading = false
+            })
+          }
+        },
         
         // Company Basic Info
         updateCompanyBasicInfo: (data: Partial<CompanyBasicInfo>) =>

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { LoadingButton } from '@/components/ui/loading-button'
 import { 
   Building2, 
   Settings, 
@@ -16,14 +15,10 @@ import {
   MapPin,
   Clock,
   ChevronLeft,
-  Edit,
-  Save,
-  X,
-  Plus,
-  Shield
+  Plus
 } from 'lucide-react'
 import { useToast } from '@/components/ui/toast'
-import type { Organization, OrganizationSettings, OrganizationMember } from '@/lib/services/organization-service'
+import type { Organization } from '@/lib/services/organization-service'
 import { useAuth } from '@/components/providers/MinimalAuthProvider'
 
 interface OrganizationManagerProps {
@@ -33,7 +28,7 @@ interface OrganizationManagerProps {
 
 export function OrganizationManager({ organizationId, onClose }: OrganizationManagerProps) {
   const { user } = useAuth()
-  const { toast } = useToast()
+  const { error: showError } = useToast()
   
   const [activeTab, setActiveTab] = useState<'details' | 'settings' | 'members'>('details')
   const [organization, setOrganization] = useState<Organization | null>(null)
@@ -98,11 +93,7 @@ export function OrganizationManager({ organizationId, onClose }: OrganizationMan
       setOrganization(mockOrganization)
     } catch (error) {
       console.error('Error fetching organization:', error)
-      toast({ 
-        title: 'Error',
-        description: 'Failed to load organization',
-        variant: 'destructive'
-      })
+      showError('Failed to load organization')
     } finally {
       setLoading(false)
     }
@@ -375,11 +366,11 @@ export function OrganizationManager({ organizationId, onClose }: OrganizationMan
                 <div className="flex items-center gap-3">
                   <div className="h-8 w-8 bg-gray-200 rounded-full flex items-center justify-center">
                     <span className="text-sm font-medium">
-                      {user?.full_name?.charAt(0).toUpperCase()}
+                      {user?.email?.charAt(0).toUpperCase()}
                     </span>
                   </div>
                   <div>
-                    <p className="font-medium">{user?.full_name}</p>
+                    <p className="font-medium">{user?.email}</p>
                     <p className="text-sm text-gray-600">{user?.email}</p>
                   </div>
                 </div>

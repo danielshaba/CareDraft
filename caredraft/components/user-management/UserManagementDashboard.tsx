@@ -3,9 +3,6 @@
 import React, { useState, useEffect } from 'react'
 import { 
   Search, 
-  Filter, 
-  Plus, 
-  MoreVertical, 
   Edit, 
   Trash2, 
   UserPlus, 
@@ -22,7 +19,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/form-input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { LoadingButton } from '@/components/ui/loading-button'
+
 import { useUserManagement } from '@/hooks/usePermissions'
 import { useAuth } from '@/components/providers/MinimalAuthProvider'
 import { createClient } from '@/lib/supabase'
@@ -93,15 +90,33 @@ export function UserManagementDashboard() {
 
   // Load users
   const loadUsers = async () => {
-    if (!currentUser?.organization_id) return
+    if (!currentUser?.id) return
 
     setState(prev => ({ ...prev, loading: true, error: null }))
 
     try {
+      // First, fetch the current user's database record to get their organization_id
+      const { data: currentUserData, error: userError } = await supabase
+        .from('users')
+        .select('organization_id')
+        .eq('id', currentUser.id)
+        .single()
+
+      if (userError) throw userError
+      if (!currentUserData?.organization_id) {
+        setState(prev => ({
+          ...prev,
+          error: 'User organization not found',
+          loading: false
+        }))
+        return
+      }
+
+      // Now fetch all users in the same organization
       const { data: users, error } = await supabase
         .from('users')
         .select('*')
-        .eq('organization_id', currentUser.organization_id)
+        .eq('organization_id', currentUserData.organization_id)
         .order('created_at', { ascending: false })
 
       if (error) throw error
@@ -119,7 +134,7 @@ export function UserManagementDashboard() {
         totalUsers: usersWithStats.length,
         loading: false
       }))
-    } catch {
+    } catch (error) {
       console.error('Error loading users:', error)
       setState(prev => ({
         ...prev,
@@ -186,7 +201,7 @@ export function UserManagementDashboard() {
   // Effects
   useEffect(() => {
     loadUsers()
-  }, [currentUser?.organization_id])
+  }, [currentUser?.id])
 
   useEffect(() => {
     filterUsers()
@@ -543,7 +558,7 @@ export function UserManagementDashboard() {
               }))
 
               setRoleModalUser(null)
-            } catch {
+            } catch (error) {
               console.error('Error updating user role:', error)
               // Handle error (could add toast notification here)
             }

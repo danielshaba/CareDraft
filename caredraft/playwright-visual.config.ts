@@ -36,9 +36,6 @@ export default defineConfig({
     /* Consistent viewport for visual tests */
     viewport: { width: 1280, height: 720 },
     
-    /* Disable animations for consistent screenshots */
-    reducedMotion: 'reduce',
-    
     /* Wait for fonts and images to load */
     actionTimeout: 15000,
     navigationTimeout: 30000,
@@ -60,12 +57,10 @@ export default defineConfig({
     /* Visual comparison thresholds */
     toHaveScreenshot: { 
       threshold: 0.2,
-      mode: 'strict',
       animations: 'disabled'
     },
     toMatchSnapshot: {
-      threshold: 0.2,
-      mode: 'strict'
+      threshold: 0.2
     },
     timeout: 10000
   },

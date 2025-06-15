@@ -1,6 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -64,6 +67,22 @@ interface CSMInfo {
 
 export default function FirstTenderKickOffPage() {
   const router = useRouter()
+  const [isClient, setIsClient] = useState(false)
+  
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
+  // Show loading state during hydration to prevent SSR issues
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-brand-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600"></div>
+      </div>
+    )
+  }
+  
+  // Only access store on client side to prevent SSR issues
   const { 
     companyBasicInfo: _companyBasicInfo, 
     companyProfile: _companyProfile,

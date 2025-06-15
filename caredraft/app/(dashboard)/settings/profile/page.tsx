@@ -1,5 +1,11 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+
+
+
 import React, { ErrorInfo } from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'

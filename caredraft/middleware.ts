@@ -7,6 +7,7 @@ import { createServerClient } from '@supabase/ssr'
 const authRoutes = ['/login', '/signup', '/reset-password', '/auth']
 const publicRoutes = ['/', '/pricing', '/about', '/contact', '/terms', '/privacy']
 const protectedRoutes = ['/dashboard', '/proposals', '/answer-bank', '/research', '/settings', '/admin', '/extract']
+const onboardingRoutes = ['/onboarding/welcome', '/onboarding/verify-email', '/onboarding/profile', '/onboarding/knowledge', '/onboarding/team-setup', '/onboarding/tutorial', '/onboarding/first-tender']
 
 // Role-based route access
 const roleBasedRoutes = {
@@ -14,6 +15,99 @@ const roleBasedRoutes = {
   manager: ['/admin/users', '/settings/organization', '/settings/billing'],
   writer: [], // All authenticated routes
   viewer: [], // All authenticated routes (read-only enforced at component level)
+}
+
+// Onboarding step mapping
+const onboardingStepRoutes = {
+  1: '/onboarding/welcome',
+  2: '/onboarding/profile', 
+  3: '/onboarding/knowledge',
+  4: '/onboarding/team-setup',
+  5: '/onboarding/tutorial',
+  6: '/onboarding/first-tender'
+}
+
+/**
+ * Check if user has completed onboarding
+ */
+async function checkOnboardingStatus(supabase: any, userId: string): Promise<{
+  isCompleted: boolean
+  nextStep: number
+  shouldRedirect: boolean
+  redirectUrl: string | null
+}> {
+  try {
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('onboarding_completed, onboarding_steps_completed')
+      .eq('id', userId)
+      .single()
+
+    if (error || !user) {
+      // If no user data, assume they need full onboarding
+      return {
+        isCompleted: false,
+        nextStep: 1,
+        shouldRedirect: true,
+        redirectUrl: '/onboarding/welcome'
+      }
+    }
+
+    // If onboarding is already marked complete, no redirect needed
+    if (user.onboarding_completed) {
+      return {
+        isCompleted: true,
+        nextStep: 0,
+        shouldRedirect: false,
+        redirectUrl: null
+      }
+    }
+
+    // Check completed steps
+    const completedSteps = user.onboarding_steps_completed || []
+    
+    // Find next incomplete step
+    let nextStep = 1
+    for (let step = 1; step <= 6; step++) {
+      if (!completedSteps.includes(step)) {
+        nextStep = step
+        break
+      }
+    }
+
+    // If all steps completed, mark as complete
+    if (completedSteps.length >= 6) {
+      // Update completion status in database
+      await supabase
+        .from('users')
+        .update({ onboarding_completed: true, onboarding_completed_at: new Date().toISOString() })
+        .eq('id', userId)
+
+      return {
+        isCompleted: true,
+        nextStep: 0,
+        shouldRedirect: false,
+        redirectUrl: null
+      }
+    }
+
+    return {
+      isCompleted: false,
+      nextStep,
+      shouldRedirect: true,
+      redirectUrl: onboardingStepRoutes[nextStep as keyof typeof onboardingStepRoutes] || '/onboarding/welcome'
+    }
+
+  } catch (error) {
+    console.error('Error checking onboarding status:', error)
+    // Fallback to requiring onboarding
+    return {
+      isCompleted: false,
+      nextStep: 1,
+      shouldRedirect: true,
+      redirectUrl: '/onboarding/welcome'
+    }
+  }
 }
 
 export async function middleware(request: NextRequest) {
@@ -25,10 +119,15 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/api') ||
     pathname.startsWith('/static') ||
     pathname.includes('.') ||
-    pathname.startsWith('/favicon') ||
-    pathname.startsWith('/auth/callback') ||
-    pathname === '/api/auth/callback'
+    pathname.startsWith('/favicon')
   ) {
+    return NextResponse.next()
+  }
+
+  // EARLY RETURN: Allow all onboarding routes without any checks
+  // This prevents any middleware-related authentication issues during onboarding
+  const isOnboardingRoute = onboardingRoutes.some(route => pathname.startsWith(route))
+  if (isOnboardingRoute) {
     return NextResponse.next()
   }
 
@@ -68,12 +167,6 @@ export async function middleware(request: NextRequest) {
     const isPublicRoute = publicRoutes.includes(pathname) || pathname === '/'
     const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
 
-    // Redirect authenticated users away from auth pages
-    if (isAuthenticated && isAuthRoute && pathname !== '/auth/callback') {
-      const redirectUrl = new URL('/dashboard', request.url)
-      return NextResponse.redirect(redirectUrl)
-    }
-
     // Allow access to public routes for everyone
     if (isPublicRoute) {
       return response
@@ -82,6 +175,28 @@ export async function middleware(request: NextRequest) {
     // Allow auth routes for unauthenticated users
     if (!isAuthenticated && (isAuthRoute || pathname === '/')) {
       return response
+    }
+
+    // Redirect authenticated users away from auth pages
+    if (isAuthenticated && isAuthRoute) {
+      const redirectUrl = new URL('/dashboard', request.url)
+      return NextResponse.redirect(redirectUrl)
+    }
+
+    // For protected routes, check onboarding completion
+    if (isAuthenticated && user && isProtectedRoute) {
+      try {
+        const onboardingStatus = await checkOnboardingStatus(supabase, user.id)
+        
+        if (!onboardingStatus.isCompleted && onboardingStatus.shouldRedirect) {
+          // User needs to complete onboarding before accessing protected routes
+          const redirectUrl = new URL(onboardingStatus.redirectUrl!, request.url)
+          return NextResponse.redirect(redirectUrl)
+        }
+      } catch (onboardingError) {
+        // If onboarding check fails, allow access but log the error
+        console.warn('Onboarding status check failed:', onboardingError)
+      }
     }
 
     // Redirect unauthenticated users to login for protected routes

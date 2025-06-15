@@ -101,7 +101,7 @@ export function useNetworkAwareApi() {
         }
         
         return result;
-      } catch {
+      } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
         
         // Don't retry on final attempt

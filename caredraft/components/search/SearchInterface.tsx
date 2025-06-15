@@ -164,7 +164,7 @@ export function SearchInterface({
       setResults(finalResults)
       onSearchComplete?.(finalResults)
 
-    } catch {
+    } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Search failed'
       setError(errorMessage)
       console.error('Search error:', err)

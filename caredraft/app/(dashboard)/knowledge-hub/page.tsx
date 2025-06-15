@@ -1,5 +1,11 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+
+
+
 import React, { useState } from 'react'
 import { Search, Filter, BookOpen, Globe, TrendingUp, FileText, Clock, Star, Settings } from 'lucide-react'
 // SearchBar and SearchFilters components removed - functionality integrated inline

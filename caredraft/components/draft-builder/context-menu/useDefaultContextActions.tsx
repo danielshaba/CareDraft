@@ -11,7 +11,6 @@ import {
   RefreshCw, 
   Type,
   PlusCircle,
-  Globe,
   Languages,
   Volume2,
   Scissors,
@@ -113,7 +112,7 @@ export const useDefaultContextActions = () => {
         id: 'explain-how',
         label: 'Explain How',
         description: 'Add step-by-step explanations',
-        category: 'evidencing',
+        category: 'EVIDENCING',
         icon: HelpCircle,
         handler: async (selectedText) => {
           showStatus('Generating explanation...')
@@ -135,7 +134,7 @@ export const useDefaultContextActions = () => {
               showStatus('Failed to generate explanation', true)
             }
           } catch (error) {
-            showStatus(`Explanation failed: ${error.message}`, true)
+            showStatus(`Explanation failed: ${error instanceof Error ? error.message : 'Unknown error'}`, true)
           }
         }
       },
@@ -143,7 +142,7 @@ export const useDefaultContextActions = () => {
         id: 'add-statistics',
         label: 'Add Statistics',
         description: 'Include relevant statistics and data',
-        category: 'evidencing',
+        category: 'EVIDENCING',
         icon: BarChart3,
         handler: async (selectedText) => {
           showStatus('Finding relevant statistics...')
@@ -165,7 +164,7 @@ export const useDefaultContextActions = () => {
               showStatus('Failed to find relevant statistics', true)
             }
           } catch (error) {
-            showStatus(`Statistics search failed: ${error.message}`, true)
+            showStatus(`Statistics search failed: ${error instanceof Error ? error.message : 'Unknown error'}`, true)
           }
         }
       },
@@ -173,7 +172,7 @@ export const useDefaultContextActions = () => {
         id: 'add-case-study',
         label: 'Add Case Study',
         description: 'Include relevant case studies and examples',
-        category: 'evidencing',
+        category: 'EVIDENCING',
         icon: FileText,
         handler: async (selectedText) => {
           showStatus('Finding relevant case study...')
@@ -195,7 +194,7 @@ export const useDefaultContextActions = () => {
               showStatus('Failed to find relevant case study', true)
             }
           } catch (error) {
-            showStatus(`Case study search failed: ${error.message}`, true)
+            showStatus(`Case study search failed: ${error instanceof Error ? error.message : 'Unknown error'}`, true)
           }
         }
       },
@@ -205,7 +204,7 @@ export const useDefaultContextActions = () => {
         id: 'summarise',
         label: 'Summarise',
         description: 'Create a concise summary',
-        category: 'editing',
+        category: 'EDITING',
         icon: Zap,
         handler: async (selectedText) => {
           showStatus('Creating summary...')
@@ -227,7 +226,7 @@ export const useDefaultContextActions = () => {
               showStatus('Failed to create summary', true)
             }
           } catch (error) {
-            showStatus(`Summarization failed: ${error.message}`, true)
+            showStatus(`Summarization failed: ${error instanceof Error ? error.message : 'Unknown error'}`, true)
           }
         }
       },
@@ -235,7 +234,7 @@ export const useDefaultContextActions = () => {
         id: 'improve-grammar',
         label: 'Improve Grammar',
         description: 'Fix grammar and language issues',
-        category: 'editing',
+        category: 'EDITING',
         icon: CheckCircle2,
         handler: async (selectedText) => {
           showStatus('Improving grammar...')
@@ -257,7 +256,7 @@ export const useDefaultContextActions = () => {
               showStatus('Failed to improve grammar', true)
             }
           } catch (error) {
-            showStatus(`Grammar improvement failed: ${error.message}`, true)
+            showStatus(`Grammar improvement failed: ${error instanceof Error ? error.message : 'Unknown error'}`, true)
           }
         }
       },
@@ -265,7 +264,7 @@ export const useDefaultContextActions = () => {
         id: 'change-tense',
         label: 'Change Tense',
         description: 'Convert to different tense',
-        category: 'editing',
+        category: 'EDITING',
         icon: RefreshCw,
         handler: async (selectedText) => {
           showStatus('Converting tense...')
@@ -287,7 +286,7 @@ export const useDefaultContextActions = () => {
               showStatus('Failed to convert tense', true)
             }
           } catch (error) {
-            showStatus(`Tense conversion failed: ${error.message}`, true)
+            showStatus(`Tense conversion failed: ${error instanceof Error ? error.message : 'Unknown error'}`, true)
           }
         }
       },
@@ -295,7 +294,7 @@ export const useDefaultContextActions = () => {
         id: 'rephrase',
         label: 'Rephrase',
         description: 'Rewrite in different words',
-        category: 'editing',
+        category: 'EDITING',
         icon: Type,
         handler: async (selectedText) => {
           showStatus('Rephrasing text...')
@@ -317,7 +316,7 @@ export const useDefaultContextActions = () => {
               showStatus('Failed to rephrase text', true)
             }
           } catch (error) {
-            showStatus(`Rephrasing failed: ${error.message}`, true)
+            showStatus(`Rephrasing failed: ${error instanceof Error ? error.message : 'Unknown error'}`, true)
           }
         }
       },
@@ -325,7 +324,7 @@ export const useDefaultContextActions = () => {
         id: 'reduce-word-count',
         label: 'Reduce Word Count',
         description: 'Make text more concise',
-        category: 'editing',
+        category: 'EDITING',
         icon: Scissors,
         handler: async (selectedText) => {
           showStatus('Reducing word count...')
@@ -347,7 +346,7 @@ export const useDefaultContextActions = () => {
               showStatus('Failed to reduce word count', true)
             }
           } catch (error) {
-            showStatus(`Word reduction failed: ${error.message}`, true)
+            showStatus(`Word reduction failed: ${error instanceof Error ? error.message : 'Unknown error'}`, true)
           }
         }
       },
@@ -357,9 +356,9 @@ export const useDefaultContextActions = () => {
         id: 'incorporate',
         label: 'Incorporate',
         description: 'Merge with existing content',
-        category: 'inputs',
+        category: 'INPUTS',
         icon: PlusCircle,
-        handler: (selectedText) => {
+        handler: (_selectedText) => {
           showStatus('Incorporate feature coming soon')
         }
       },
@@ -367,9 +366,9 @@ export const useDefaultContextActions = () => {
         id: 'we-will',
         label: 'We Will',
         description: 'Convert to commitment language',
-        category: 'inputs', 
+        category: 'INPUTS', 
         icon: Volume2,
-        handler: (selectedText) => {
+        handler: (_selectedText) => {
           showStatus('We Will feature coming soon')
         }
       },
@@ -377,9 +376,9 @@ export const useDefaultContextActions = () => {
         id: 'translate',
         label: 'Translate',
         description: 'Translate to other languages',
-        category: 'inputs',
+        category: 'INPUTS',
         icon: Languages,
-        handler: (selectedText) => {
+        handler: (_selectedText) => {
           showStatus('Translation feature coming soon')
         }
       },
@@ -389,9 +388,9 @@ export const useDefaultContextActions = () => {
         id: 'caredraft-tone',
         label: 'CareDraft Tone of Voice',
         description: 'Apply CareDraft brand tone',
-        category: 'custom',
+        category: 'CUSTOM',
         icon: Volume2,
-        handler: (selectedText) => {
+        handler: (_selectedText) => {
           showStatus('CareDraft tone feature coming soon')
         }
       },
@@ -399,9 +398,9 @@ export const useDefaultContextActions = () => {
         id: 'replace-banned-words',
         label: 'Replace Banned Words',
         description: 'Remove inappropriate terms',
-        category: 'custom',
+        category: 'CUSTOM',
         icon: CheckCircle2,
-        handler: (selectedText) => {
+        handler: (_selectedText) => {
           showStatus('Banned word replacement coming soon')
         }
       },
@@ -411,9 +410,9 @@ export const useDefaultContextActions = () => {
         id: 'pure-completion',
         label: 'Pure Completion',
         description: 'Complete the thought',
-        category: 'other',
+        category: 'OTHER',
         icon: Lightbulb,
-        handler: (selectedText) => {
+        handler: (_selectedText) => {
           showStatus('Pure completion feature coming soon')
         }
       },
@@ -421,9 +420,9 @@ export const useDefaultContextActions = () => {
         id: 'search',
         label: 'Search',
         description: 'Search for related content',
-        category: 'other',
+        category: 'OTHER',
         icon: Search,
-        handler: (selectedText) => {
+        handler: (_selectedText) => {
           showStatus('Search feature coming soon')
         }
       }

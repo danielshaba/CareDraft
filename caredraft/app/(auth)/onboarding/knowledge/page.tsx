@@ -1,6 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -27,7 +30,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { KnowledgeBaseUpload } from '@/components/shared/FileUpload'
-import CareDraftLogo from '@/components/ui/CareDraftLogo'
+import { Logo } from '@/components/ui/Logo'
 import { useOnboardingStore } from '@/lib/stores/onboarding-store'
 
 // Document categories with their specific requirements
@@ -205,6 +208,22 @@ function CategoryUploadSection({
 
 export default function OnboardingKnowledgePage() {
   const router = useRouter()
+  const [isClient, setIsClient] = useState(false)
+  
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
+  // Show loading state during hydration to prevent SSR issues
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-neutral-light via-white to-brand-light flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600"></div>
+      </div>
+    )
+  }
+  
+  // Only access store on client side to prevent SSR issues
   const { companyBasicInfo } = useOnboardingStore()
   
   // Track uploaded files by category
@@ -258,7 +277,7 @@ export default function OnboardingKnowledgePage() {
           {/* Header */}
           <div className="text-center mb-8">
             <Link href="/dashboard" className="inline-block mb-6">
-              <CareDraftLogo />
+              <Logo size="lg" variant="full" />
             </Link>
             
             <div className="mb-6">

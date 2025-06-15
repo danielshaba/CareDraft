@@ -1,5 +1,11 @@
 import { createClient } from '@/lib/supabase'
-import { Notification, CreateNotificationInput } from '@/types/collaboration'
+import type { Database } from '@/lib/database.types'
+
+type Notification = Database['public']['Tables']['notifications']['Row']
+type NotificationInsert = Database['public']['Tables']['notifications']['Insert']
+
+// Use the database insert type directly
+export type CreateNotificationInput = NotificationInsert
 
 export class NotificationsService {
   private supabase = createClient()
@@ -7,7 +13,7 @@ export class NotificationsService {
   /**
    * Create a new notification
    */
-  async createNotification(data: CreateNotificationInput): Promise<Notification> {
+  async createNotification(data: NotificationInsert): Promise<Notification> {
     const { data: notification, error } = await this.supabase
       .from('notifications')
       .insert(data)
@@ -47,7 +53,7 @@ export class NotificationsService {
   async markAsRead(notificationId: string): Promise<Notification> {
     const { data, error } = await this.supabase
       .from('notifications')
-      .update({ read_at: new Date().toISOString() })
+      .update({ read_status: true })
       .eq('id', notificationId)
       .select(`
         *,
@@ -66,9 +72,9 @@ export class NotificationsService {
   async markAllAsRead(userId: string): Promise<void> {
     const { error } = await this.supabase
       .from('notifications')
-      .update({ read_at: new Date().toISOString() })
+      .update({ read_status: true })
       .eq('user_id', userId)
-      .is('read_at', null)
+      .eq('read_status', false)
 
     if (error) throw error
   }
@@ -81,7 +87,7 @@ export class NotificationsService {
       .from('notifications')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId)
-      .is('read_at', null)
+      .eq('read_status', false)
 
     if (error) throw error
     return count || 0

@@ -1,5 +1,11 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+
+
+
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -7,12 +13,21 @@ import Link from 'next/link'
 import { useAuth } from '@/components/providers/AuthProvider'
 import { resetPasswordFormSchema, type ResetPasswordFormData } from '@/lib/auth.validation'
 import { InlineLoader } from '@/components/LoadingSpinner'
+import { Logo } from '@/components/ui/Logo'
+import { useToastActions } from '@/lib/stores/toastStore'
+import { formatAuthError } from '@/lib/auth.utils'
 
 export default function ResetPasswordPage() {
   const { resetPassword, loading: authLoading } = useAuth()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [otpStep, setOtpStep] = useState(false)
+  const [otp, setOtp] = useState('')
+  const [otpError, setOtpError] = useState<string | null>(null)
+  const [otpLoading, setOtpLoading] = useState(false)
+  const [resendTimer, setResendTimer] = useState(60)
+  const toast = useToastActions()
 
   const {
     register,
@@ -28,22 +43,76 @@ export default function ResetPasswordPage() {
 
   const onSubmit = async (data: ResetPasswordFormData) => {
     if (isSubmitting || authLoading) return
-
     setIsSubmitting(true)
     setSubmitError(null)
     setSubmitSuccess(false)
-
+    setOtpError(null)
     try {
       const result = await resetPassword(data.email)
-
       if (result.error) {
-        setSubmitError(result.error.message || 'An error occurred during password reset.')
+        setSubmitError(result.error.message || 'An error occurred during password reset')
+        toast.error('Reset Password Error', result.error.message || 'An error occurred during password reset')
       } else {
-        setSubmitSuccess(true)
+        setOtpStep(true)
+        setResendTimer(60)
+        // Start resend timer
+        const timer = setInterval(() => setResendTimer(t => t > 0 ? t - 1 : 0), 1000)
+        setTimeout(() => clearInterval(timer), 60000)
+        toast.success('OTP Sent', 'A 6-digit code was sent to your email.')
       }
-    } catch (catchError) {
-      console.error('Reset password error:', catchError)
+    } catch (err) {
       setSubmitError('An unexpected error occurred. Please try again.')
+      toast.error('Unexpected Error', 'An unexpected error occurred. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  // OTP verification handler
+  const handleOtpVerify = async () => {
+    setOtpLoading(true)
+    setOtpError(null)
+    try {
+      const response = await fetch('/api/auth/otp/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: watchedEmail, token: otp, type: 'email' })
+      })
+      const result = await response.json()
+      if (!result.success) {
+        let errorMsg = result.error?.code === 'too_many_requests'
+          ? 'Too many attempts. Please wait before trying again.'
+          : result.error?.code === 'user_not_found'
+          ? 'No account found with this email address.'
+          : formatAuthError(result.error || { code: '', message: result.error?.message })
+        setOtpError(errorMsg)
+        toast.error('OTP Verification Failed', errorMsg)
+      } else {
+        toast.success('Password Reset Verified', 'OTP verified. You may now set a new password.')
+        window.location.href = '/login'
+      }
+    } catch (err) {
+      setOtpError('An unexpected error occurred. Please try again.')
+      toast.error('Unexpected Error', 'An unexpected error occurred. Please try again.')
+    } finally {
+      setOtpLoading(false)
+    }
+  }
+
+  // Resend OTP handler
+  const handleResendOtp = async () => {
+    setSubmitError(null)
+    setOtpError(null)
+    setIsSubmitting(true)
+    try {
+      const result = await resetPassword(watchedEmail)
+      if (result.error) {
+        setSubmitError(result.error.message || 'Failed to resend OTP')
+        toast.error('Resend OTP Failed', result.error.message || 'Failed to resend OTP')
+      } else {
+        setResendTimer(60)
+        toast.success('OTP Resent', 'A new 6-digit code was sent to your email.')
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -52,24 +121,29 @@ export default function ResetPasswordPage() {
   // Show success state after reset email is sent
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          {/* Logo */}
+          <div className="flex justify-center mb-8">
+            <Logo size="lg" variant="full" />
+          </div>
+          
           <div className="text-center">
-            <div className="mx-auto h-16 w-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-8 w-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="mx-auto h-16 w-16 bg-teal-100 rounded-full flex items-center justify-center mb-4">
+              <svg className="h-8 w-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Check your email</h2>
             <p className="text-gray-600 mb-6">
-              We&apos;ve sent password reset instructions to <span className="font-medium text-gray-900">{watchedEmail}</span>
+              We&apos;ve sent password reset instructions to <span className="font-medium text-teal-500">{watchedEmail}</span>
             </p>
             <p className="text-sm text-gray-500 mb-8">
               Follow the link in your email to reset your password. The link will expire in 1 hour.
             </p>
           </div>
 
-          <div className="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
+          <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 border border-teal-50">
             <div className="space-y-4">
               <button
                 type="button"
@@ -77,7 +151,7 @@ export default function ResetPasswordPage() {
                   setSubmitSuccess(false)
                   setSubmitError(null)
                 }}
-                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+                className="w-full flex justify-center py-2 px-4 border border-teal-50 rounded-md shadow-sm text-sm font-medium text-teal-600 bg-white hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
               >
                 Try a different email
               </button>
@@ -85,7 +159,7 @@ export default function ResetPasswordPage() {
               <div className="text-center">
                 <Link
                   href="/login"
-                  className="text-sm text-orange-600 hover:text-orange-500 transition-colors"
+                  className="text-sm text-teal-500 hover:text-teal-600 transition-colors"
                 >
                   Back to sign in
                 </Link>
@@ -106,17 +180,90 @@ export default function ResetPasswordPage() {
     )
   }
 
+  if (otpStep) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="flex justify-center mb-8">
+            <Logo size="lg" variant="full" />
+          </div>
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Enter the code</h2>
+            <p className="text-gray-600 mb-6">
+              We sent a 6-digit code to <span className="font-medium text-teal-500">{watchedEmail}</span>
+            </p>
+          </div>
+          <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 border border-teal-50">
+            <div className="space-y-6">
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]{6}"
+                maxLength={6}
+                value={otp}
+                onChange={e => setOtp(e.target.value.replace(/\D/g, ''))}
+                className="block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent sm:text-sm"
+                placeholder="Enter 6-digit code"
+                autoFocus
+                disabled={otpLoading}
+                aria-label="6-digit OTP code"
+                aria-invalid={!!otpError}
+                aria-describedby={otpError ? 'otp-error' : undefined}
+                role="textbox"
+                onPaste={e => {
+                  const pasted = e.clipboardData.getData('Text').replace(/\D/g, '')
+                  if (pasted.length === 6) setOtp(pasted)
+                }}
+              />
+              {otpError && <p id="otp-error" className="text-sm text-red-600" role="alert">{formatAuthError({ code: otpError, message: otpError })}</p>}
+              <button
+                type="button"
+                onClick={handleOtpVerify}
+                disabled={otp.length !== 6 || otpLoading}
+                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-all duration-200 ${otp.length === 6 && !otpLoading ? 'bg-teal-500 hover:bg-teal-600' : 'bg-gray-400 cursor-not-allowed'} focus:outline-none`}
+              >
+                {otpLoading ? <><InlineLoader size="sm" /> Verifying...</> : 'Verify code'}
+              </button>
+              <div className="flex justify-between items-center">
+                <button
+                  type="button"
+                  onClick={handleResendOtp}
+                  disabled={resendTimer > 0 || isSubmitting}
+                  className="text-sm text-teal-500 hover:text-teal-600 disabled:text-gray-400"
+                >
+                  {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend code'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setOtpStep(false); setOtp(''); setOtpError(null); }}
+                  className="text-sm text-gray-500 hover:text-gray-700"
+                >
+                  Change email
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Reset your password</h1>
-          <p className="text-gray-600 mb-8">
+        {/* Logo */}
+        <div className="flex justify-center mb-8">
+          <Logo size="lg" variant="full" />
+        </div>
+        
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-teal-600 mb-2">Reset your password</h1>
+          <p className="text-gray-600">
             Enter your email address and we&apos;ll send you instructions to reset your password.
           </p>
         </div>
 
-        <div className="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
+        <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 border border-teal-50">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -128,10 +275,10 @@ export default function ResetPasswordPage() {
                   type="email"
                   autoComplete="email"
                   placeholder="Enter your email address"
-                  className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent sm:text-sm transition-colors ${
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent sm:text-sm transition-colors ${
                     errors.email
                       ? 'border-red-300 bg-red-50'
-                      : 'border-gray-300 bg-white hover:border-gray-400'
+                      : 'border-gray-300 bg-white hover:border-teal-500'
                   }`}
                 />
                 {errors.email && (
@@ -161,7 +308,7 @@ export default function ResetPasswordPage() {
                 disabled={!isValid || isSubmitting || authLoading}
                 className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-all duration-200 ${
                   isValid && !isSubmitting && !authLoading
-                    ? 'bg-orange-600 hover:bg-orange-700 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500'
+                    ? 'bg-teal-500 hover:bg-teal-600 focus:ring-2 focus:ring-offset-2 focus:ring-teal-500'
                     : 'bg-gray-400 cursor-not-allowed'
                 } focus:outline-none`}
               >
@@ -190,14 +337,14 @@ export default function ResetPasswordPage() {
             <div className="mt-6 grid grid-cols-2 gap-3">
               <Link
                 href="/login"
-                className="flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+                className="flex justify-center py-2 px-4 border border-teal-50 rounded-md shadow-sm text-sm font-medium text-teal-600 bg-white hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
               >
                 Sign in
               </Link>
               
               <Link
                 href="/signup"
-                className="flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+                className="flex justify-center py-2 px-4 border border-teal-50 rounded-md shadow-sm text-sm font-medium text-teal-600 bg-white hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
               >
                 Sign up
               </Link>

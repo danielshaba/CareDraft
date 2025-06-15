@@ -28,7 +28,14 @@ interface PreferencesState extends Partial<UserNotificationPreferences> {
 }
 
 export function NotificationPreferencesSettings({ className }: NotificationPreferencesSettingsProps) {
-  const { user } = useAuth()
+  const [isClient, setIsClient] = useState(false)
+  
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
+  // Only access auth context on client side to prevent SSR issues
+  const { user } = isClient ? useAuth() : { user: null }
   const supabase = createClient()
   
   const [preferences, setPreferences] = useState<PreferencesState>({
@@ -274,12 +281,6 @@ export function NotificationPreferencesSettings({ className }: NotificationPrefe
               checked={preferences.app_document_shared || false}
               onChange={(checked) => updatePreference('app_document_shared', checked)}
             />
-            <PreferenceToggle
-              label="Research Session Shared"
-              description="When research sessions are shared with you"
-              checked={preferences.app_research_session_shared || false}
-              onChange={(checked) => updatePreference('app_research_session_shared', checked)}
-            />
           </div>
         </div>
 
@@ -331,12 +332,6 @@ export function NotificationPreferencesSettings({ className }: NotificationPrefe
               description="Email me when documents are shared"
               checked={preferences.email_document_shared || false}
               onChange={(checked) => updatePreference('email_document_shared', checked)}
-            />
-            <PreferenceToggle
-              label="Research Session Shared"
-              description="Email me when research sessions are shared"
-              checked={preferences.email_research_session_shared || false}
-              onChange={(checked) => updatePreference('email_research_session_shared', checked)}
             />
           </div>
         </div>

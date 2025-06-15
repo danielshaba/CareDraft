@@ -83,7 +83,7 @@ export function MentionInput({
       const results = await usersService.searchUsers(query, 8)
       setSuggestions(results)
       setSelectedIndex(0)
-    } catch {
+    } catch (error) {
       console.error('Error searching users:', error)
       setSuggestions([])
     } finally {

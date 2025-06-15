@@ -77,7 +77,7 @@ export function CreateSessionModal({
       setFormData({ title: '', query: '', description: '' })
       setErrors({})
       onClose()
-    } catch {
+    } catch (error) {
       console.error('Failed to create session:', error)
     }
   }

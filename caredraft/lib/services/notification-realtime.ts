@@ -1,251 +1,127 @@
-// Real-time Notification Service
-// Handles Supabase real-time subscriptions for instant notification delivery
+/**
+ * Notification Realtime Service (Stub Implementation)
+ * This is a placeholder until the notifications table is created and realtime functionality is implemented
+ */
 
-import { createClient } from '../supabase.client';
-import { Database } from '../database.types';
-import { RealtimeChannel, RealtimePostgresChangesPayload, REALTIME_SUBSCRIBE_STATES } from '@supabase/supabase-js';
+import type { Database } from '@/lib/database.types'
 
-type NotificationRow = Database['public']['Tables']['notifications']['Row'];
-type NotificationInsert = Database['public']['Tables']['notifications']['Insert'];
+type NotificationRow = Database['public']['Tables']['notifications']['Row']
 
-// Event handlers for notification updates
+export interface NotificationSubscription {
+  userId: string
+  types: string[]
+  callback: (notification: NotificationRow) => void
+}
+
 export interface NotificationEventHandlers {
-  onNewNotification?: (notification: NotificationRow) => void;
-  onNotificationUpdate?: (notification: NotificationRow) => void;
-  onNotificationDelete?: (notificationId: string) => void;
-  onConnectionChange?: (connected: boolean) => void;
-  onError?: (error: Error) => void;
+  onNewNotification?: (notification: NotificationRow) => void
+  onNotificationUpdate?: (notification: NotificationRow) => void
+  onNotificationDelete?: (notificationId: string) => void
+  onConnectionChange?: (connected: boolean) => void
+  onError?: (error: Error) => void
 }
 
 export class NotificationRealtimeService {
-  private supabase = createClient();
-  private channel: RealtimeChannel | null = null;
-  private handlers: NotificationEventHandlers = {};
-  private currentUserId: string | null = null;
-  private isConnected = false;
-  private reconnectTimer: NodeJS.Timeout | null = null;
-  private reconnectAttempts = 0;
-  private maxReconnectAttempts = 5;
-  private reconnectDelay = 1000; // Start with 1 second
+  private static instance: NotificationRealtimeService
+  private subscriptions: Map<string, NotificationSubscription> = new Map()
 
-  constructor(userId?: string) {
-    this.currentUserId = userId || null;
-  }
-
-  /**
-   * Initialize real-time subscription for notifications
-   */
-  public subscribe(userId: string, handlers: NotificationEventHandlers = {}) {
-    this.currentUserId = userId;
-    this.handlers = handlers;
-    
-    // Cleanup existing subscription
-    this.unsubscribe();
-    
-    try {
-      // Create channel for user-specific notifications
-      this.channel = this.supabase
-        .channel(`notifications:user:${userId}`)
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'notifications',
-            filter: `user_id=eq.${userId}`,
-          },
-          this.handleInsert.bind(this)
-        )
-        .on(
-          'postgres_changes',
-          {
-            event: 'UPDATE',
-            schema: 'public',
-            table: 'notifications',
-            filter: `user_id=eq.${userId}`,
-          },
-          this.handleUpdate.bind(this)
-        )
-        .on(
-          'postgres_changes',
-          {
-            event: 'DELETE',
-            schema: 'public',
-            table: 'notifications',
-            filter: `user_id=eq.${userId}`,
-          },
-          this.handleDelete.bind(this)
-        )
-                 .subscribe((status: string) => {
-          console.log(`[NotificationRealtime] Subscription status: ${status}`);
-          
-          if (status === 'SUBSCRIBED') {
-            this.isConnected = true;
-            this.reconnectAttempts = 0;
-            this.handlers.onConnectionChange?.(true);
-          } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
-            this.isConnected = false;
-            this.handlers.onConnectionChange?.(false);
-            this.attemptReconnect();
-          }
-        });
-
-      console.log(`[NotificationRealtime] Subscribed to notifications for user: ${userId}`);
-      
-    } catch {
-      console.error('[NotificationRealtime] Subscription error:', error);
-      this.handlers.onError?.(error as Error);
-      this.attemptReconnect();
+  static getInstance(): NotificationRealtimeService {
+    if (!NotificationRealtimeService.instance) {
+      NotificationRealtimeService.instance = new NotificationRealtimeService()
     }
+    return NotificationRealtimeService.instance
   }
 
   /**
-   * Handle new notification insert
+   * Subscribe to real-time notifications (stub implementation)
    */
-  private handleInsert(payload: RealtimePostgresChangesPayload<NotificationRow>) {
-    console.log('[NotificationRealtime] New notification:', payload);
-    
-    try {
-      const notification = payload.new as NotificationRow;
-      if (notification && 'user_id' in notification && this.currentUserId === notification.user_id) {
-        this.handlers.onNewNotification?.(notification);
-      }
-    } catch {
-      console.error('[NotificationRealtime] Error handling insert:', error);
-      this.handlers.onError?.(error as Error);
-    }
+  subscribe(_userId: string, _handlers: NotificationEventHandlers): void {
+    console.log('Stub: subscribe called')
+    // Stub implementation - no actual subscription
+    // Call connection change handler to simulate connection
+    _handlers.onConnectionChange?.(true)
   }
 
   /**
-   * Handle notification update (e.g., read status change)
+   * Unsubscribe from notifications (stub implementation)
    */
-  private handleUpdate(payload: RealtimePostgresChangesPayload<NotificationRow>) {
-    console.log('[NotificationRealtime] Notification updated:', payload);
-    
-    try {
-      const notification = payload.new as NotificationRow;
-      if (notification && 'user_id' in notification && this.currentUserId === notification.user_id) {
-        this.handlers.onNotificationUpdate?.(notification);
-      }
-    } catch {
-      console.error('[NotificationRealtime] Error handling update:', error);
-      this.handlers.onError?.(error as Error);
-    }
+  unsubscribe(): void {
+    console.log('Stub: unsubscribe called')
+    this.subscriptions.clear()
   }
 
   /**
-   * Handle notification deletion
+   * Force reconnection (stub implementation)
    */
-  private handleDelete(payload: RealtimePostgresChangesPayload<NotificationRow>) {
-    console.log('[NotificationRealtime] Notification deleted:', payload);
-    
-    try {
-      const notification = payload.old as NotificationRow;
-      if (notification && 'user_id' in notification && 'id' in notification && this.currentUserId === notification.user_id) {
-        this.handlers.onNotificationDelete?.(notification.id);
-      }
-    } catch {
-      console.error('[NotificationRealtime] Error handling delete:', error);
-      this.handlers.onError?.(error as Error);
-    }
+  reconnect(): void {
+    console.log('Stub: reconnect called')
+    // Stub implementation - no actual reconnection
   }
 
   /**
-   * Attempt to reconnect with exponential backoff
+   * Subscribe to real-time notifications (alternative method - stub implementation)
    */
-  private attemptReconnect() {
-    if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      console.error('[NotificationRealtime] Max reconnection attempts reached');
-      this.handlers.onError?.(new Error('Failed to establish real-time connection after multiple attempts'));
-      return;
-    }
-
-    if (this.reconnectTimer) {
-      clearTimeout(this.reconnectTimer);
-    }
-
-    const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts);
-    console.log(`[NotificationRealtime] Attempting reconnect in ${delay}ms (attempt ${this.reconnectAttempts + 1}/${this.maxReconnectAttempts})`);
-
-    this.reconnectTimer = setTimeout(() => {
-      this.reconnectAttempts++;
-      if (this.currentUserId) {
-        this.subscribe(this.currentUserId, this.handlers);
-      }
-    }, delay);
+  async subscribeToNotifications(
+    _userId: string,
+    _callback: (notification: NotificationRow) => void,
+    _types?: string[]
+  ): Promise<void> {
+    console.log('Stub: subscribeToNotifications called')
+    // Stub implementation - no actual subscription
   }
 
   /**
-   * Unsubscribe from real-time notifications
+   * Unsubscribe from notifications (alternative method - stub implementation)
    */
-  public unsubscribe() {
-    if (this.reconnectTimer) {
-      clearTimeout(this.reconnectTimer);
-      this.reconnectTimer = null;
-    }
-
-    if (this.channel) {
-      this.supabase.removeChannel(this.channel);
-      this.channel = null;
-    }
-
-    this.isConnected = false;
-    this.reconnectAttempts = 0;
-    console.log('[NotificationRealtime] Unsubscribed from notifications');
+  async unsubscribeFromNotifications(_userId: string): Promise<void> {
+    console.log('Stub: unsubscribeFromNotifications called')
+    this.subscriptions.delete(_userId)
   }
 
   /**
-   * Check if currently connected
+   * Send a notification (stub implementation)
    */
-  public getConnectionStatus(): boolean {
-    return this.isConnected;
+  async sendNotification(_notification: Omit<NotificationRow, 'id' | 'created_at' | 'updated_at'>): Promise<void> {
+    console.log('Stub: sendNotification called')
+    // Stub implementation - no actual notification sent
   }
 
   /**
-   * Get current user ID
+   * Mark notification as read (stub implementation)
    */
-  public getCurrentUserId(): string | null {
-    return this.currentUserId;
+  async markAsRead(_notificationId: string, _userId: string): Promise<void> {
+    console.log('Stub: markAsRead called')
+    // Stub implementation - no actual update
   }
 
   /**
-   * Update handlers without resubscribing
+   * Get unread count (stub implementation)
    */
-  public updateHandlers(handlers: Partial<NotificationEventHandlers>) {
-    this.handlers = { ...this.handlers, ...handlers };
+  async getUnreadCount(_userId: string): Promise<number> {
+    console.log('Stub: getUnreadCount called')
+    return 0
   }
 
   /**
-   * Force reconnection
+   * Get notifications for user (stub implementation)
    */
-  public reconnect() {
-    if (this.currentUserId) {
-      console.log('[NotificationRealtime] Force reconnection requested');
-      this.reconnectAttempts = 0;
-      this.subscribe(this.currentUserId, this.handlers);
-    }
+  async getNotifications(_userId: string, _limit?: number): Promise<NotificationRow[]> {
+    console.log('Stub: getNotifications called')
+    return []
+  }
+
+  /**
+   * Cleanup subscriptions (stub implementation)
+   */
+  cleanup(): void {
+    console.log('Stub: cleanup called')
+    this.subscriptions.clear()
   }
 }
 
-// Singleton instance for app-wide use
-let realtimeService: NotificationRealtimeService | null = null;
-
 /**
- * Get or create the notification real-time service instance
+ * Get or create the notification real-time service instance (stub implementation)
  */
 export function getNotificationRealtimeService(): NotificationRealtimeService {
-  if (!realtimeService) {
-    realtimeService = new NotificationRealtimeService();
-  }
-  return realtimeService;
-}
-
-/**
- * Cleanup service on app unmount
- */
-export function cleanupNotificationRealtime() {
-  if (realtimeService) {
-    realtimeService.unsubscribe();
-    realtimeService = null;
-  }
+  return NotificationRealtimeService.getInstance()
 } 

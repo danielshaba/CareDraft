@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Mail, Send, UserPlus, Eye, Edit, Crown, Users, X } from 'lucide-react'
+
+
+import { Mail, Send, Eye, Edit, Crown, Users, X } from 'lucide-react'
 import { useToast } from '@/components/ui/toast'
 import { LoadingButton } from '@/components/ui/loading-button'
 import type { UserRole } from '@/lib/auth.types'
@@ -123,7 +123,7 @@ export function InviteUserModal({ isOpen, onClose, onInviteSent }: InviteUserMod
       onClose()
       
       onInviteSent?.()
-    } catch {
+    } catch (error) {
       console.error('Error sending invitation:', error)
       toast.error(
         'Failed to send invitation',
@@ -133,8 +133,6 @@ export function InviteUserModal({ isOpen, onClose, onInviteSent }: InviteUserMod
       setIsLoading(false)
     }
   }
-
-  const selectedRole = roleOptions.find(option => option.value === form.role)
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">

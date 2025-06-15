@@ -56,3 +56,5 @@ export default function UnauthorizedPage() {
     </div>
   )
 } 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'

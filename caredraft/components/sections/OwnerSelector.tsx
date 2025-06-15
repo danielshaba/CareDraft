@@ -41,6 +41,8 @@ export default function OwnerSelector({
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
+    
+    return undefined
   }, [isOpen])
 
   const handleOwnerSelect = (owner: Owner | null) => {

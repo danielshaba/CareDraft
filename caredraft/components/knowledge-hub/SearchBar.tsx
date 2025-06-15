@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import { Search, Sparkles, Globe, X, Filter, ChevronDown, Mic, MicOff } from 'lucide-react'
+import { Search, Sparkles, Globe, X, Mic, MicOff } from 'lucide-react'
 
 interface SearchBarProps {
   query: string

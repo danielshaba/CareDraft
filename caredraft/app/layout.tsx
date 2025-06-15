@@ -4,7 +4,8 @@ import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ToastContainer } from "@/components/ui/toast";
 
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
-import "./globals.css";
+// Temporarily comment out CSS import to isolate entryCSSFiles issue
+// import "./globals.css";
 
 
 const poppins = Poppins({
@@ -54,23 +55,39 @@ export const metadata: Metadata = {
     locale: 'en_GB',
     url: '/',
     title: 'CareDraft - AI-Powered Care Proposal Platform',
-    description: 'Create winning care proposals with AI-powered assistance. Streamline your tender response process with CareDraft.',
+    description: 'Create winning care proposals with AI-powered assistance. Streamline your tender response process with CareDraft\'s intelligent proposal management platform.',
     siteName: 'CareDraft',
     images: [
       {
-        url: '/images/caredraft-logo.svg',
-        width: 200,
-        height: 60,
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'CareDraft - AI-Powered Care Proposal Platform',
+        type: 'image/png',
+      },
+      {
+        url: '/caredraft-logo-official.svg',
+        width: 280,
+        height: 80,
         alt: 'CareDraft Logo',
+        type: 'image/svg+xml',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CareDraft - AI-Powered Care Proposal Platform',
-    description: 'Create winning care proposals with AI-powered assistance.',
+    description: 'Create winning care proposals with AI-powered assistance. Streamline your tender response process.',
     creator: '@caredraft',
-    images: ['/images/caredraft-logo.svg'],
+    site: '@caredraft',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'CareDraft - AI-Powered Care Proposal Platform',
+      }
+    ],
   },
   robots: {
     index: true,
@@ -84,9 +101,17 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico', sizes: '32x32' }
+    ],
     shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon-152x152.png', sizes: '152x152', type: 'image/png' },
+      { url: '/apple-touch-icon-167x167.png', sizes: '167x167', type: 'image/png' },
+      { url: '/apple-touch-icon-180x180.png', sizes: '180x180', type: 'image/png' }
+    ],
   },
   manifest: '/manifest.json',
 };

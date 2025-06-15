@@ -159,19 +159,45 @@ export function Layout({
  * Standard authenticated layout with sidebar and top bar
  */
 export function AuthenticatedLayout({ children, className }: { children: React.ReactNode; className?: string }) {
-  const { user } = useAuth()
+  const [isClient, setIsClient] = React.useState(false)
+  
+  React.useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
+  // Only access auth context on client side to prevent SSR issues
+  const { user } = isClient ? useAuth() : { user: null }
+  
+  // Show loading state during hydration
+  if (!isClient) {
+    return (
+      <Layout className={className}>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600"></div>
+        </div>
+      </Layout>
+    )
+  }
   
   return (
-    <RealtimeNotificationProvider
-      userId={user?.id}
-      autoConnect={true}
-      debug={false}
-      showBrowserNotifications={true}
-    >
-      <Layout className={className}>
-        {children}
-      </Layout>
-    </RealtimeNotificationProvider>
+    <>
+      {isClient && user?.id ? (
+        <RealtimeNotificationProvider
+          userId={user.id}
+          autoConnect={true}
+          debug={false}
+          showBrowserNotifications={true}
+        >
+          <Layout className={className}>
+            {children}
+          </Layout>
+        </RealtimeNotificationProvider>
+      ) : (
+        <Layout className={className}>
+          {children}
+        </Layout>
+      )}
+    </>
   )
 }
 

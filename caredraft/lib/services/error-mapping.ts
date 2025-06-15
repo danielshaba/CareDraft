@@ -292,7 +292,7 @@ const DEFAULT_ERROR_MAPPING: MappedError = {
  */
 export function mapError(
   error: Error | string | { status?: number; message?: string; code?: string },
-  context?: Partial<ErrorContext>
+  _context?: Partial<ErrorContext>
 ): MappedError {
   let errorMessage = '';
   let statusCode: number | undefined;

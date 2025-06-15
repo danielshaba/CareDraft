@@ -4,7 +4,7 @@
 // Shows notification count and connection status in navigation/header areas
 
 import React from 'react';
-import { Bell, BellOff, Wifi, WifiOff } from 'lucide-react';
+import { Bell, Wifi, WifiOff } from 'lucide-react';
 import { useNotificationConnectionStatus, useUnreadNotificationCount } from './RealtimeNotificationProvider';
 
 interface NotificationIndicatorProps {

@@ -82,7 +82,7 @@ export function useAutoSave({
       } else {
         throw new Error('Failed to create version')
       }
-    } catch {
+    } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to save'
       setSaveError(errorMessage)
       onSave?.(false, errorMessage)
@@ -202,10 +202,10 @@ export function useVersionControl(sectionId: string) {
 
       const version = await VersionsService.createVersion(versionInput)
       return version?.version_number || null
-    } catch {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to create version'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create version'
       setError(errorMessage)
-      console.error('Version creation error:', err)
+      console.error('Version creation error:', error)
       return null
     } finally {
       setIsCreating(false)

@@ -32,7 +32,7 @@ interface DraftStore {
 
 export const useDraftStore = create<DraftStore>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       drafts: [],
       currentDraft: null,
       isLoading: false,
@@ -100,7 +100,7 @@ export const useDraftStore = create<DraftStore>()(
         }))
       },
 
-      loadDrafts: async (organizationId) => {
+      loadDrafts: async (_organizationId) => {
         set({ isLoading: true, error: null })
         try {
           // TODO: Implement API call to load drafts

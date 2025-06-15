@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button'
 import { OrganizationManager } from '@/components/organization/OrganizationManager'
 import { Building2, Plus } from 'lucide-react'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
 export default function OrganizationsPage() {
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null)
 
@@ -157,4 +160,4 @@ export default function OrganizationsPage() {
       </div>
     </div>
   )
-} 
+}

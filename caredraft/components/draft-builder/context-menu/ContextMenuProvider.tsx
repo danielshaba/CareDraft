@@ -170,6 +170,9 @@ export const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ childr
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
+
+    // Return empty cleanup function when menu is not open
+    return () => {}
   }, [state.isOpen, hideMenu])
 
   const contextValue: ContextMenuContextType = {

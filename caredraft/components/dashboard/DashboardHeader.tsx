@@ -23,8 +23,25 @@ export function DashboardHeader() {
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div className="flex items-center">
-            <Link href="/dashboard" className="flex items-center">
-              <h1 className="text-brand font-heading text-xl">CareDraft</h1>
+            <Link href="/dashboard" className="flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50 rounded-lg p-1 -m-1">
+              <div className="h-8 w-8">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
+                  <rect width="48" height="48" rx="8" fill="#2A6F6F"/>
+                  <rect x="8" y="12" width="32" height="2" rx="1" fill="#E8F5F5"/>
+                  <rect x="8" y="18" width="24" height="2" rx="1" fill="#E8F5F5"/>
+                  <rect x="8" y="24" width="28" height="2" rx="1" fill="#E8F5F5"/>
+                  <rect x="8" y="30" width="20" height="2" rx="1" fill="#E8F5F5"/>
+                  <rect x="8" y="36" width="32" height="2" rx="1" fill="#E8F5F5"/>
+                  <path d="M40 0L48 8V6C48 2.68629 45.3137 0 42 0H40Z" fill="#1F4F4F"/>
+                  <path d="M40 0V6C40 7.10457 40.8954 8 42 8H48L40 0Z" fill="#F0F9F9"/>
+                  <g transform="translate(32, 28)">
+                    <path d="M8 2L9 6L13 8L9 10L8 14L7 10L3 8L7 6L8 2Z" fill="#F0F9F9"/>
+                    <circle cx="2" cy="4" r="1" fill="#F0F9F9"/>
+                    <circle cx="15" cy="12" r="0.8" fill="#F0F9F9"/>
+                  </g>
+                </svg>
+              </div>
+              <h1 className="text-teal-600 font-bold text-xl font-sans">CareDraft</h1>
             </Link>
           </div>
 

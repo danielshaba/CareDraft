@@ -50,7 +50,6 @@ export class ContextMenuAIService {
     onProgress?: (progress: OperationProgress) => void
   ): Promise<OperationResult> {
     const operationId = `op_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-    const startTime = Date.now()
 
     // Initialize progress tracking
     const initialProgress: OperationProgress = {
@@ -110,7 +109,7 @@ export class ContextMenuAIService {
    * Route operation to appropriate AI endpoint
    */
   private async routeOperation(operation: ContextMenuOperation): Promise<OperationResult> {
-    const startTime = Date.now()
+    const _startTime = Date.now()
     
     try {
       let endpoint: string
@@ -301,7 +300,7 @@ export class ContextMenuAIService {
         operation: operation.action,
         model: data.model,
         tokensUsed: data.tokensUsed,
-        processingTime: Date.now() - startTime
+        processingTime: Date.now() - _startTime
       }
 
     } catch (error) {
@@ -312,7 +311,7 @@ export class ContextMenuAIService {
         resultText: operation.selectedText, // Return original text on failure
         originalText: operation.selectedText,
         operation: operation.action,
-        processingTime: Date.now() - startTime,
+        processingTime: Date.now() - _startTime,
         error: error instanceof Error ? error.message : 'Unknown error'
       }
     }

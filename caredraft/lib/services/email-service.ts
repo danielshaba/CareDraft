@@ -56,7 +56,7 @@ export class EmailService {
       })
 
       return !!result.data?.id
-    } catch {
+    } catch (error) {
       console.error('Error sending notification email:', error)
       return false
     }
@@ -91,7 +91,7 @@ export class EmailService {
       })
 
       return !!result.data?.id
-    } catch {
+    } catch (error) {
       console.error('Error sending digest email:', error)
       return false
     }

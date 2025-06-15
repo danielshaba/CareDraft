@@ -1,5 +1,11 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+
+
+
 import React, { useState, useEffect, use } from 'react'
 import { ChevronLeft, FileText, BarChart3 } from 'lucide-react'
 import Link from 'next/link'

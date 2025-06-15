@@ -1,3 +1,8 @@
+'use client'
+
+// Disable static generation for this page since it uses AuthProvider context
+export const dynamic = 'force-dynamic'
+
 import React from 'react'
 import { AuthenticatedLayout } from '@/components/shared/Layout'
 import { NotificationPreferencesSettings } from '@/components/notifications/NotificationPreferencesSettings'

@@ -34,3 +34,5 @@ export default function UserManagementPage() {
     </AuthenticatedLayout>
   )
 } 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'

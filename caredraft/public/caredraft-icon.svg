@@ -1,0 +1,40 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- CareDraft Icon: Document with Sparkle -->
+  
+  <!-- Document Background -->
+  <rect x="96" y="64" width="320" height="384" rx="24" ry="24" fill="#2A6F6F"/>
+  
+  <!-- Document Header -->
+  <rect x="96" y="64" width="320" height="80" rx="24" ry="24" fill="#2A6F6F"/>
+  <rect x="96" y="120" width="320" height="24" fill="#2A6F6F"/>
+  
+  <!-- Document Lines -->
+  <rect x="136" y="180" width="240" height="8" rx="4" fill="#E8F5F5"/>
+  <rect x="136" y="208" width="200" height="8" rx="4" fill="#E8F5F5"/>
+  <rect x="136" y="236" width="220" height="8" rx="4" fill="#E8F5F5"/>
+  <rect x="136" y="264" width="180" height="8" rx="4" fill="#E8F5F5"/>
+  <rect x="136" y="292" width="160" height="8" rx="4" fill="#E8F5F5"/>
+  <rect x="136" y="320" width="240" height="8" rx="4" fill="#E8F5F5"/>
+  <rect x="136" y="348" width="200" height="8" rx="4" fill="#E8F5F5"/>
+  <rect x="136" y="376" width="140" height="8" rx="4" fill="#E8F5F5"/>
+  
+  <!-- Document Corner Fold -->
+  <path d="M352 64L416 128V88C416 74.7452 405.255 64 392 64H352Z" fill="#1F4F4F"/>
+  <path d="M352 64V104C352 117.255 362.745 128 376 128H416L352 64Z" fill="#F0F9F9"/>
+  
+  <!-- Sparkle Element -->
+  <g transform="translate(360, 200)">
+    <!-- Main sparkle star -->
+    <path d="M24 8L28 20L40 24L28 28L24 40L20 28L8 24L20 20L24 8Z" fill="#F0F9F9"/>
+    <!-- Small sparkles -->
+    <circle cx="8" cy="12" r="3" fill="#F0F9F9"/>
+    <circle cx="44" cy="36" r="2" fill="#F0F9F9"/>
+    <circle cx="12" cy="44" r="2" fill="#F0F9F9"/>
+    <!-- Tiny sparkles -->
+    <circle cx="36" cy="8" r="1.5" fill="#F0F9F9"/>
+    <circle cx="52" cy="20" r="1" fill="#F0F9F9"/>
+  </g>
+  
+  <!-- Shadow effect -->
+  <ellipse cx="256" cy="480" rx="120" ry="24" fill="#1F4F4F" opacity="0.2"/>
+</svg> 

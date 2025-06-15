@@ -1,46 +1,44 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+
+
+
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { 
   Building2, 
   Mail, 
-  Search, 
-  MapPin, 
   ArrowRight,
   AlertCircle,
-  Loader2,
-  Shield,
-  User
+  User,
+  Loader2
 } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import CareDraftLogo from '@/components/ui/CareDraftLogo'
+import { Logo } from '@/components/ui/Logo'
 import { useOnboardingStore } from '@/lib/stores/onboarding-store'
 import { useAuth } from '@/components/providers/AuthProvider'
 import { createClient } from '@/lib/supabase'
-import { 
-  CompaniesHouseCompany, 
-  formatCompanyName, 
-  formatCompanyDescription 
-} from '@/lib/services/companies-house'
+
 
 // Validation schema for profile setup
 const profileSetupSchema = z.object({
-  companyName: z.string().min(2, 'Company name must be at least 2 characters'),
-  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
-  agreedToTerms: z.boolean().refine(val => val, 'You must agree to the terms and conditions'),
-  agreedToPrivacy: z.boolean().refine(val => val, 'You must agree to the privacy policy'),
+  companyName: z.string().min(1, 'Required').refine(val => val.trim().length >= 2, 'Must be 2+ characters'),
+  fullName: z.string().min(1, 'Required').refine(val => val.trim().length >= 2, 'Must be 2+ characters'), 
+  agreedToTerms: z.boolean().refine(val => val === true, 'You must agree to the terms and conditions'),
+  agreedToPrivacy: z.boolean().refine(val => val === true, 'You must agree to the privacy policy'),
   marketingConsent: z.boolean().optional()
 })
 
@@ -50,47 +48,52 @@ export default function OnboardingWelcomePage() {
   const router = useRouter()
   const { user } = useAuth()
   const { 
-    companyBasicInfo, 
     updateCompanyBasicInfo, 
-    nextStep, 
-    setLoading, 
-    isLoading,
-    errors,
-    setError,
+    isLoading, 
+    errors, 
+    setError, 
     clearError 
   } = useOnboardingStore()
 
-  // Company search state
-  const [companyResults, setCompanyResults] = useState<CompaniesHouseCompany[]>([])
-  const [showResults, setShowResults] = useState(false)
-  const [searchLoading, setSearchLoading] = useState(false)
-  const [selectedCompany, setSelectedCompany] = useState<CompaniesHouseCompany | null>(null)
   const [isCreatingProfile, setIsCreatingProfile] = useState(false)
   
-  // Refs
-  const searchTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
-  const searchInputRef = useRef<HTMLInputElement>(null)
 
-  // Form setup
+
+
+
+  // Form setup with simple validation
   const {
     register,
     handleSubmit,
-    formState: { errors: formErrors },
-    setValue,
-    watch,
-    trigger
+    formState: { errors: formErrors, isSubmitting },
+    watch
   } = useForm<ProfileSetupFormData>({
     resolver: zodResolver(profileSetupSchema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
     defaultValues: {
-      companyName: companyBasicInfo.name || '',
-      fullName: user?.email?.split('@')[0] || '',
-      agreedToTerms: companyBasicInfo.agreedToTerms || false,
-      agreedToPrivacy: companyBasicInfo.agreedToPrivacy || false,
-      marketingConsent: companyBasicInfo.marketingConsent || false
+      companyName: '',
+      fullName: '',
+      agreedToTerms: false,
+      agreedToPrivacy: false,
+      marketingConsent: false
     }
   })
 
-  const watchedCompanyName = watch('companyName')
+  // Watch form values for manual validation
+  const companyName = watch('companyName')
+  const fullName = watch('fullName')
+  const agreedToTerms = watch('agreedToTerms')
+  const agreedToPrivacy = watch('agreedToPrivacy')
+
+  // Manual validation for button state
+  const isFormValid = 
+    companyName && companyName.trim().length >= 2 &&
+    fullName && fullName.trim().length >= 2 &&
+    agreedToTerms === true &&
+    agreedToPrivacy === true
+
+  const isButtonDisabled = !isFormValid || isSubmitting || isCreatingProfile || isLoading
 
   // Redirect if user is not authenticated
   useEffect(() => {
@@ -99,66 +102,7 @@ export default function OnboardingWelcomePage() {
     }
   }, [user, router])
 
-  // Company search with debouncing
-  useEffect(() => {
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current)
-    }
 
-    if (watchedCompanyName && watchedCompanyName.length >= 2 && watchedCompanyName !== selectedCompany?.title) {
-      setSearchLoading(true)
-      searchTimeoutRef.current = setTimeout(async () => {
-        try {
-          const response = await fetch(`/api/companies-house/search?q=${encodeURIComponent(watchedCompanyName)}`)
-          const data = await response.json()
-          
-          if (data.success && data.data?.items) {
-            setCompanyResults(data.data.items)
-            setShowResults(true)
-          } else {
-            setCompanyResults([])
-            setShowResults(false)
-          }
-        } catch (error) {
-          console.error('Company search error:', error)
-          setCompanyResults([])
-          setShowResults(false)
-        } finally {
-          setSearchLoading(false)
-        }
-      }, 300)
-    } else {
-      setShowResults(false)
-      setSearchLoading(false)
-    }
-
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current)
-      }
-    }
-  }, [watchedCompanyName, selectedCompany])
-
-  // Handle company selection
-  const handleCompanySelect = (company: CompaniesHouseCompany) => {
-    setSelectedCompany(company)
-    setValue('companyName', formatCompanyName(company))
-    setShowResults(false)
-    
-    // Update onboarding store with company info
-    updateCompanyBasicInfo({
-      name: formatCompanyName(company),
-      address: {
-        line1: [company.address.premises, company.address.address_line_1].filter(Boolean).join(' ') || '',
-        line2: company.address.address_line_2 || '',
-        city: company.address.locality || '',
-        postcode: company.address.postal_code || '',
-        country: company.address.country || 'United Kingdom'
-      }
-    })
-    
-    trigger('companyName')
-  }
 
   // Form submission - Update user profile with company information
   const onSubmit = async (data: ProfileSetupFormData) => {
@@ -170,6 +114,8 @@ export default function OnboardingWelcomePage() {
     try {
       setIsCreatingProfile(true)
       clearError('submit')
+      
+      console.log('Submitting form with data:', data)
       
       const supabase = createClient()
       
@@ -192,19 +138,16 @@ export default function OnboardingWelcomePage() {
         .eq('id', user.id)
 
       if (userError) {
-        console.error('Error updating user profile:', userError)
+        console.error('Error updating user:', userError)
         setError('submit', 'Failed to update profile. Please try again.')
         return
       }
 
-      console.log('User profile updated successfully')
-      
-      // Navigate to dashboard since profile is set up
-      router.push('/dashboard')
-      
+      // Navigate to next step
+      router.push('/onboarding/profile')
     } catch (error) {
-      console.error('Profile setup error:', error)
-      setError('submit', 'Failed to set up profile. Please try again.')
+      console.error('Form submission error:', error)
+      setError('submit', 'An unexpected error occurred. Please try again.')
     } finally {
       setIsCreatingProfile(false)
     }
@@ -225,7 +168,7 @@ export default function OnboardingWelcomePage() {
         <Card className="border-0 shadow-2xl bg-white/95 backdrop-blur-sm">
           <CardHeader className="text-center pb-4">
             <div className="flex justify-center mb-4">
-              <CareDraftLogo className="h-12 w-auto" />
+              <Logo size="lg" variant="full" />
             </div>
             <CardTitle className="text-2xl font-bold text-brand-primary">
               Complete Your Profile
@@ -245,68 +188,21 @@ export default function OnboardingWelcomePage() {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* Company Name with Autocomplete */}
-              <div className="space-y-2 relative">
+              {/* Company Name */}
+              <div className="space-y-2">
                 <Label htmlFor="companyName" className="text-sm font-medium text-gray-700">
                   <Building2 className="w-4 h-4 inline mr-2" />
                   Company Name
                 </Label>
-                <div className="relative">
                   <Input
                     {...register('companyName')}
-                    ref={searchInputRef}
                     type="text"
-                    placeholder="Start typing your company name..."
-                    className={`pr-10 ${formErrors.companyName ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-brand-primary'}`}
+                  placeholder="Enter your company name"
+                  className={formErrors.companyName ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-brand-primary'}
                     autoComplete="organization"
                   />
-                  {searchLoading && (
-                    <Loader2 className="absolute right-3 top-3 h-4 w-4 animate-spin text-gray-400" />
-                  )}
-                  {!searchLoading && watchedCompanyName && (
-                    <Search className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
-                  )}
-                </div>
-                
-                {/* Company Search Results */}
-                <AnimatePresence>
-                  {showResults && companyResults.length > 0 && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
-                    >
-                      {companyResults.slice(0, 8).map((company) => (
-                        <button
-                          key={company.company_number}
-                          type="button"
-                          onClick={() => handleCompanySelect(company)}
-                          className="w-full px-4 py-3 text-left hover:bg-brand-secondary/10 focus:bg-brand-secondary/10 focus:outline-none border-b border-gray-100 last:border-b-0"
-                        >
-                          <div className="font-medium text-gray-900 text-sm">
-                            {formatCompanyName(company)}
-                          </div>
-                          <div className="text-xs text-gray-500 mt-1">
-                            <MapPin className="w-3 h-3 inline mr-1" />
-                            {company.address_snippet || 'Address not available'}
-                          </div>
-                          {company.description && (
-                            <div className="text-xs text-brand-primary mt-1">
-                              {formatCompanyDescription(company)}
-                            </div>
-                          )}
-                        </button>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
                 {formErrors.companyName && (
-                  <p className="text-sm text-red-600 flex items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
-                    {formErrors.companyName.message}
-                  </p>
+                  <p className="text-red-500 text-sm mt-1">{formErrors.companyName.message}</p>
                 )}
               </div>
 
@@ -334,10 +230,11 @@ export default function OnboardingWelcomePage() {
               {/* Terms and Conditions */}
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <Checkbox
-                    {...register('agreedToTerms')}
+                  <input
+                    type="checkbox"
                     id="agreedToTerms"
-                    className="mt-1"
+                    {...register('agreedToTerms')}
+                    className="mt-1 h-4 w-4 text-brand-primary focus:ring-brand-primary border-gray-300 rounded"
                   />
                   <Label htmlFor="agreedToTerms" className="text-sm text-gray-700 leading-5">
                     I agree to the{' '}
@@ -348,20 +245,26 @@ export default function OnboardingWelcomePage() {
                     >
                       Terms of Service
                     </Link>
+                    {' '}and{' '}
+                    <Link 
+                      href="/conditions" 
+                      className="text-brand-primary hover:text-brand-accent underline"
+                      target="_blank"
+                    >
+                      Conditions of Use
+                    </Link>
                   </Label>
                 </div>
                 {formErrors.agreedToTerms && (
-                  <p className="text-sm text-red-600 flex items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
-                    {formErrors.agreedToTerms.message}
-                  </p>
+                  <p className="text-red-500 text-sm mt-1">{formErrors.agreedToTerms.message}</p>
                 )}
 
                 <div className="flex items-start space-x-3">
-                  <Checkbox
-                    {...register('agreedToPrivacy')}
+                  <input
+                    type="checkbox"
                     id="agreedToPrivacy"
-                    className="mt-1"
+                    {...register('agreedToPrivacy')}
+                    className="mt-1 h-4 w-4 text-brand-primary focus:ring-brand-primary border-gray-300 rounded"
                   />
                   <Label htmlFor="agreedToPrivacy" className="text-sm text-gray-700 leading-5">
                     I agree to the{' '}
@@ -372,26 +275,29 @@ export default function OnboardingWelcomePage() {
                     >
                       Privacy Policy
                     </Link>
+                    {' '}and consent to the collection and processing of my personal data
                   </Label>
                 </div>
                 {formErrors.agreedToPrivacy && (
-                  <p className="text-sm text-red-600 flex items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
-                    {formErrors.agreedToPrivacy.message}
-                  </p>
+                  <p className="text-red-500 text-sm mt-1">{formErrors.agreedToPrivacy.message}</p>
                 )}
 
                 <div className="flex items-start space-x-3">
-                  <Checkbox
-                    {...register('marketingConsent')}
+                  <input
+                    type="checkbox"
                     id="marketingConsent"
-                    className="mt-1"
+                    {...register('marketingConsent')}
+                    className="mt-1 h-4 w-4 text-brand-primary focus:ring-brand-primary border-gray-300 rounded"
                   />
                   <Label htmlFor="marketingConsent" className="text-sm text-gray-700 leading-5">
                     I would like to receive product updates and marketing communications
                   </Label>
                 </div>
               </div>
+
+
+
+
 
               {/* Error Display */}
               {errors.submit && (
@@ -406,8 +312,8 @@ export default function OnboardingWelcomePage() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                disabled={isCreatingProfile}
-                className="w-full bg-brand-primary hover:bg-brand-accent text-white py-3 text-base font-medium"
+                disabled={isButtonDisabled}
+                className="w-full bg-brand-primary hover:bg-brand-accent text-white py-3 text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isCreatingProfile ? (
                   <>

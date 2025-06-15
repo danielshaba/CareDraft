@@ -307,11 +307,16 @@ export interface PushNotificationData {
 export default {
   // Type guards
   isNotification: (obj: unknown): obj is Notification => {
-    return obj && typeof obj.id === 'string' && typeof obj.user_id === 'string' && typeof obj.type === 'string';
+    return obj !== null && typeof obj === 'object' && 
+           typeof (obj as any).id === 'string' && 
+           typeof (obj as any).user_id === 'string' && 
+           typeof (obj as any).type === 'string';
   },
   
   isNotificationPreferences: (obj: unknown): obj is UserNotificationPreferences => {
-    return obj && typeof obj.id === 'string' && typeof obj.user_id === 'string';
+    return obj !== null && typeof obj === 'object' && 
+           typeof (obj as any).id === 'string' && 
+           typeof (obj as any).user_id === 'string';
   },
   
   isValidNotificationType: (type: string): type is NotificationType => {

@@ -1,1 +1,1 @@
-import { useAuth } from '@/components/providers/AuthProvider' 
+// This file is currently empty - placeholder for future user profile functionality 

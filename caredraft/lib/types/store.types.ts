@@ -1,5 +1,5 @@
 import { Database } from '@/lib/database.types'
-import { User, Session } from '@supabase/supabase-js'
+import { Session } from '@supabase/supabase-js'
 import { RealtimeChannel } from '@supabase/supabase-js'
 
 // Base types from database

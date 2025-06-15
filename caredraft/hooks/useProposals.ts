@@ -57,7 +57,7 @@ export function useProposals(options: UseProposalsOptions = {}): UseProposalsRet
       }
 
       setProposals(data)
-    } catch {
+    } catch (err) {
       console.error('Error fetching proposals:', err)
       setError(err instanceof Error ? err.message : 'Failed to load proposals')
     } finally {

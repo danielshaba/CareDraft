@@ -1,5 +1,5 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Database, ResearchSession, ResearchSessionInsert, ResearchSessionUpdate, ResearchSessionWithStats } from '@/lib/database.types'
+import { Database, ResearchSession, ResearchSessionWithStats } from '@/lib/database.types'
 
 // Response types for API operations
 export interface ResearchSessionListResponse {
@@ -317,9 +317,9 @@ class ResearchSessionService {
         return new Blob(['No results to export'], { type: 'text/plain' })
       }
 
-      const headers = Object.keys(results[0]).join(',')
+      const headers = Object.keys(results[0] as Record<string, unknown>).join(',')
       const rows = results.map(result => 
-        Object.values(result).map(value => 
+        Object.values(result as Record<string, unknown>).map(value => 
           typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value
         ).join(',')
       )

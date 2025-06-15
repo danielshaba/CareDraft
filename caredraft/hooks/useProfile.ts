@@ -1,20 +1,12 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useCachedData } from './useCache'
-import { useLoadingState } from './useLoadingState'
 import { 
   profileDataService, 
   ProfileData,
   DataConflictResolution
 } from '@/lib/services/profile-data-service'
-import { 
-  ProfileData as ValidationProfileData,
-  ProfileUpdateData, 
-  ProfileConflicts,
-  validateProfile,
-  validateProfileUpdate,
-  createDefaultProfile
-} from '@/lib/validations/profile'
+
 
 export interface UseProfileOptions {
   autoSync?: boolean
@@ -66,8 +58,7 @@ export function useProfile(options: UseProfileOptions = {}): ProfileState & Prof
     isFromOnboarding: false
   })
 
-  const { isLoading: dataLoading, setLoading } = useLoadingState()
-  const debounceRef = useRef<NodeJS.Timeout>()
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
   const originalDataRef = useRef<ProfileData | null>(null)
 
   // Fetch profile data with caching

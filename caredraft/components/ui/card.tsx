@@ -9,7 +9,7 @@ const cardVariants = cva(
       variant: {
         default: "border-gray-200",
         brand: "border-brand-200 bg-brand-50",
-        success: "border-green-200 bg-green-50",
+        success: "border-teal-200 bg-teal-50",
         warning: "border-yellow-200 bg-yellow-50",
         error: "border-red-200 bg-red-50",
         interactive: "border-gray-200 hover:border-brand-300 hover:shadow-md cursor-pointer",

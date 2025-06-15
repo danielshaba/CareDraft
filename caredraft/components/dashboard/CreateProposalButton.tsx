@@ -28,7 +28,7 @@ export const CreateProposalButton: React.FC<CreateProposalButtonProps> = ({
   size = 'md',
   className = '',
   onClick,
-  href = '/proposals/create',
+  href = '/proposals/create/upload',
   disabled = false
 }) => {
   // Size configurations

@@ -10,7 +10,6 @@ import {
   Copy, 
   Calendar, 
   Clock, 
-  User,
   Search,
   ExternalLink,
   FileText,
@@ -79,7 +78,7 @@ export function ResearchSessionViewer({
         query: editedQuery.trim()
       })
       setIsEditing(false)
-    } catch {
+    } catch (error) {
       console.error('Failed to update session:', error)
     }
   }
@@ -179,7 +178,7 @@ export function ResearchSessionViewer({
           // You might want to show a toast notification here
         }
       }
-    } catch {
+    } catch (error) {
       console.error('Failed to export session:', error)
       // You might want to show a toast notification here
     }
@@ -189,7 +188,7 @@ export function ResearchSessionViewer({
     try {
       await navigator.clipboard.writeText(text)
       // You might want to show a toast notification here
-    } catch {
+    } catch (error) {
       console.error('Failed to copy to clipboard:', error)
     }
   }

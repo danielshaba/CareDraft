@@ -37,6 +37,8 @@ export default function DueDatePicker({
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
+    
+    return undefined
   }, [isOpen])
 
   // Update local state when prop changes

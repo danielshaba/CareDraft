@@ -63,7 +63,7 @@ export function NetworkDemo() {
         actionType: 'basic_save'
       });
       saveLoadingState.setData(result);
-    } catch {
+    } catch (error) {
       saveLoadingState.setError(error instanceof Error ? error : new Error('Unknown error'));
     }
   };
@@ -72,7 +72,7 @@ export function NetworkDemo() {
     try {
       const result = await retryableUpload.execute();
       console.log('Upload result:', result);
-    } catch {
+    } catch (error) {
       console.error('Upload failed:', error);
     }
   };
@@ -81,7 +81,7 @@ export function NetworkDemo() {
     try {
       const result = await queuedSave();
       console.log('Queued save result:', result);
-    } catch {
+    } catch (error) {
       console.error('Queued save failed:', error);
     }
   };
@@ -186,9 +186,9 @@ export function NetworkDemo() {
               </p>
             )}
             
-            {saveLoadingState.data && (
+            {!!saveLoadingState.data && (
               <p className="text-sm text-emerald-600">
-                Success! ID: {saveLoadingState.data.id}
+                Success! ID: {typeof saveLoadingState.data === 'object' && saveLoadingState.data !== null && 'id' in saveLoadingState.data ? (saveLoadingState.data as { id: string }).id : 'Unknown'}
               </p>
             )}
           </div>

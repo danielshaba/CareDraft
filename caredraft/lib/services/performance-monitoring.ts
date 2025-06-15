@@ -305,6 +305,7 @@ class PerformanceMonitoringService {
       const nav = navigator as any;
       return nav.connection?.effectiveType || nav.mozConnection?.type || nav.webkitConnection?.type;
     }
+    return undefined;
   }
   
   private getDeviceMemory(): number | undefined {
@@ -312,6 +313,7 @@ class PerformanceMonitoringService {
       const nav = navigator as any;
       return nav.deviceMemory;
     }
+    return undefined;
   }
   
   // Periodic reporting
@@ -361,7 +363,7 @@ class PerformanceMonitoringService {
           body: JSON.stringify(data),
         });
       }
-    } catch {
+    } catch (error) {
       console.error('Failed to send performance metrics:', error);
       // Re-queue metrics for retry
       this.metricsQueue.unshift(...data.metrics);
@@ -418,7 +420,7 @@ export const performanceMonitor = PerformanceMonitoringService.getInstance();
 export function usePerformanceMonitoring(userId?: string) {
   const [metrics, setMetrics] = React.useState<PerformanceMetric[]>([]);
   const [isMonitoring, setIsMonitoring] = React.useState(false);
-  const [performanceScore, setPerformanceScore] = React.useState(85);
+  const [performanceScore, _setPerformanceScore] = React.useState(85);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -467,7 +469,7 @@ export function usePerformanceMonitoring(userId?: string) {
 
 // Service worker hook
 export function useServiceWorker() {
-  const [isRegistered, setIsRegistered] = React.useState(false);
+  const [isRegistered, _setIsRegistered] = React.useState(false);
   const [isOnline, setIsOnline] = React.useState(true);
   const [updateAvailable, setUpdateAvailable] = React.useState(false);
   const [cacheSize, setCacheSize] = React.useState(0);
@@ -487,6 +489,7 @@ export function useServiceWorker() {
         window.removeEventListener('offline', handleOffline);
       };
     }
+    return undefined;
   }, []);
 
   const updateServiceWorker = React.useCallback(() => {

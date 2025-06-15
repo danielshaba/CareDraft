@@ -6,8 +6,7 @@ import {
   Play, 
   Eye, 
   CheckCircle,
-  AlertCircle,
-  Calendar
+  AlertCircle
 } from 'lucide-react'
 import { SectionStatus } from '@/types/database'
 
@@ -171,6 +170,8 @@ export function StatusSelector({
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
+    
+    return () => {} // Return empty cleanup function when not adding listener
   }, [isOpen])
 
   const handleStatusSelect = (status: SectionStatus) => {

@@ -115,18 +115,13 @@ export function SearchFilters({
         <hr className="border-gray-200" />
 
         <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <label className="text-sm font-medium">Minimum Credibility</label>
-            <span className="text-xs text-gray-500">
-              {Math.round(filters.minCredibility * 100)}%
-            </span>
-          </div>
           <Slider
-            value={[filters.minCredibility]}
-            onValueChange={(value: number[]) => handleFilterChange('minCredibility', value[0])}
-            max={1}
+            label="Minimum Credibility"
+            value={Math.round(filters.minCredibility * 100)}
+            onChange={(value: number) => handleFilterChange('minCredibility', value / 100)}
+            max={100}
             min={0}
-            step={0.1}
+            step={10}
             className="w-full"
           />
         </div>

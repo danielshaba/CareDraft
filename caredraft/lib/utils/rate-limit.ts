@@ -63,7 +63,7 @@ setInterval(() => store.cleanup(), 5 * 60 * 1000)
  */
 function defaultKeyGenerator(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for')
-  const ip = forwarded ? forwarded.split(',')[0] : request.ip || 'unknown'
+  const ip = forwarded ? forwarded.split(',')[0] : 'unknown'
   return `rate_limit_${ip}`
 }
 

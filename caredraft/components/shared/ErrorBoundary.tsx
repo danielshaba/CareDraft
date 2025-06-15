@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { AlertCircle, RefreshCw, Home, FileX, Wifi, Bug } from 'lucide-react'
-import { formatErrorForDisplay, mapError } from '@/lib/services/error-mapping'
+
 import { logError, addBreadcrumb } from '@/lib/services/error-logging'
 
 interface ErrorBoundaryState {

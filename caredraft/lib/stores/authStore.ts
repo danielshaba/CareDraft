@@ -74,14 +74,14 @@ const getPermissionsForRole = (role?: string): UserPermissions => {
 }
 
 // Helper function to create AuthUser from User and database user data
-const createAuthUser = (user: User | null, dbUser?: unknown, session?: Session | null): AuthUser | null => {
+const createAuthUser = (user: User | null, dbUser?: any, session?: Session | null): AuthUser | null => {
   if (!user || !dbUser) return null
 
   return {
     ...dbUser,
-    session,
+    session: session || undefined,
     permissions: getPermissionsForRole(dbUser.role),
-  }
+  } as AuthUser
 }
 
 // Initial state
@@ -154,7 +154,7 @@ export const useAuthStore = create<AuthStore>()(
 
               return { success: true }
             } catch (error: unknown) {
-              const errorMessage = error.message || 'An unexpected error occurred'
+              const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred'
               set((state) => {
                 state.isSigningIn = false
                 state.error = errorMessage
@@ -171,7 +171,7 @@ export const useAuthStore = create<AuthStore>()(
             })
 
             try {
-              const { data, error } = await supabase.auth.signUp({
+              const { data: _data, error } = await supabase.auth.signUp({
                 email,
                 password,
                 options: {
@@ -194,7 +194,7 @@ export const useAuthStore = create<AuthStore>()(
 
               return { success: true }
             } catch (error: unknown) {
-              const errorMessage = error.message || 'An unexpected error occurred'
+              const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred'
               set((state) => {
                 state.isSigningUp = false
                 state.error = errorMessage
@@ -225,7 +225,7 @@ export const useAuthStore = create<AuthStore>()(
             } catch (error: unknown) {
               set((state) => {
                 state.isSigningOut = false
-                state.error = error.message || 'Sign out failed'
+                state.error = error instanceof Error ? error.message : 'Sign out failed'
                 state.lastError = new Date()
               })
             }
@@ -331,7 +331,7 @@ export const useAuthStore = create<AuthStore>()(
             try {
               const { data, error } = await supabase
                 .from('users')
-                .update(updates)
+                .update(updates as any)
                 .eq('id', state.user.id)
                 .select()
                 .single()
@@ -407,8 +407,6 @@ export const useAuthStore = create<AuthStore>()(
 
 // Initialize auth state on store creation
 supabase.auth.onAuthStateChange(async (event, session) => {
-  const store = useAuthStore.getState()
-
   switch (event) {
     case 'SIGNED_IN':
     case 'TOKEN_REFRESHED':

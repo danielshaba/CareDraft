@@ -218,3 +218,5 @@ export default function ContactPage() {
     </div>
   )
 } 
+// Disable static generation for this page since it has interactive form elements
+export const dynamic = 'force-dynamic'

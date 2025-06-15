@@ -53,7 +53,7 @@ export default function AIAssistPanel({ editor }: AIAssistPanelProps) {
       }
 
       replaceSelectedText(result)
-    } catch {
+    } catch (error) {
       console.error('AI function failed:', error)
       alert('AI function failed. Please try again.')
     } finally {

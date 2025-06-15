@@ -3,6 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { AlertCircle, RefreshCw, Home, ArrowLeft } from 'lucide-react'
+import { Logo } from '@/components/ui/Logo'
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -63,53 +64,46 @@ export default function Error({ error, reset }: ErrorProps) {
         return {
           title: 'Connection Problem',
           description: 'Unable to load this page due to a network issue. Please check your connection and try again.',
-          bgColor: 'from-brand-50 to-indigo-50',
-          iconColor: 'text-brand-600',
-          iconBg: 'bg-brand-100',
-          buttonColor: 'bg-brand-600 hover:bg-brand-700',
+          iconColor: 'text-teal-600',
+          iconBg: 'bg-teal-100',
+          buttonColor: 'bg-teal-600 hover:bg-teal-700',
         }
       case 'notFound':
         return {
           title: 'Page Not Found',
           description: 'The page you\'re looking for doesn\'t exist or has been moved.',
-          bgColor: 'from-purple-50 to-violet-50',
-          iconColor: 'text-purple-600',
-          iconBg: 'bg-purple-100',
-          buttonColor: 'bg-purple-600 hover:bg-purple-700',
+          iconColor: 'text-teal-600',
+          iconBg: 'bg-teal-100',
+          buttonColor: 'bg-teal-600 hover:bg-teal-700',
         }
       case 'auth':
         return {
           title: 'Authentication Required',
           description: 'You need to sign in to access this page.',
-          bgColor: 'from-yellow-50 to-orange-50',
-          iconColor: 'text-yellow-600',
-          iconBg: 'bg-yellow-100',
-          buttonColor: 'bg-yellow-600 hover:bg-yellow-700',
+          iconColor: 'text-teal-600',
+          iconBg: 'bg-teal-100',
+          buttonColor: 'bg-teal-600 hover:bg-teal-700',
         }
       case 'permission':
         return {
           title: 'Access Denied',
           description: 'You don\'t have permission to access this page.',
-          bgColor: 'from-red-50 to-pink-50',
-          iconColor: 'text-red-600',
-          iconBg: 'bg-red-100',
-          buttonColor: 'bg-red-600 hover:bg-red-700',
+          iconColor: 'text-teal-600',
+          iconBg: 'bg-teal-100',
+          buttonColor: 'bg-teal-600 hover:bg-teal-700',
         }
       default:
         return {
           title: 'Something Went Wrong',
           description: 'An unexpected error occurred while loading this page.',
-          bgColor: 'from-gray-50 to-slate-50',
-          iconColor: 'text-gray-600',
-          iconBg: 'bg-gray-100',
-          buttonColor: 'bg-gray-600 hover:bg-gray-700',
+          iconColor: 'text-teal-600',
+          iconBg: 'bg-teal-100',
+          buttonColor: 'bg-teal-600 hover:bg-teal-700',
         }
     }
   }
 
   const config = getErrorConfig()
-
-  // Removed unused handleRefresh function since we have reset button working
 
   const handleGoBack = () => {
     if (typeof window !== 'undefined' && window.history.length > 1) {
@@ -120,9 +114,14 @@ export default function Error({ error, reset }: ErrorProps) {
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${config.bgColor} flex items-center justify-center px-4`}>
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100 flex items-center justify-center px-4">
       <div className="max-w-lg w-full text-center">
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          {/* CareDraft Logo */}
+          <div className="mb-6">
+            <Logo size="lg" className="mx-auto" />
+          </div>
+
           {/* Icon */}
           <div className={`mx-auto flex items-center justify-center w-16 h-16 ${config.iconBg} rounded-full mb-6`}>
             <AlertCircle className={`w-8 h-8 ${config.iconColor}`} />
@@ -167,7 +166,7 @@ export default function Error({ error, reset }: ErrorProps) {
           <div className="space-y-3">
             <button
               onClick={reset}
-              className={`inline-flex items-center justify-center w-full text-white px-6 py-3 rounded-lg font-medium ${config.buttonColor} transition-colors`}
+              className={`inline-flex items-center justify-center w-full text-white px-6 py-3 rounded-lg font-medium ${config.buttonColor} transition-colors focus:ring-2 focus:ring-teal-500 focus:ring-offset-2`}
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Try Again
@@ -176,7 +175,7 @@ export default function Error({ error, reset }: ErrorProps) {
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={handleGoBack}
-                className="inline-flex items-center justify-center bg-gray-100 text-gray-700 px-4 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                className="inline-flex items-center justify-center bg-gray-100 text-gray-700 px-4 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Go Back
@@ -184,7 +183,7 @@ export default function Error({ error, reset }: ErrorProps) {
               
               <Link
                 href="/"
-                className="inline-flex items-center justify-center bg-gray-100 text-gray-700 px-4 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                className="inline-flex items-center justify-center bg-gray-100 text-gray-700 px-4 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
               >
                 <Home className="w-4 h-4 mr-2" />
                 Home
@@ -202,7 +201,7 @@ export default function Error({ error, reset }: ErrorProps) {
             </p>
             <Link
               href="/contact"
-              className={`text-sm ${config.iconColor} hover:opacity-80 font-medium`}
+              className="text-sm text-teal-600 hover:text-teal-700 font-medium"
             >
               Contact Support
             </Link>

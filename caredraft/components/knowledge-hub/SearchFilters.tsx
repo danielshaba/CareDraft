@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Filter, ChevronDown, ChevronUp, Calendar, FileText, Globe2, Building, Users, X } from 'lucide-react'
+import { Filter, ChevronDown, ChevronUp } from 'lucide-react'
 
 interface SearchFiltersProps {
   filters: {
@@ -14,149 +14,35 @@ interface SearchFiltersProps {
     language?: string
   }
   onFiltersChange: (filters: unknown) => void
-  resultsCount?: number
   className?: string
 }
 
-interface FilterOption {
-  value: string
-  label: string
-  count?: number
-  color?: string
-}
 
-const contentTypeOptions: FilterOption[] = [
-  { value: 'all', label: 'All Content', count: 1247 },
-  { value: 'documents', label: 'Documents', count: 542, color: 'blue' },
-  { value: 'policies', label: 'Policies & Procedures', count: 89, color: 'green' },
-  { value: 'templates', label: 'Templates', count: 156, color: 'purple' },
-  { value: 'research', label: 'Research Papers', count: 234, color: 'orange' },
-  { value: 'news', label: 'News & Updates', count: 178, color: 'red' },
-  { value: 'compliance', label: 'Compliance Guides', count: 48, color: 'yellow' },
-]
 
-const dateRangeOptions: FilterOption[] = [
-  { value: 'all', label: 'Any time' },
-  { value: 'today', label: 'Today' },
-  { value: 'week', label: 'Past week' },
-  { value: 'month', label: 'Past month' },
-  { value: 'quarter', label: 'Past 3 months' },
-  { value: 'year', label: 'Past year' },
-  { value: 'custom', label: 'Custom range...' },
-]
 
-const sourceOptions: FilterOption[] = [
-  { value: 'all', label: 'All Sources' },
-  { value: 'internal', label: 'Internal Library' },
-  { value: 'cqc', label: 'CQC Guidelines' },
-  { value: 'nhs', label: 'NHS Resources' },
-  { value: 'gov', label: 'Government Publications' },
-  { value: 'academic', label: 'Academic Research' },
-  { value: 'industry', label: 'Industry Reports' },
-]
 
-const sortOptions: FilterOption[] = [
-  { value: 'relevance', label: 'Most Relevant' },
-  { value: 'date', label: 'Most Recent' },
-  { value: 'popularity', label: 'Most Popular' },
-  { value: 'title', label: 'Title A-Z' },
-  { value: 'type', label: 'Content Type' },
-]
 
-const fileTypeOptions: FilterOption[] = [
-  { value: 'all', label: 'All File Types' },
-  { value: 'pdf', label: 'PDF Documents' },
-  { value: 'doc', label: 'Word Documents' },
-  { value: 'xls', label: 'Spreadsheets' },
-  { value: 'ppt', label: 'Presentations' },
-  { value: 'txt', label: 'Text Files' },
-]
 
-const popularTags = [
-  'care-standards', 'health-safety', 'staff-training', 'medication-management',
-  'quality-assurance', 'infection-control', 'mental-health', 'dementia-care',
-  'safeguarding', 'dignity-respect', 'person-centered', 'compliance'
-]
+
+
+
+
+
+
+
 
 export function SearchFilters({
   filters,
   onFiltersChange,
-  resultsCount,
   className = ""
 }: SearchFiltersProps) {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [showCustomDate, setShowCustomDate] = useState(false)
-  const [customDateFrom, setCustomDateFrom] = useState('')
-  const [customDateTo, setCustomDateTo] = useState('')
 
   const updateFilter = (key: string, value: unknown) => {
     onFiltersChange({
       ...filters,
       [key]: value
     })
-  }
-
-  const addTag = (tag: string) => {
-    const currentTags = filters.tags || []
-    if (!currentTags.includes(tag)) {
-      updateFilter('tags', [...currentTags, tag])
-    }
-  }
-
-  const removeTag = (tag: string) => {
-    const currentTags = filters.tags || []
-    updateFilter('tags', currentTags.filter(t => t !== tag))
-  }
-
-  const clearAllFilters = () => {
-    onFiltersChange({
-      contentType: 'all',
-      dateRange: 'all',
-      source: 'all',
-      sortBy: 'relevance',
-      tags: [],
-      fileType: 'all',
-      language: 'all'
-    })
-    setShowCustomDate(false)
-    setCustomDateFrom('')
-    setCustomDateTo('')
-  }
-
-  const hasActiveFilters = () => {
-    return filters.contentType !== 'all' ||
-           filters.dateRange !== 'all' ||
-           filters.source !== 'all' ||
-           filters.sortBy !== 'relevance' ||
-           (filters.tags && filters.tags.length > 0) ||
-           (filters.fileType && filters.fileType !== 'all')
-  }
-
-  const getFilterCount = () => {
-    let count = 0
-    if (filters.contentType !== 'all') count++
-    if (filters.dateRange !== 'all') count++
-    if (filters.source !== 'all') count++
-    if (filters.sortBy !== 'relevance') count++
-    if (filters.tags && filters.tags.length > 0) count += filters.tags.length
-    if (filters.fileType && filters.fileType !== 'all') count++
-    return count
-  }
-
-  const handleDateRangeChange = (value: string) => {
-    if (value === 'custom') {
-      setShowCustomDate(true)
-    } else {
-      setShowCustomDate(false)
-      updateFilter('dateRange', value)
-    }
-  }
-
-  const applyCustomDateRange = () => {
-    if (customDateFrom && customDateTo) {
-      updateFilter('dateRange', `${customDateFrom}|${customDateTo}`)
-      setShowCustomDate(false)
-    }
   }
 
   return (

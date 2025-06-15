@@ -42,9 +42,9 @@ export default function DraggableSectionTree({
   onAddSubsection,
   onReorderSections
 }: DraggableSectionTreeProps) {
-  const [isDragging, setIsDragging] = useState(false)
+  const [_isDragging, setIsDragging] = useState(false)
 
-  const handleDragStart = (start: DragStart) => {
+  const handleDragStart = (_start: DragStart) => {
     setIsDragging(true)
   }
 

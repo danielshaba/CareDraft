@@ -116,7 +116,7 @@ export class CompliancePDFGenerator {
         statistics
       }
 
-    } catch {
+    } catch (error) {
       console.error('Compliance PDF generation failed:', error)
       return {
         success: false,
@@ -137,7 +137,7 @@ export class CompliancePDFGenerator {
   /**
    * Add title page with overview
    */
-  private addTitlePage(options: CompliancePDFOptions, statistics: unknown): void {
+  private addTitlePage(options: CompliancePDFOptions, statistics: any): void {
     const centerX = this.pageWidth / 2
 
     // Main title
@@ -195,7 +195,7 @@ export class CompliancePDFGenerator {
   /**
    * Add detailed statistics page
    */
-  private addStatisticsPage(statistics: unknown): void {
+  private addStatisticsPage(statistics: any): void {
     this.currentY = 30
 
     this.pdf.setFontSize(18)
@@ -209,7 +209,7 @@ export class CompliancePDFGenerator {
   /**
    * Add statistics box
    */
-  private addStatisticsBox(statistics: unknown, detailed: boolean): void {
+  private addStatisticsBox(statistics: any, detailed: boolean): void {
     const boxWidth = this.pageWidth - (this.margins.left + this.margins.right)
     const boxHeight = detailed ? 80 : 60
     const boxX = this.margins.left

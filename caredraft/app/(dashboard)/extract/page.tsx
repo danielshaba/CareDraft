@@ -1,5 +1,8 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -37,6 +40,7 @@ interface SmartExtractionState {
 }
 
 export default function ExtractPage() {
+  const [isClient, setIsClient] = useState(false)
   const [documents, setDocuments] = useState<UploadedDocument[]>([])
   const [previewDocument, setPreviewDocument] = useState<UploadedDocument | null>(null)
   const [selectedDocumentForExtraction, setSelectedDocumentForExtraction] = useState<UploadedDocument | null>(null)
@@ -47,6 +51,19 @@ export default function ExtractPage() {
   })
   const { extractTextFromStorage, isExtracting } = useTextExtraction()
   const { extractFromText: smartExtractFromText, isExtracting: isSmartExtracting } = useSmartExtraction()
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  // Show loading state during hydration to prevent SSR issues
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600"></div>
+      </div>
+    )
+  }
 
   const loadExistingDocuments = async () => {
     // TODO: Implement after migration is applied

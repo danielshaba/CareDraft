@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
   },
 
   // Only use webpack config when NOT using Turbopack
-  webpack: (config, { isServer, dev }) => {
+  webpack: (config, { isServer: _isServer, dev }) => {
     // Skip webpack customizations when using Turbopack to avoid conflicts
     if (process.env.NODE_ENV === 'development' && process.argv.includes('--turbopack')) {
       return config;
@@ -76,17 +76,20 @@ const nextConfig: NextConfig = {
       'date-fns',
       'recharts',
     ],
-    // CSS optimization (renamed from optimizeCss in Next.js 15)
-    optimizeCss: true,
+    // Try disabling CSS chunking to resolve CSS preloading issues
+    cssChunking: false,
     // Enable server component external packages
     serverComponentsExternalPackages: ['@supabase/ssr'],
+    // Temporarily disable force transforms to resolve build issues
+    // forceSwcTransforms: true,
   },
   
   // Turbopack configuration (Next.js 15 stable configuration)
-  turbopack: {
-    // Enable CSS optimization for better performance
-    // Note: memoryLimit is not a valid option in stable Turbopack
-  },
+  // Temporarily disabled to resolve build issues
+  // turbopack: {
+  //   // Enable CSS optimization for better performance
+  //   // Note: memoryLimit is not a valid option in stable Turbopack
+  // },
   
   // Compiler optimizations
   compiler: {
@@ -95,7 +98,7 @@ const nextConfig: NextConfig = {
   },
   
   // Output optimization for deployment
-  output: 'standalone',
+  // output: 'standalone', // Temporarily disabled to avoid prerendering issues
   
   // Enable compression for better performance
   compress: true,

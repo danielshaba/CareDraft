@@ -3,6 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { RefreshCw, Home, Bug } from 'lucide-react'
+import { Logo } from '@/components/ui/Logo'
 
 interface GlobalErrorProps {
   error: Error & { digest?: string }
@@ -44,12 +45,17 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
   return (
     <html>
       <body>
-        <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center px-4">
+        <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100 flex items-center justify-center px-4">
           <div className="max-w-lg w-full text-center">
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-red-100">
+            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+              {/* CareDraft Logo */}
+              <div className="mb-6">
+                <Logo size="lg" className="mx-auto" />
+              </div>
+
               {/* Icon */}
-              <div className="mx-auto flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-6">
-                <Bug className="w-8 h-8 text-red-600" />
+              <div className="mx-auto flex items-center justify-center w-16 h-16 bg-teal-100 rounded-full mb-6">
+                <Bug className="w-8 h-8 text-teal-600" />
               </div>
 
               {/* Content */}
@@ -97,7 +103,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               <div className="space-y-3">
                 <button
                   onClick={reset}
-                  className="inline-flex items-center justify-center w-full bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors"
+                  className="inline-flex items-center justify-center w-full bg-teal-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
                 >
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Try Again
@@ -105,7 +111,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                 
                 <button
                   onClick={handleRefresh}
-                  className="inline-flex items-center justify-center w-full bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                  className="inline-flex items-center justify-center w-full bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                 >
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Reload Application
@@ -113,7 +119,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                 
                 <Link
                   href="/"
-                  className="inline-flex items-center justify-center w-full bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                  className="inline-flex items-center justify-center w-full bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                 >
                   <Home className="w-4 h-4 mr-2" />
                   Go to Home
@@ -130,7 +136,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                 </p>
                 <Link
                   href="/contact"
-                  className="text-sm text-red-600 hover:text-red-700 font-medium"
+                  className="text-sm text-teal-600 hover:text-teal-700 font-medium"
                 >
                   Contact Support
                 </Link>

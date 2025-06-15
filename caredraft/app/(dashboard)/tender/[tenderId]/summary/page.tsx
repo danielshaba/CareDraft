@@ -1,5 +1,11 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+
+
+
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 

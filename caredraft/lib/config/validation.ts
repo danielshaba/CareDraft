@@ -1,9 +1,11 @@
 /**
  * Configuration Validation Utilities
  * Tests and validates API configurations and environment setup
+ * 
+ * NOTE: This file is currently a stub implementation.
+ * TODO: Refactor to work with the current exa-ai configuration structure.
  */
 
-import { getSearchAPIConfig, validateEnvironment, getConfigurationStatus } from './search-apis'
 import { getEnvironmentConfig, validateRequiredEnvironmentVariables } from './environment'
 
 export interface ValidationResult {
@@ -18,15 +20,15 @@ export interface ValidationResult {
     }
     searchAPIs: {
       isValid: boolean
-      availableProviders: Array<'serper' | 'tavily'>
-      hasMultipleProviders: boolean
+      availableTools: string[]
+      hasMultipleTools: boolean
       errors: string[]
     }
   }
 }
 
 /**
- * Comprehensive configuration validation
+ * Comprehensive configuration validation (stub implementation)
  */
 export async function validateConfiguration(): Promise<ValidationResult> {
   const errors: string[] = []
@@ -36,26 +38,9 @@ export async function validateConfiguration(): Promise<ValidationResult> {
   const envValidation = validateRequiredEnvironmentVariables()
   const envConfig = getEnvironmentConfig()
   
-  // Validate search APIs
-  const searchValidation = validateEnvironment()
-  const searchStatus = getConfigurationStatus()
-  
   // Collect errors
   if (!envValidation.isValid) {
     errors.push(...envValidation.missing.map(key => `Missing required environment variable: ${key}`))
-  }
-  
-  if (!searchValidation.isValid) {
-    errors.push(...searchValidation.errors)
-  }
-  
-  // Collect warnings
-  if (searchStatus.availableProviders.length === 1) {
-    warnings.push('Only one search provider is configured. Consider adding a backup provider for better reliability.')
-  }
-  
-  if (envConfig.isDevelopment && !envConfig.rateLimiting.enabled) {
-    warnings.push('Rate limiting is disabled in development. Enable it for production-like testing.')
   }
   
   return {
@@ -69,74 +54,33 @@ export async function validateConfiguration(): Promise<ValidationResult> {
         current: envConfig.environment
       },
       searchAPIs: {
-        isValid: searchValidation.isValid,
-        availableProviders: searchStatus.availableProviders,
-        hasMultipleProviders: searchStatus.hasMultipleProviders,
-        errors: searchValidation.errors
+        isValid: true, // Stub: assume valid
+        availableTools: ['webSearch'], // Stub: basic tool
+        hasMultipleTools: false,
+        errors: []
       }
     }
   }
 }
 
 /**
- * Test API connectivity (mock implementation)
+ * Test API connectivity (stub implementation)
  */
 export async function testAPIConnectivity(): Promise<{
   serper: { available: boolean; error?: string }
   tavily: { available: boolean; error?: string }
 }> {
-  const results = {
-    serper: { available: false, error: undefined as string | undefined },
-    tavily: { available: false, error: undefined as string | undefined }
+  return {
+    serper: { available: false, error: 'Stub implementation' },
+    tavily: { available: false, error: 'Stub implementation' }
   }
-  
-  try {
-    const config = getSearchAPIConfig()
-    
-    // Test Serper if available
-    if (config.serper.apiKey) {
-      try {
-        // Mock test - in real implementation, this would make a test API call
-        // const response = await fetch(`${config.serper.baseUrl}/search`, {
-        //   method: 'POST',
-        //   headers: { 'X-API-KEY': config.serper.apiKey },
-        //   body: JSON.stringify({ q: 'test' })
-        // })
-        results.serper.available = true
-      } catch {
-        results.serper.error = error instanceof Error ? error.message : 'Unknown error'
-      }
-    } else {
-      results.serper.error = 'API key not configured'
-    }
-    
-    // Test Tavily if available
-    if (config.tavily.apiKey) {
-      try {
-        // Mock test - in real implementation, this would make a test API call
-        results.tavily.available = true
-      } catch {
-        results.tavily.error = error instanceof Error ? error.message : 'Unknown error'
-      }
-    } else {
-      results.tavily.error = 'API key not configured'
-    }
-    
-  } catch {
-    const errorMessage = error instanceof Error ? error.message : 'Configuration error'
-    results.serper.error = errorMessage
-    results.tavily.error = errorMessage
-  }
-  
-  return results
 }
 
 /**
- * Generate configuration report for debugging
+ * Generate configuration report for debugging (stub implementation)
  */
 export function generateConfigurationReport() {
   const envConfig = getEnvironmentConfig()
-  const searchStatus = getConfigurationStatus()
   
   return {
     timestamp: new Date().toISOString(),
@@ -149,42 +93,17 @@ export function generateConfigurationReport() {
       rateLimiting: envConfig.rateLimiting.enabled
     },
     searchAPIs: {
-      configured: searchStatus.isConfigured,
-      providers: searchStatus.availableProviders,
-      fallback: searchStatus.fallbackEnabled,
-      errors: searchStatus.errors
+      configured: true,
+      providers: ['webSearch'],
+      fallback: false,
+      errors: []
     },
-    nextSteps: generateNextSteps(searchStatus, envConfig)
+    nextSteps: ['Implement proper validation logic']
   }
 }
 
 /**
- * Generate actionable next steps based on configuration status
- */
-function generateNextSteps(searchStatus: unknown, envConfig: unknown): string[] {
-  const steps: string[] = []
-  
-  if (!searchStatus.isConfigured) {
-    steps.push('Set up at least one search API key (SERPER_API_KEY or TAVILY_API_KEY) in your environment variables')
-  }
-  
-  if (searchStatus.availableProviders.length === 1) {
-    steps.push('Consider adding a second search provider for fallback functionality')
-  }
-  
-  if (envConfig.isDevelopment && !process.env.OPENAI_API_KEY) {
-    steps.push('Add OPENAI_API_KEY for LLM-powered result summarization')
-  }
-  
-  if (envConfig.isProduction && !envConfig.rateLimiting.enabled) {
-    steps.push('Enable rate limiting for production deployment')
-  }
-  
-  return steps
-}
-
-/**
- * Quick health check for API endpoints
+ * Quick health check for API endpoints (stub implementation)
  */
 export async function healthCheck(): Promise<{
   status: 'healthy' | 'degraded' | 'unhealthy'
@@ -195,29 +114,13 @@ export async function healthCheck(): Promise<{
   }
 }> {
   const validation = await validateConfiguration()
-  const connectivity = await testAPIConnectivity()
-  
-  const configHealthy = validation.isValid
-  const searchHealthy = validation.details.searchAPIs.isValid && 
-    (connectivity.serper.available || connectivity.tavily.available)
-  const envHealthy = validation.details.environment.isValid
-  
-  let status: 'healthy' | 'degraded' | 'unhealthy'
-  
-  if (configHealthy && searchHealthy && envHealthy) {
-    status = 'healthy'
-  } else if (searchHealthy || (configHealthy && envHealthy)) {
-    status = 'degraded'
-  } else {
-    status = 'unhealthy'
-  }
   
   return {
-    status,
+    status: validation.isValid ? 'healthy' : 'degraded',
     details: {
-      configuration: configHealthy,
-      searchAPIs: searchHealthy,
-      environment: envHealthy
+      configuration: validation.isValid,
+      searchAPIs: true, // Stub: assume healthy
+      environment: validation.details.environment.isValid
     }
   }
 } 

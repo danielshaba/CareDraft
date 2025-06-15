@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { Bell, Check, X, MessageCircle, AtSign } from 'lucide-react'
-import { Notification } from '@/types/collaboration'
+import type { Database } from '@/lib/database.types'
 import { NotificationsService } from '@/lib/services/notifications'
-import { formatTimeAgo, getUserDisplayName } from '@/types/collaboration'
+import { formatTimeAgo } from '@/types/collaboration'
+
+type Notification = Database['public']['Tables']['notifications']['Row']
 
 interface NotificationBellProps {
   userId: string
@@ -30,7 +32,7 @@ export function NotificationBell({ userId, className = '' }: NotificationBellPro
         ])
         setNotifications(notifs)
         setUnreadCount(count)
-      } catch {
+      } catch (error) {
         console.error('Error fetching notifications:', error)
       } finally {
         setLoading(false)
@@ -73,12 +75,12 @@ export function NotificationBell({ userId, className = '' }: NotificationBellPro
       setNotifications(prev => 
         prev.map(n => 
           n.id === notificationId 
-            ? { ...n, read_at: new Date().toISOString() }
+            ? { ...n, read_status: true }
             : n
         )
       )
       setUnreadCount(prev => Math.max(0, prev - 1))
-    } catch {
+    } catch (error) {
       console.error('Error marking notification as read:', error)
     }
   }
@@ -87,10 +89,10 @@ export function NotificationBell({ userId, className = '' }: NotificationBellPro
     try {
       await notificationsService.markAllAsRead(userId)
       setNotifications(prev => 
-        prev.map(n => ({ ...n, read_at: n.read_at || new Date().toISOString() }))
+        prev.map(n => ({ ...n, read_status: true }))
       )
       setUnreadCount(0)
-    } catch {
+    } catch (error) {
       console.error('Error marking all notifications as read:', error)
     }
   }
@@ -100,10 +102,10 @@ export function NotificationBell({ userId, className = '' }: NotificationBellPro
       await notificationsService.deleteNotification(notificationId)
       setNotifications(prev => prev.filter(n => n.id !== notificationId))
       const notification = notifications.find(n => n.id === notificationId)
-      if (notification && !notification.read_at) {
+      if (notification && !notification.read_status) {
         setUnreadCount(prev => Math.max(0, prev - 1))
       }
-    } catch {
+    } catch (error) {
       console.error('Error deleting notification:', error)
     }
   }
@@ -120,14 +122,7 @@ export function NotificationBell({ userId, className = '' }: NotificationBellPro
   }
 
   const getNotificationMessage = (notification: Notification) => {
-    switch (notification.type) {
-      case 'mention':
-        return `${getUserDisplayName(notification.user)} mentioned you in a comment`
-      case 'comment':
-        return `${getUserDisplayName(notification.user)} commented on your section`
-      default:
-        return notification.message || 'New notification'
-    }
+    return notification.title || 'New notification'
   }
 
   return (
@@ -178,7 +173,7 @@ export function NotificationBell({ userId, className = '' }: NotificationBellPro
                 <div
                   key={notification.id}
                   className={`group p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors ${
-                    !notification.read_at ? 'bg-brand-50' : ''
+                    !notification.read_status ? 'bg-brand-50' : ''
                   }`}
                 >
                   <div className="flex items-start gap-3">
@@ -199,7 +194,7 @@ export function NotificationBell({ userId, className = '' }: NotificationBellPro
 
                     {/* Actions */}
                     <div className="flex-shrink-0 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      {!notification.read_at && (
+                      {!notification.read_status && (
                         <button
                           onClick={() => handleMarkAsRead(notification.id)}
                           className="p-1 rounded hover:bg-gray-200 transition-colors"
@@ -218,7 +213,7 @@ export function NotificationBell({ userId, className = '' }: NotificationBellPro
                     </div>
 
                     {/* Unread indicator */}
-                    {!notification.read_at && (
+                    {!notification.read_status && (
                       <div className="w-2 h-2 bg-brand-primary rounded-full flex-shrink-0 mt-2" />
                     )}
                   </div>

@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     
     // Execute company search
     const searchService = ExaMCPService.createWithDefaults()
-    const results = await searchService.searchCompanyInfo(body.companyName)
+    const results = await searchService.searchCompanies(body.companyName)
     
     // Add company-specific metadata
     const enhancedResults = {

@@ -12,13 +12,14 @@ import {
   Eye
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useUserManagement } from '@/hooks/usePermissions'
 import { createClient } from '@/lib/supabase'
-import type { UserRole, Permission, ROLE_PERMISSIONS } from '@/lib/auth.types'
+import type { UserRole, Permission } from '@/lib/auth.types'
 import type { Database } from '@/lib/database.types'
+import type { UserProfile } from '@/lib/auth.types'
 
 type User = Database['public']['Tables']['users']['Row']
 
@@ -124,8 +125,14 @@ export function RoleAssignmentModal({
       return
     }
 
+    // Create UserProfile-compatible object for permission checking
+    const userProfile: UserProfile = {
+      ...user,
+      auth_id: user.id // Use the user.id as auth_id for permission checking
+    }
+
     // Check if user can change to this role
-    if (!userManagement.canChangeUserRole(user, selectedRole)) {
+    if (!userManagement.canChangeUserRole(userProfile, selectedRole)) {
       setError('You do not have permission to assign this role')
       return
     }
@@ -143,8 +150,8 @@ export function RoleAssignmentModal({
 
       onRoleChanged?.(user.id, selectedRole)
       onClose()
-    } catch {
-      console.error('Error updating user role:', err)
+    } catch (error) {
+      console.error('Error updating user role:', error)
       setError('Failed to update user role. Please try again.')
     } finally {
       setLoading(false)
@@ -153,7 +160,12 @@ export function RoleAssignmentModal({
 
   const getAvailableRoles = (): UserRole[] => {
     const roles: UserRole[] = ['viewer', 'writer', 'manager', 'admin']
-    return roles.filter(role => userManagement.canChangeUserRole(user, role))
+    // Create UserProfile-compatible object for permission checking
+    const userProfile: UserProfile = {
+      ...user,
+      auth_id: user.id // Use the user.id as auth_id for permission checking
+    }
+    return roles.filter(role => userManagement.canChangeUserRole(userProfile, role))
   }
 
   const availableRoles = getAvailableRoles()
@@ -304,7 +316,7 @@ export function RoleAssignmentModal({
           </Button>
           <LoadingButton
             onClick={handleRoleChange}
-            loading={loading}
+            isLoading={loading}
             disabled={!hasChanges || loading}
             className="gap-2"
           >

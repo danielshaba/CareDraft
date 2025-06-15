@@ -1,8 +1,6 @@
 import { 
   ChunkingConfig, 
-  DocumentType, 
-  DEFAULT_CHUNK_SIZE, 
-  DEFAULT_OVERLAP_SIZE 
+  DocumentType
 } from '@/types/rag'
 
 export interface ProcessedChunk {
@@ -74,7 +72,7 @@ export class DocumentProcessor {
       chunks = this.enrichWithCareSectorMetadata(chunks)
       
       return chunks
-    } catch {
+    } catch (error) {
       console.error('Error processing document:', error)
       throw error
     }

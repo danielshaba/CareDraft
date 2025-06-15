@@ -1,5 +1,8 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
 import React, { useState } from 'react'
 import { 
   FileUpload, 
@@ -17,8 +20,22 @@ import { STORAGE_BUCKETS } from '@/lib/storage'
 import { useToast } from '@/components/ui/toast'
 
 export default function TestUploadPage() {
+  const [isClient, setIsClient] = useState(false)
   const [activeTab, setActiveTab] = useState<'tender' | 'exports' | 'knowledge'>('tender')
   const toast = useToast()
+
+  React.useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  // Show loading state during hydration to prevent SSR issues
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600"></div>
+      </div>
+    )
+  }
 
   const handleUploadComplete = (filePath: string, fileName: string) => {
     toast.success(`Successfully uploaded ${fileName}`)

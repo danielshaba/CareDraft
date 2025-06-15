@@ -66,7 +66,7 @@ export default function UtilityPanel({ editor }: UtilityPanelProps) {
       if (result.success) {
         setRecentAnswers(result.data.answers || [])
       }
-    } catch {
+    } catch (error) {
       console.error('Error loading recent answers:', error)
     } finally {
       setLoadingAnswers(false)
@@ -81,7 +81,7 @@ export default function UtilityPanel({ editor }: UtilityPanelProps) {
       if (result.success) {
         setPopularAnswers(result.data.answers || [])
       }
-    } catch {
+    } catch (error) {
       console.error('Error loading popular answers:', error)
     }
   }
@@ -106,7 +106,7 @@ export default function UtilityPanel({ editor }: UtilityPanelProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ context: 'proposal_draft' })
       })
-    } catch {
+    } catch (error) {
       console.error('Error tracking usage:', error)
     }
 
@@ -152,7 +152,7 @@ export default function UtilityPanel({ editor }: UtilityPanelProps) {
     </button>
   )
 
-  const AnswerCard = ({ answer, section }: { answer: Answer; section: string }) => (
+  const AnswerCard = ({ answer }: { answer: Answer }) => (
     <button
       key={answer.id}
       onClick={() => insertAnswerBankItem(answer)}
@@ -277,7 +277,7 @@ export default function UtilityPanel({ editor }: UtilityPanelProps) {
                   <div className="text-xs font-medium text-gray-700 mb-2">Most Used</div>
                   <div className="space-y-2">
                     {popularAnswers.map((answer) => (
-                      <AnswerCard key={answer.id} answer={answer} section="popular" />
+                      <AnswerCard key={answer.id} answer={answer} />
                     ))}
                   </div>
                 </div>
@@ -289,7 +289,7 @@ export default function UtilityPanel({ editor }: UtilityPanelProps) {
                   <div className="text-xs font-medium text-gray-700 mb-2">Recently Updated</div>
                   <div className="space-y-2">
                     {recentAnswers.map((answer) => (
-                      <AnswerCard key={answer.id} answer={answer} section="recent" />
+                      <AnswerCard key={answer.id} answer={answer} />
                     ))}
                   </div>
                 </div>

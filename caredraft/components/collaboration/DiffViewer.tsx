@@ -163,7 +163,11 @@ export default function DiffViewer({
                 className={`flex ${getDiffLineClassName(line.type)}`}
               >
                 <div className="flex-shrink-0 w-16 px-2 py-1 text-xs text-gray-500 bg-gray-50 border-r border-gray-200 text-right">
-                  {line.lineNumber || line.newLineNumber || line.oldLineNumber || ''}
+                  {line.type === 'added'
+                    ? line.newLineNumber
+                    : line.type === 'removed'
+                      ? line.oldLineNumber
+                      : line.lineNumber || ''}
                 </div>
                 <div className="flex-1 px-3 py-1 whitespace-pre-wrap break-words">
                   {line.type === 'added' && <span className="text-green-600 mr-1">+</span>}

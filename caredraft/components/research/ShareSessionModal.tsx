@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { X, Share2, Mail, User, Plus, Trash2 } from 'lucide-react'
+import { X, Share2, Mail, User, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/form-input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+
 import { LoadingButton } from '@/components/ui/loading-button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useResearchSessionStore } from '@/lib/stores/researchSessionStore'
@@ -62,7 +62,7 @@ export function ShareSessionModal({
     try {
       const users = await researchSessionService.getShareableUsers()
       setShareableUsers(users)
-    } catch {
+    } catch (err) {
       console.error('Failed to load shareable users:', err)
       setError(err instanceof Error ? err.message : 'Failed to load users')
     } finally {
@@ -76,7 +76,7 @@ export function ShareSessionModal({
     try {
       const sharedWith = currentSession.shared_with as string[] | null
       setCurrentlyShared(sharedWith || [])
-    } catch {
+    } catch (err) {
       console.error('Failed to parse shared_with data:', err)
       setCurrentlyShared([])
     }
@@ -97,7 +97,7 @@ export function ShareSessionModal({
       await shareSession(sessionId, selectedUserIds)
       setSelectedUserIds([])
       loadCurrentSharing()
-    } catch {
+    } catch (err) {
       console.error('Failed to share session:', err)
       setError(err instanceof Error ? err.message : 'Failed to share session')
     }
@@ -109,7 +109,7 @@ export function ShareSessionModal({
     try {
       await removeSharing(sessionId, userIds)
       loadCurrentSharing()
-    } catch {
+    } catch (err) {
       console.error('Failed to remove sharing:', err)
       setError(err instanceof Error ? err.message : 'Failed to remove sharing')
     }

@@ -20,46 +20,59 @@ import {
 export function usePermissions() {
   const { user } = useAuth()
 
+  // Convert Supabase Auth User to UserProfile-compatible object for permission checking
+  const userProfile: UserProfile | null = user ? {
+    id: user.id,
+    auth_id: user.id,
+    email: user.email || '',
+    full_name: user.user_metadata?.full_name || '',
+    role: user.user_metadata?.role || 'viewer',
+    organization_id: user.user_metadata?.organization_id || '',
+    email_confirmed: user.email_confirmed_at !== null,
+    created_at: user.created_at,
+    updated_at: user.updated_at || user.created_at
+  } as UserProfile : null
+
   return {
     // Basic permission checks
-    hasRole: (role: UserRole) => userHasRole(user, role),
-    hasPermission: (permission: Permission) => userHasPermission(user, permission),
+    hasRole: (role: UserRole) => userHasRole(userProfile, role),
+    hasPermission: (permission: Permission) => userHasPermission(userProfile, permission),
     
     // Organization access
-    canAccessOrganization: (orgId: string) => userCanAccessOrganization(user, orgId),
-    canManageUser: (targetUser: UserProfile) => userCanManageUser(user, targetUser),
+    canAccessOrganization: (orgId: string) => userCanAccessOrganization(userProfile, orgId),
+    canManageUser: (targetUser: UserProfile) => userCanManageUser(userProfile, targetUser),
     
     // Specific feature permissions
-    canViewProposals: () => userHasPermission(user, 'view_proposals'),
-    canCreateProposals: () => userHasPermission(user, 'create_proposals'),
-    canEditProposals: () => userHasPermission(user, 'edit_proposals'),
-    canDeleteProposals: () => userHasPermission(user, 'delete_proposals'),
+    canViewProposals: () => userHasPermission(userProfile, 'view_proposals'),
+    canCreateProposals: () => userHasPermission(userProfile, 'create_proposals'),
+    canEditProposals: () => userHasPermission(userProfile, 'edit_proposals'),
+    canDeleteProposals: () => userHasPermission(userProfile, 'delete_proposals'),
     
-    canViewAnswerBank: () => userHasPermission(user, 'view_answer_bank'),
-    canEditAnswerBank: () => userHasPermission(user, 'edit_answer_bank'),
+    canViewAnswerBank: () => userHasPermission(userProfile, 'view_answer_bank'),
+    canEditAnswerBank: () => userHasPermission(userProfile, 'edit_answer_bank'),
     
-    canViewResearch: () => userHasPermission(user, 'view_research'),
-    canCreateResearch: () => userHasPermission(user, 'create_research'),
+    canViewResearch: () => userHasPermission(userProfile, 'view_research'),
+    canCreateResearch: () => userHasPermission(userProfile, 'create_research'),
     
-    canManageUsers: () => userHasPermission(user, 'manage_users'),
-    canManageOrganization: () => userHasPermission(user, 'manage_organization'),
+    canManageUsers: () => userHasPermission(userProfile, 'manage_users'),
+    canManageOrganization: () => userHasPermission(userProfile, 'manage_organization'),
     
     // Role checks
-    isAdmin: () => userHasRole(user, 'admin'),
-    isManager: () => userHasRole(user, 'manager'),
-    isWriter: () => userHasRole(user, 'writer'),
-    isViewer: () => userHasRole(user, 'viewer'),
+    isAdmin: () => userHasRole(userProfile, 'admin'),
+    isManager: () => userHasRole(userProfile, 'manager'),
+    isWriter: () => userHasRole(userProfile, 'writer'),
+    isViewer: () => userHasRole(userProfile, 'viewer'),
     
     // Organization checks
     isInSameOrganization: (otherUser: UserProfile) => {
-      if (!user || !otherUser) return false
-      return user.organization_id === otherUser.organization_id
+      if (!userProfile || !otherUser) return false
+      return userProfile.organization_id === otherUser.organization_id
     },
-    getUserOrganizationId: () => user?.organization_id || null,
+    getUserOrganizationId: () => userProfile?.organization_id || null,
     
     // Current user info
-    getCurrentUser: () => user,
-    getCurrentRole: () => user?.role || null,
+    getCurrentUser: () => userProfile,
+    getCurrentRole: () => userProfile?.role || null,
   }
 }
 
@@ -69,12 +82,25 @@ export function usePermissions() {
 export function useMultiplePermissions(permissions: Permission[]) {
   const { user } = useAuth()
   
+  // Convert Supabase Auth User to UserProfile-compatible object for permission checking
+  const userProfile: UserProfile | null = user ? {
+    id: user.id,
+    auth_id: user.id,
+    email: user.email || '',
+    full_name: user.user_metadata?.full_name || '',
+    role: user.user_metadata?.role || 'viewer',
+    organization_id: user.user_metadata?.organization_id || '',
+    email_confirmed: user.email_confirmed_at !== null,
+    created_at: user.created_at,
+    updated_at: user.updated_at || user.created_at
+  } as UserProfile : null
+  
   return {
-    hasAll: () => permissions.every(permission => userHasPermission(user, permission)),
-    hasAny: () => permissions.some(permission => userHasPermission(user, permission)),
-    hasNone: () => permissions.every(permission => !userHasPermission(user, permission)),
+    hasAll: () => permissions.every(permission => userHasPermission(userProfile, permission)),
+    hasAny: () => permissions.some(permission => userHasPermission(userProfile, permission)),
+    hasNone: () => permissions.every(permission => !userHasPermission(userProfile, permission)),
     permissions: permissions.reduce((acc, permission) => {
-      acc[permission] = userHasPermission(user, permission)
+      acc[permission] = userHasPermission(userProfile, permission)
       return acc
     }, {} as Record<Permission, boolean>)
   }

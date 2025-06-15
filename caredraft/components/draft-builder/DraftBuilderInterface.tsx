@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -36,7 +36,7 @@ export default function DraftBuilderInterface({ proposalId }: DraftBuilderInterf
   })
   
   // Initialize proposal workflow if proposalId is provided
-  const [workflowState, workflowActions] = useProposalWorkflow({
+  const [workflowState] = useProposalWorkflow({
     proposalId: proposalId || '',
     autoRefresh: true,
     refreshInterval: 30000,
@@ -67,7 +67,7 @@ export default function DraftBuilderInterface({ proposalId }: DraftBuilderInterf
       },
     },
     immediatelyRender: false,
-    onUpdate: ({ editor }) => {
+    onUpdate: ({ editor: _editor }) => {
       // Auto-save functionality could be added here
       // Reset any success state when content changes
       if (saveState.data) {
@@ -239,7 +239,7 @@ export default function DraftBuilderInterface({ proposalId }: DraftBuilderInterf
                     )}
                   </div>
                   <div>
-                    {saveState.data && (
+                    {saveState.data !== null && saveState.data !== undefined && (
                       <span className="text-green-600">Document saved</span>
                     )}
                     {saveState.error && (

@@ -103,17 +103,6 @@ export const createOrganizationSchema = z.object({
     ),
 })
 
-// Auth callback validation schema (for handling auth redirects)
-export const authCallbackSchema = z.object({
-  code: z.string().optional(),
-  error: z.string().optional(),
-  error_description: z.string().optional(),
-  access_token: z.string().optional(),
-  refresh_token: z.string().optional(),
-  token_type: z.string().optional(),
-  expires_in: z.number().optional(),
-})
-
 /**
  * Type inference from schemas
  */
@@ -123,7 +112,6 @@ export type ResetPasswordFormData = z.infer<typeof resetPasswordFormSchema>
 export type CreateUserData = z.infer<typeof createUserSchema>
 export type UpdateUserProfileData = z.infer<typeof updateUserProfileSchema>
 export type CreateOrganizationData = z.infer<typeof createOrganizationSchema>
-export type AuthCallbackData = z.infer<typeof authCallbackSchema>
 
 /**
  * Validation helper functions

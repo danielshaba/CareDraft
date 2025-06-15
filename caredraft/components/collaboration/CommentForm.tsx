@@ -137,12 +137,11 @@ export function CommentForm({
         content: content.trim(),
         text_range_start: textRange?.start || null,
         text_range_end: textRange?.end || null,
-        selected_text: textRange?.selectedText || null,
       }
 
       await onSubmit(commentData)
       setContent('')
-    } catch {
+    } catch (error) {
       console.error('Error submitting comment:', error)
     } finally {
       setIsSubmitting(false)

@@ -2,16 +2,11 @@
 
 import React, { useState, useEffect } from 'react'
 import { 
-  ChevronDown, 
-  ChevronRight, 
   Plus, 
-  MoreHorizontal,
-  FileText,
-  Folder,
-  FolderOpen
+  FileText
 } from 'lucide-react'
-import { SectionWithChildren, reorderSection } from '@/lib/sections'
-import { SectionStatus } from '@/types/database'
+import { SectionWithChildren } from '@/lib/sections'
+
 import SectionTreeNode from './SectionTreeNode'
 import AddSectionModal from './AddSectionModal'
 import DraggableSectionTree from './DraggableSectionTree'
@@ -94,21 +89,13 @@ export default function SectionManagementSidebar({
   const handleCreateSection = (sectionData: Record<string, unknown>) => {
     onSectionCreate?.({
       ...sectionData,
-      parentSectionId: addModalParentId
+      parentSectionId: addModalParentId ?? null
     })
     setShowAddModal(false)
     setAddModalParentId(undefined)
   }
 
-  const getStatusColor = (status: SectionStatus): string => {
-    switch (status) {
-      case 'not_started': return 'bg-gray-100 text-gray-700'
-      case 'in_progress': return 'bg-brand-100 text-brand-700'
-      case 'review': return 'bg-yellow-100 text-yellow-700'
-      case 'complete': return 'bg-green-100 text-green-700'
-      default: return 'bg-gray-100 text-gray-700'
-    }
-  }
+
 
   const renderSectionTree = (sections: SectionWithChildren[], level = 0) => {
     return sections.map(section => (
@@ -123,7 +110,6 @@ export default function SectionManagementSidebar({
         onUpdate={(updates) => onSectionUpdate?.(section.id, updates)}
         onDelete={() => onSectionDelete?.(section.id)}
         onAddChild={() => handleAddSection(section.id)}
-        getStatusColor={getStatusColor}
       >
         {section.children && section.children.length > 0 && expandedSections.has(section.id) && (
           <div className="ml-4">
@@ -171,7 +157,7 @@ export default function SectionManagementSidebar({
             <DraggableSectionTree
               sections={sections}
               expandedSections={expandedSections}
-              selectedSectionId={selectedSectionId}
+              selectedSectionId={selectedSectionId ?? null}
               onToggleExpanded={toggleExpanded}
               onSelectSection={(id) => onSectionSelect?.(id)}
               onUpdateSection={(id, updates) => onSectionUpdate?.(id, updates)}
@@ -183,7 +169,7 @@ export default function SectionManagementSidebar({
                   await reorderSection(sourceId, destinationIndex)
                   // Refresh sections after reordering
                   window.location.reload() // Temporary - should use proper state management
-                } catch {
+                } catch (error) {
                   console.error('Error reordering section:', error)
                 }
               }}

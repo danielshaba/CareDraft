@@ -9,12 +9,11 @@ import {
   Bug, 
   Shield, 
   FileX, 
-  Clock,
   ExternalLink,
   Copy
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { mapError, formatErrorForDisplay, type MappedError } from '@/lib/services/error-mapping';
+import { mapError, formatErrorForDisplay } from '@/lib/services/error-mapping';
 import { useNetworkAwareApi } from '@/hooks/useNetworkAwareApi';
 import { LoadingButton } from '@/components/ui/loading-button';
 
@@ -381,7 +380,7 @@ export function useErrorDisplay() {
       <ErrorDisplay
         error={error}
         onDismiss={hideError}
-        onRetry={() => retryAction}
+        onRetry={() => retryAction(() => Promise.resolve())}
         showTechnicalDetails={process.env.NODE_ENV === 'development'}
       />
     ) : null

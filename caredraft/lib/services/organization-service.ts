@@ -1,19 +1,31 @@
-import { createClient } from '@/lib/supabase'
-import { 
-  AuthenticationError, 
-  AuthorizationError, 
-  ValidationError, 
-  NotFoundError 
-} from '@/lib/utils/errors'
-import type { UserRole } from '@/lib/auth.types'
-import type { Database } from '@/lib/database.types'
+/**
+ * Organization Service (Stub Implementation)
+ * This is a placeholder until the organizations table is created in the database
+ */
 
-type Organization = Database['public']['Tables']['organizations']['Row']
-type OrganizationInsert = Database['public']['Tables']['organizations']['Insert']
-type OrganizationUpdate = Database['public']['Tables']['organizations']['Update']
+import type { UserRole } from '@/lib/auth.types'
 
 // Organization interfaces
-export interface OrganizationWithStats extends Organization {
+export interface OrganizationWithStats {
+  id: string
+  name: string
+  slug: string
+  description?: string
+  logo_url?: string
+  website?: string
+  industry?: string
+  size?: string
+  billing_email?: string
+  phone?: string
+  address?: string
+  city?: string
+  country?: string
+  timezone?: string
+  settings: OrganizationSettings
+  subscription?: OrganizationSubscription
+  created_at: string
+  updated_at: string
+  owner_id: string
   member_count?: number
   active_projects?: number
   total_proposals?: number
@@ -133,283 +145,101 @@ export interface OrganizationStats {
 }
 
 export class OrganizationService {
-  private supabase = createClient()
-
   /**
-   * Get organization by ID
+   * Get organization by ID (stub implementation)
    */
-  async getOrganization(id: string): Promise<OrganizationWithStats | null> {
-    try {
-      const { data: organization, error } = await this.supabase
-        .from('organizations')
-        .select('*')
-        .eq('id', id)
-        .single()
-
-      if (error) {
-        console.error('Error fetching organization:', error)
-        return null
-      }
-
-      // Get additional stats
-      const stats = await this.getOrganizationStats(id)
-      
-      return {
-        ...organization,
-        ...stats
-      }
-    } catch (error) {
-      console.error('Error in getOrganization:', error)
-      return null
-    }
+  async getOrganization(_id: string): Promise<OrganizationWithStats | null> {
+    console.log('Stub: getOrganization called')
+    return null
   }
 
   /**
-   * Get organization statistics
+   * Get organization statistics (stub implementation)
    */
-  async getOrganizationStats(organizationId: string): Promise<{
+  async getOrganizationStats(_organizationId: string): Promise<{
     member_count: number
     active_projects: number
     total_proposals: number
   }> {
-    try {
-      // Get member count
-      const { count: memberCount } = await this.supabase
-        .from('organization_members')
-        .select('*', { count: 'exact', head: true })
-        .eq('organization_id', organizationId)
-
-      // Get active projects count (mock for now)
-      const activeProjects = 0
-
-      // Get total proposals count (mock for now)
-      const totalProposals = 0
-
-      return {
-        member_count: memberCount || 0,
-        active_projects: activeProjects,
-        total_proposals: totalProposals
-      }
-    } catch (error) {
-      console.error('Error getting organization stats:', error)
-      return {
-        member_count: 0,
-        active_projects: 0,
-        total_proposals: 0
-      }
+    console.log('Stub: getOrganizationStats called')
+    return {
+      member_count: 0,
+      active_projects: 0,
+      total_proposals: 0
     }
   }
 
   /**
-   * Create new organization
+   * Create organization (stub implementation)
    */
-  async createOrganization(data: CreateOrganizationRequest): Promise<Organization | null> {
-    try {
-      const organizationData: OrganizationInsert = {
-        name: data.name,
-        description: data.description,
-        website: data.website,
-        industry: data.industry,
-        size: data.size,
-        logo_url: data.logo_url,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }
-
-      const { data: organization, error } = await this.supabase
-        .from('organizations')
-        .insert(organizationData)
-        .select()
-        .single()
-
-      if (error) {
-        console.error('Error creating organization:', error)
-        return null
-      }
-
-      return organization
-    } catch (error) {
-      console.error('Error in createOrganization:', error)
-      return null
-    }
+  async createOrganization(_data: CreateOrganizationRequest): Promise<Organization | null> {
+    console.log('Stub: createOrganization called')
+    return null
   }
 
   /**
-   * Update organization
+   * Update organization (stub implementation)
    */
   async updateOrganization(
-    id: string, 
-    data: UpdateOrganizationRequest
+    _id: string, 
+    _data: UpdateOrganizationRequest
   ): Promise<Organization | null> {
-    try {
-      const updateData: OrganizationUpdate = {
-        ...data,
-        updated_at: new Date().toISOString()
-      }
-
-      const { data: organization, error } = await this.supabase
-        .from('organizations')
-        .update(updateData)
-        .eq('id', id)
-        .select()
-        .single()
-
-      if (error) {
-        console.error('Error updating organization:', error)
-        return null
-      }
-
-      return organization
-    } catch (error) {
-      console.error('Error in updateOrganization:', error)
-      return null
-    }
+    console.log('Stub: updateOrganization called')
+    return null
   }
 
   /**
-   * Delete organization
+   * Delete organization (stub implementation)
    */
-  async deleteOrganization(id: string): Promise<boolean> {
-    try {
-      const { error } = await this.supabase
-        .from('organizations')
-        .delete()
-        .eq('id', id)
-
-      if (error) {
-        console.error('Error deleting organization:', error)
-        return false
-      }
-
-      return true
-    } catch (error) {
-      console.error('Error in deleteOrganization:', error)
-      return false
-    }
+  async deleteOrganization(_id: string): Promise<boolean> {
+    console.log('Stub: deleteOrganization called')
+    return false
   }
 
   /**
-   * Get organizations for user
+   * Get user organizations (stub implementation)
    */
-  async getUserOrganizations(userId: string): Promise<OrganizationWithStats[]> {
-    try {
-      const { data: memberships, error } = await this.supabase
-        .from('organization_members')
-        .select(`
-          organization_id,
-          role,
-          organizations (*)
-        `)
-        .eq('user_id', userId)
-
-      if (error) {
-        console.error('Error fetching user organizations:', error)
-        return []
-      }
-
-      const organizations: OrganizationWithStats[] = []
-      
-      for (const membership of memberships || []) {
-        if (membership.organizations) {
-          const stats = await this.getOrganizationStats(membership.organization_id)
-          organizations.push({
-            ...membership.organizations,
-            ...stats
-          })
-        }
-      }
-
-      return organizations
-    } catch (error) {
-      console.error('Error in getUserOrganizations:', error)
-      return []
-    }
+  async getUserOrganizations(_userId: string): Promise<OrganizationWithStats[]> {
+    console.log('Stub: getUserOrganizations called')
+    return []
   }
 
   /**
-   * Add user to organization
+   * Add member (stub implementation)
    */
   async addMember(
-    organizationId: string, 
-    userId: string, 
-    role: 'admin' | 'member' = 'member'
+    _organizationId: string, 
+    _userId: string, 
+    _role: 'admin' | 'member' = 'member'
   ): Promise<boolean> {
-    try {
-      const { error } = await this.supabase
-        .from('organization_members')
-        .insert({
-          organization_id: organizationId,
-          user_id: userId,
-          role,
-          joined_at: new Date().toISOString()
-        })
-
-      if (error) {
-        console.error('Error adding organization member:', error)
-        return false
-      }
-
-      return true
-    } catch (error) {
-      console.error('Error in addMember:', error)
-      return false
-    }
+    console.log('Stub: addMember called')
+    return false
   }
 
   /**
-   * Remove user from organization
+   * Remove member (stub implementation)
    */
-  async removeMember(organizationId: string, userId: string): Promise<boolean> {
-    try {
-      const { error } = await this.supabase
-        .from('organization_members')
-        .delete()
-        .eq('organization_id', organizationId)
-        .eq('user_id', userId)
-
-      if (error) {
-        console.error('Error removing organization member:', error)
-        return false
-      }
-
-      return true
-    } catch (error) {
-      console.error('Error in removeMember:', error)
-      return false
-    }
+  async removeMember(_organizationId: string, _userId: string): Promise<boolean> {
+    console.log('Stub: removeMember called')
+    return false
   }
 
   /**
-   * Update member role
+   * Update member role (stub implementation)
    */
   async updateMemberRole(
-    organizationId: string, 
-    userId: string, 
-    role: 'admin' | 'member'
+    _organizationId: string, 
+    _userId: string, 
+    _role: 'admin' | 'member'
   ): Promise<boolean> {
-    try {
-      const { error } = await this.supabase
-        .from('organization_members')
-        .update({ role })
-        .eq('organization_id', organizationId)
-        .eq('user_id', userId)
-
-      if (error) {
-        console.error('Error updating member role:', error)
-        return false
-      }
-
-      return true
-    } catch (error) {
-      console.error('Error in updateMemberRole:', error)
-      return false
-    }
+    console.log('Stub: updateMemberRole called')
+    return false
   }
 
   /**
-   * Get organization members
+   * Get members (stub implementation)
    */
-  async getMembers(organizationId: string): Promise<Array<{
+  async getMembers(_organizationId: string): Promise<Array<{
     user_id: string
     role: string
     joined_at: string
@@ -418,82 +248,24 @@ export class OrganizationService {
       full_name?: string
     }
   }>> {
-    try {
-      const { data: members, error } = await this.supabase
-        .from('organization_members')
-        .select(`
-          user_id,
-          role,
-          joined_at,
-          profiles (
-            email,
-            full_name
-          )
-        `)
-        .eq('organization_id', organizationId)
-
-      if (error) {
-        console.error('Error fetching organization members:', error)
-        return []
-      }
-
-      return members?.map(member => ({
-        user_id: member.user_id,
-        role: member.role,
-        joined_at: member.joined_at,
-        user: member.profiles ? {
-          email: member.profiles.email,
-          full_name: member.profiles.full_name
-        } : undefined
-      })) || []
-    } catch (error) {
-      console.error('Error in getMembers:', error)
-      return []
-    }
+    console.log('Stub: getMembers called')
+    return []
   }
 
   /**
-   * Check if user is member of organization
+   * Check if user is member (stub implementation)
    */
-  async isMember(organizationId: string, userId: string): Promise<boolean> {
-    try {
-      const { data, error } = await this.supabase
-        .from('organization_members')
-        .select('user_id')
-        .eq('organization_id', organizationId)
-        .eq('user_id', userId)
-        .single()
-
-      if (error) {
-        return false
-      }
-
-      return !!data
-    } catch {
-      return false
-    }
+  async isMember(_organizationId: string, _userId: string): Promise<boolean> {
+    console.log('Stub: isMember called')
+    return false
   }
 
   /**
-   * Check if user is admin of organization
+   * Check if user is admin (stub implementation)
    */
-  async isAdmin(organizationId: string, userId: string): Promise<boolean> {
-    try {
-      const { data, error } = await this.supabase
-        .from('organization_members')
-        .select('role')
-        .eq('organization_id', organizationId)
-        .eq('user_id', userId)
-        .single()
-
-      if (error) {
-        return false
-      }
-
-      return data?.role === 'admin'
-    } catch {
-      return false
-    }
+  async isAdmin(_organizationId: string, _userId: string): Promise<boolean> {
+    console.log('Stub: isAdmin called')
+    return false
   }
 }
 

@@ -38,7 +38,7 @@ export const initializeStores = async () => {
     }
     
     return { success: true }
-  } catch {
+  } catch (error) {
     console.error('Failed to initialize stores:', error)
     return { success: false, error }
   }
@@ -55,8 +55,8 @@ export const setupProposalSubscriptions = () => {
   realtimeStore.subscribe(
     'proposals',
     '*',
-    (payload) => {
-      const { eventType, new: newRecord, old: oldRecord } = payload
+    (payload: any) => {
+      const { eventType, new: newRecord, old: _oldRecord } = payload
       
       // Handle proposal updates in real-time
       if (eventType === 'UPDATE' && newRecord) {
@@ -74,8 +74,8 @@ export const setupProposalSubscriptions = () => {
   realtimeStore.subscribe(
     'sections',
     '*',
-    (payload) => {
-      const { eventType, new: newRecord, old: oldRecord } = payload
+    (payload: any) => {
+      const { eventType, new: newRecord, old: _oldRecord } = payload
       
       // Handle section updates in real-time
       const activeProposal = proposalStore.activeProposal
@@ -96,9 +96,9 @@ export const setupProposalSubscriptions = () => {
             break
             
           case 'DELETE':
-            if (oldRecord && oldRecord.proposal_id === activeProposal.id) {
+            if (_oldRecord && _oldRecord.proposal_id === activeProposal.id) {
               // Remove deleted section
-              proposalStore.deleteSection(oldRecord.id)
+              proposalStore.deleteSection(_oldRecord.id)
             }
             break
         }
@@ -119,7 +119,7 @@ export const setupUserPresenceSubscriptions = () => {
   realtimeStore.subscribe(
     'users',
     'UPDATE',
-    (payload) => {
+    (payload: any) => {
       const { new: newRecord } = payload
       
       // Update current user data if it's our user
@@ -157,7 +157,7 @@ export const cleanupStores = () => {
     useRealtimeStore.getState().reset()
     
     return { success: true }
-  } catch {
+  } catch (error) {
     console.error('Failed to cleanup stores:', error)
     return { success: false, error }
   }
@@ -180,7 +180,7 @@ export const hydrateStores = async () => {
     }
     
     return { success: true }
-  } catch {
+  } catch (error) {
     console.error('Failed to hydrate stores:', error)
     return { success: false, error }
   }

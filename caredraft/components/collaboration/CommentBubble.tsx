@@ -49,7 +49,7 @@ function CommentItem({
 
   const userColor = getUserColor(comment.user_id)
   const displayName = getUserDisplayName(comment.user || { email: '', user_metadata: {} })
-  const isResolved = false // 'resolved_at' in comment && comment.resolved_at !== null
+  const isResolved = comment.is_resolved
 
   const handleReplySubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -145,7 +145,7 @@ function CommentItem({
                   </button>
                 )}
 
-                {comment.parent_id === null && (
+                {comment.parent_comment_id === null && (
                   <button
                     onClick={() => {
                       if (isResolved) { onUnresolve() } else { onResolve() }
@@ -255,7 +255,7 @@ function CommentItem({
         {isResolved && (
           <div className="mt-2 flex items-center gap-1 text-xs text-green-700">
             <Check className="w-3 h-3" />
-            Resolved by {getUserDisplayName(comment.resolved_by || { email: '', user_metadata: {} })} {formatTimeAgo(comment.resolved_at!)}
+            Resolved
           </div>
         )}
       </div>
@@ -296,12 +296,12 @@ export function CommentBubble({
 }: CommentBubbleProps) {
   // Sort comments to show unresolved first, then by creation date
   const sortedComments = [...comments].sort((a, b) => {
-    if (a.resolved_at === null && b.resolved_at !== null) return -1
-    if (a.resolved_at !== null && b.resolved_at === null) return 1
+    if (!a.is_resolved && b.is_resolved) return -1
+    if (a.is_resolved && !b.is_resolved) return 1
     return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
   })
 
-  const unresolvedCount = comments.filter(c => c.resolved_at === null).length
+  const unresolvedCount = comments.filter(c => !c.is_resolved).length
   const totalCount = comments.length
 
   if (comments.length === 0) return null

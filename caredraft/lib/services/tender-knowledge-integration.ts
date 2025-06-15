@@ -158,7 +158,7 @@ export class TenderKnowledgeIntegrationService {
   /**
    * Generate embeddings for semantic similarity search
    */
-  private async generateEmbeddings(content: string): Promise<number[]> {
+  private async generateEmbeddings(_content: string): Promise<number[]> {
     try {
       // In production, use OpenAI embeddings API or similar
       // For now, return mock embeddings
@@ -313,7 +313,7 @@ export class TenderKnowledgeIntegrationService {
    */
   private suggestRelevantSections(
     source: TenderKnowledgeSource, 
-    query: TenderContextQuery
+    _query: TenderContextQuery
   ): string[] {
     const sections: string[] = []
     

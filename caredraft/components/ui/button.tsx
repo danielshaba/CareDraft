@@ -14,7 +14,7 @@ const buttonVariants = cva(
         secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500",
         ghost: "bg-transparent text-brand-500 hover:bg-brand-50 hover:text-brand-600 focus:ring-brand-500",
         link: "text-brand-500 underline-offset-4 hover:underline hover:text-brand-600 focus:ring-brand-500",
-        success: "bg-green-500 text-white hover:bg-green-600 focus:ring-green-500",
+        success: "bg-teal-600 text-white hover:bg-teal-700 focus:ring-teal-600",
         warning: "bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-500",
       },
       size: {

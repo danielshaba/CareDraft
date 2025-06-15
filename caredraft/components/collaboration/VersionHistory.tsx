@@ -35,7 +35,7 @@ export default function VersionHistory({
       setLoading(true)
       const versionsData = await VersionsService.getVersionsBySection(sectionId)
       setVersions(versionsData)
-    } catch {
+    } catch (error) {
       console.error('Error loading versions:', error)
     } finally {
       setLoading(false)

@@ -173,7 +173,7 @@ export const useNetworkStore = create<NetworkState & NetworkActions>()(
         if (action.onSuccess) {
           action.onSuccess(result);
         }
-      } catch {
+      } catch (error) {
         const errorObj = error instanceof Error ? error : new Error(String(error));
         
         // Remove from retrying set
@@ -284,10 +284,10 @@ export const useNetworkStore = create<NetworkState & NetworkActions>()(
           });
           const isConnected = response.ok;
           
-          set(state => ({
+          set({
             isConnected,
             isOnline: isConnected
-          }));
+          });
         } catch {
           set({ isConnected: false, isOnline: false });
         }

@@ -4,7 +4,7 @@ import { FullConfig } from '@playwright/test';
  * Global teardown for Playwright tests
  * Cleans up test environment and resources
  */
-async function globalTeardown(config: FullConfig) {
+async function globalTeardown(_config: FullConfig) {
   console.log('🧹 Cleaning up Playwright test environment...');
 
   try {
@@ -18,7 +18,7 @@ async function globalTeardown(config: FullConfig) {
     await cleanupTempFiles();
 
     console.log('✅ Global teardown completed successfully');
-  } catch {
+  } catch (error) {
     console.error('❌ Global teardown failed:', error);
     // Don't throw error in teardown to avoid masking test failures
   }
@@ -34,8 +34,8 @@ async function cleanupTestData() {
     // Add any test data cleanup here
     // This could include removing test organizations, documents, etc.
     console.log('✅ Test data cleanup completed');
-  } catch {
-    console.log('⚠️ Test data cleanup skipped:', error.message);
+  } catch (error) {
+    console.log('⚠️ Test data cleanup skipped:', error instanceof Error ? error.message : 'Unknown error');
   }
 }
 
@@ -55,8 +55,8 @@ async function cleanupAuthState() {
       fs.rmSync(authPath, { recursive: true, force: true });
       console.log('✅ Authentication state cleaned up');
     }
-  } catch {
-    console.log('⚠️ Authentication cleanup skipped:', error.message);
+  } catch (error) {
+    console.log('⚠️ Authentication cleanup skipped:', error instanceof Error ? error.message : 'Unknown error');
   }
 }
 
@@ -69,8 +69,8 @@ async function cleanupTempFiles() {
   try {
     // Clean up any temporary files created during tests
     console.log('✅ Temporary files cleanup completed');
-  } catch {
-    console.log('⚠️ Temporary files cleanup skipped:', error.message);
+  } catch (error) {
+    console.log('⚠️ Temporary files cleanup skipped:', error instanceof Error ? error.message : 'Unknown error');
   }
 }
 

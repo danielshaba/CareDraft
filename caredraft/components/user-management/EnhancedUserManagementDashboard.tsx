@@ -3,12 +3,10 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAuth } from '@/components/providers/MinimalAuthProvider'
 import { 
-  Users, UserPlus, UserX, ShieldAlert, Download, MoreVertical,
-  Search, Filter, CheckCircle, AlertTriangle
+  Users, UserPlus, UserX, ShieldAlert, Download,
+  CheckCircle, AlertTriangle, LucideIcon
 } from 'lucide-react'
 import { UserManagementDashboard } from './UserManagementDashboard'
 import { UserLifecycleManager } from './UserLifecycleManager'
@@ -26,8 +24,6 @@ interface DashboardStats {
 }
 
 export function EnhancedUserManagementDashboard() {
-  const { user } = useAuth()
-  const toast = useToast()
   const [activeTab, setActiveTab] = useState('users')
   const [stats, setStats] = useState<DashboardStats>({
     totalUsers: 0,
@@ -67,7 +63,7 @@ export function EnhancedUserManagementDashboard() {
   }: {
     title: string
     value: number
-    icon: unknown
+    icon: LucideIcon
     color?: string
     bgColor?: string
   }) => (

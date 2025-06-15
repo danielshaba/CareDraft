@@ -69,7 +69,7 @@ class ServiceWorkerManager {
       this.checkForUpdates();
 
       return registration;
-    } catch {
+    } catch (error) {
       console.error('❌ Service worker registration failed:', error);
       return null;
     }
@@ -90,7 +90,7 @@ class ServiceWorkerManager {
         console.log('✅ Service worker unregistered');
       }
       return success;
-    } catch {
+    } catch (error) {
       console.error('❌ Service worker unregistration failed:', error);
       return false;
     }
@@ -105,7 +105,7 @@ class ServiceWorkerManager {
     try {
       await this.registration.update();
       console.log('🔄 Service worker update check initiated');
-    } catch {
+    } catch (error) {
       console.error('❌ Service worker update failed:', error);
     }
   }
@@ -260,7 +260,7 @@ class ServiceWorkerManager {
         cacheNames.map(cacheName => caches.delete(cacheName))
       );
       console.log('🗑️ All caches cleared');
-    } catch {
+    } catch (error) {
       console.error('❌ Failed to clear caches:', error);
     }
   }
@@ -298,7 +298,7 @@ class ServiceWorkerManager {
 
       console.log('🔔 Push subscription created');
       return subscription;
-    } catch {
+    } catch (error) {
       console.error('❌ Push subscription failed:', error);
       return null;
     }
@@ -393,7 +393,7 @@ export function useBackgroundSync() {
   });
 
   React.useEffect(() => {
-    const handleSyncSuccess = (data: unknown) => {
+    const handleSyncSuccess = (_data: unknown) => {
       setSyncStatus(prev => ({
         ...prev,
         lastSyncTime: new Date(),

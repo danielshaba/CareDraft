@@ -71,7 +71,7 @@ export function useLoadingState<T = any>(options: UseLoadingStateOptions = {}) {
       const result = await asyncFunction();
       setData(result);
       return result;
-    } catch {
+    } catch (error) {
       const errorObj = error instanceof Error ? error : new Error(String(error));
       setError(errorObj);
       throw errorObj;

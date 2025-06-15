@@ -1,11 +1,10 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { 
   Search, 
-  Bell, 
   Settings, 
   LogOut,
   Menu, 
@@ -20,7 +19,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/components/providers/AuthProvider'
 import { NotificationDropdown } from '@/components/notifications/NotificationDropdown'
-import CareDraftLogo from '@/components/ui/CareDraftLogo'
+import { Logo } from '@/components/ui/Logo'
 
 // Context and providers (removed unused imports)
 
@@ -86,7 +85,12 @@ export function TopBar({ className = '', onMenuClick }: TopBarProps) {
   const pathname = usePathname()
   const { user, signOut } = useAuth()
   const [showProfileMenu, setShowProfileMenu] = React.useState(false)
+  const [isClient, setIsClient] = React.useState(false)
   const profileMenuRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // Close dropdowns when clicking outside
   React.useEffect(() => {
@@ -131,9 +135,9 @@ export function TopBar({ className = '', onMenuClick }: TopBarProps) {
           </button>
 
           {/* Logo */}
-          <Link href="/dashboard" className="flex items-center space-x-3">
-            <CareDraftLogo size="sm" variant="icon-only" />
-            <span className="text-xl font-semibold text-neutral-900 hidden sm:block">CareDraft</span>
+          <Link href="/dashboard" className="flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50 rounded-lg p-1 -m-1">
+            <Logo size="sm" variant="icon-only" priority />
+            <span className="text-xl font-semibold text-neutral-900 hidden sm:block font-sans">CareDraft</span>
           </Link>
         </div>
 
@@ -173,9 +177,9 @@ export function TopBar({ className = '', onMenuClick }: TopBarProps) {
 
         {/* Current module indicator for mobile */}
         {currentModule && (
-          <div className="md:hidden flex items-center space-x-2 bg-brand-teal-light rounded-lg px-3 py-1">
-            <currentModule.icon className={`h-4 w-4 text-brand-teal`} strokeWidth={2} />
-            <span className="text-sm font-medium text-brand-teal">{currentModule.label}</span>
+          <div className="md:hidden flex items-center space-x-2 bg-teal-50 rounded-lg px-3 py-1">
+            <currentModule.icon className={`h-4 w-4 text-teal-600`} strokeWidth={2} />
+            <span className="text-sm font-medium text-teal-600">{currentModule.label}</span>
           </div>
         )}
 
@@ -184,39 +188,41 @@ export function TopBar({ className = '', onMenuClick }: TopBarProps) {
           {/* Global Search */}
           <button
             onClick={() => router.push('/search')}
-            className="p-2 rounded-lg hover:bg-brand-teal-light hover:text-brand-teal transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50"
+            className="p-2 rounded-lg hover:bg-teal-50 hover:text-teal-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
             aria-label="Search"
             title="Global Search"
           >
-            <Search className="h-5 w-5 text-neutral-600" strokeWidth={2} />
+            <Search className="h-5 w-5 text-neutral-600 hover:text-teal-600 transition-colors duration-200" strokeWidth={2} />
           </button>
 
           {/* Notifications */}
-          <NotificationDropdown 
-            size="md"
-            showConnectionStatus={true}
-            panelPosition="right"
-            panelMaxHeight={400}
-          />
+          {isClient && (
+            <NotificationDropdown 
+              size="md"
+              showConnectionStatus={true}
+              panelPosition="right"
+              panelMaxHeight={400}
+            />
+          )}
 
           {/* Help */}
           <button
             onClick={() => router.push('/help')}
-            className="p-2 rounded-lg hover:bg-brand-teal-light hover:text-brand-teal transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50"
+            className="p-2 rounded-lg hover:bg-teal-50 hover:text-teal-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
             aria-label="Help"
             title="Help & Support"
           >
-            <HelpCircle className="h-5 w-5 text-neutral-600" strokeWidth={2} />
+            <HelpCircle className="h-5 w-5 text-neutral-600 hover:text-teal-600 transition-colors duration-200" strokeWidth={2} />
           </button>
 
           {/* Profile Menu */}
           <div className="relative" ref={profileMenuRef}>
             <button
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="flex items-center space-x-2 p-2 rounded-lg hover:bg-brand-teal-light transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-opacity-50"
+              className="flex items-center space-x-2 p-2 rounded-lg hover:bg-teal-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
               aria-label="Profile menu"
             >
-              <div className="w-7 h-7 bg-brand-primary-500 rounded-full flex items-center justify-center">
+              <div className="w-7 h-7 bg-teal-600 rounded-full flex items-center justify-center">
                 <User className="h-4 w-4 text-white" strokeWidth={2} />
               </div>
               <ChevronDown className="h-4 w-4 text-neutral-600 hidden sm:block" strokeWidth={2} />
@@ -238,7 +244,7 @@ export function TopBar({ className = '', onMenuClick }: TopBarProps) {
                 {/* Menu items */}
                 <Link
                   href="/settings/profile"
-                  className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-brand-teal-light hover:text-brand-teal transition-all duration-200"
+                  className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-teal-50 hover:text-teal-600 transition-all duration-200"
                   onClick={() => setShowProfileMenu(false)}
                 >
                   <User className="h-4 w-4 mr-3" strokeWidth={2} />
@@ -247,7 +253,7 @@ export function TopBar({ className = '', onMenuClick }: TopBarProps) {
 
                 <Link
                   href="/settings"
-                  className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-brand-teal-light hover:text-brand-teal transition-all duration-200"
+                  className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-teal-50 hover:text-teal-600 transition-all duration-200"
                   onClick={() => setShowProfileMenu(false)}
                 >
                   <Settings className="h-4 w-4 mr-3" strokeWidth={2} />

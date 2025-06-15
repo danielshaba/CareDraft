@@ -8,13 +8,13 @@ import { useToasts, useToastPosition, useToastActions, Toast, ToastPosition } fr
 
 const toastVariants = {
   success: {
-    bg: 'bg-white border-green-200',
-    iconBg: 'bg-green-100',
+    bg: 'bg-white border-teal-200',
+    iconBg: 'bg-teal-100',
     icon: CheckCircle,
-    iconColor: 'text-green-600',
-    title: 'text-green-900',
-    description: 'text-green-700',
-    progress: 'bg-green-500'
+    iconColor: 'text-teal-600',
+    title: 'text-teal-900',
+    description: 'text-teal-700',
+    progress: 'bg-teal-600'
   },
   error: {
     bg: 'bg-white border-red-200',
@@ -193,6 +193,8 @@ export function ToastContainer() {
         document.head.removeChild(style);
       };
     }
+    
+    return () => {} // Cleanup function for all code paths
   }, []);
 
   if (typeof window === 'undefined') return null;

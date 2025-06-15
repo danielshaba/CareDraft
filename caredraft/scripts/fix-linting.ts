@@ -2,7 +2,6 @@
 
 import { readFileSync, writeFileSync } from 'fs';
 import { glob } from 'glob';
-import { join } from 'path';
 
 /**
  * Comprehensive linting fixer based on TypeScript ESLint best practices
@@ -155,8 +154,8 @@ async function main() {
         totalFiles++;
         totalFixes += fixes.length;
       }
-    } catch {
-      console.error(`❌ Error processing ${filePath}:`, error);
+    } catch (error: unknown) {
+      console.error(`❌ Error processing ${filePath}:`, error instanceof Error ? error.message : 'Unknown error');
     }
   }
 

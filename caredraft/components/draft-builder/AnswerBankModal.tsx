@@ -1,15 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Editor } from '@tiptap/react'
 import { 
   X, 
 //  Search, 
   Clipboard, 
   Star, 
 //  Clock, 
-  Filter,
-  ChevronDown,
   Copy,
   Eye
 } from 'lucide-react'
@@ -19,7 +16,6 @@ interface AnswerBankModalProps {
   isOpen: boolean
   onClose: () => void
   onInsert: (content: string) => void
-  editor: Editor | null
 }
 
 interface Answer {
@@ -39,13 +35,6 @@ interface Answer {
   tags?: string[]
 }
 
-interface Category {
-  id: string
-  name: string
-  color?: string
-  answer_count?: number
-}
-
 interface SearchFilter {
   category_id?: string
   tags?: string[]
@@ -58,21 +47,18 @@ interface SearchFilter {
   sort_order?: 'asc' | 'desc'
 }
 
-export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: AnswerBankModalProps) {
+export default function AnswerBankModal({ isOpen, onClose, onInsert }: AnswerBankModalProps) {
   const [answers, setAnswers] = useState<Answer[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('')
-  const [sortBy, setSortBy] = useState<'usage' | 'rating' | 'recent' | 'title'>('usage')
-  const [showFilters, setShowFilters] = useState(false)
+  const [sortBy] = useState<'usage' | 'rating' | 'recent' | 'title'>('usage')
   const [previewAnswer, setPreviewAnswer] = useState<Answer | null>(null)
 
-  // Load answers and categories when modal opens
+  // Load answers when modal opens
   useEffect(() => {
     if (isOpen) {
       loadAnswers()
-      loadCategories()
     }
   }, [isOpen])
 
@@ -101,23 +87,10 @@ export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: A
       } else {
         console.error('Failed to load answers:', result.error)
       }
-    } catch {
+    } catch (error) {
       console.error('Error loading answers:', error)
     } finally {
       setLoading(false)
-    }
-  }
-
-  const loadCategories = async () => {
-    try {
-      const response = await fetch('/api/answers/categories')
-      const result = await response.json()
-      
-      if (result.success) {
-        setCategories(result.data || [])
-      }
-    } catch {
-      console.error('Error loading categories:', error)
     }
   }
 
@@ -153,7 +126,7 @@ export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: A
       if (result.success) {
         setAnswers(result.data.answers || [])
       }
-    } catch {
+    } catch (error) {
       console.error('Search error:', error)
     } finally {
       setLoading(false)
@@ -168,7 +141,7 @@ export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: A
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ context: 'proposal_draft' })
       })
-    } catch {
+    } catch (error) {
       console.error('Error tracking usage:', error)
     }
 
@@ -182,16 +155,6 @@ export default function AnswerBankModal({ isOpen, onClose, onInsert, editor }: A
       day: 'numeric',
       year: 'numeric'
     })
-  }
-
-  const getSortLabel = () => {
-    switch (sortBy) {
-      case 'usage': return 'Most Used'
-      case 'rating': return 'Highest Rated' 
-      case 'recent': return 'Recently Updated'
-      case 'title': return 'Alphabetical'
-      default: return 'Most Used'
-    }
   }
 
   if (!isOpen) return null

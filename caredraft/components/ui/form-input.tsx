@@ -162,8 +162,8 @@ CurrencyInput.displayName = 'CurrencyInput'
 
 // Date Input Component
 interface DateInputProps extends Omit<InputProps, 'type'> {
-  min?: string
-  max?: string
+  min?: string | number
+  max?: string | number
 }
 
 export const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(

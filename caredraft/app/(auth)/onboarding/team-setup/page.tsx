@@ -1,5 +1,11 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+
+
+
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -26,7 +32,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Progress } from '@/components/ui/progress'
-import CareDraftLogo from '@/components/ui/CareDraftLogo'
+import { Logo } from '@/components/ui/Logo'
 import { useOnboardingStore } from '@/lib/stores/onboarding-store'
 
 // Types for team management
@@ -188,7 +194,7 @@ export default function OnboardingTeamSetupPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <Link href="/dashboard" className="inline-block mb-6">
-              <CareDraftLogo />
+              <Logo size="lg" variant="full" />
             </Link>
             
             <div className="flex items-center justify-center mb-6">
@@ -549,4 +555,5 @@ export default function OnboardingTeamSetupPage() {
       </div>
     </div>
   )
-} 
+}
+

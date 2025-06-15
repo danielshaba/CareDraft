@@ -56,13 +56,6 @@ export interface AuthError {
   status?: number
 }
 
-// Magic link authentication response
-export interface MagicLinkResponse {
-  success: boolean
-  error?: AuthError
-  message?: string
-}
-
 // Password reset response
 export interface PasswordResetResponse {
   success: boolean
@@ -191,10 +184,6 @@ export interface AuthEventData {
 
 // Authentication configuration
 export interface AuthConfig {
-  magicLink: {
-    enabled: boolean
-    redirectTo?: string
-  }
   passwordAuth: {
     enabled: boolean
     minLength: number
@@ -208,12 +197,8 @@ export interface AuthConfig {
 
 // Default auth configuration
 export const DEFAULT_AUTH_CONFIG: AuthConfig = {
-  magicLink: {
-    enabled: true,
-    redirectTo: '/dashboard',
-  },
   passwordAuth: {
-    enabled: false, // Disabled per PRD - magic link only
+    enabled: false, // OTP only
     minLength: 8,
     requireSpecialChars: true,
   },
@@ -225,7 +210,7 @@ export const DEFAULT_AUTH_CONFIG: AuthConfig = {
 
 // Type guards
 export const isUserProfile = (user: unknown): user is UserProfile => {
-  return user && typeof user.id === 'string' && typeof user.email === 'string'
+  return !!user && typeof user === 'object' && 'id' in user && typeof (user as any).id === 'string' && 'email' in user && typeof (user as any).email === 'string'
 }
 
 export const hasRole = (user: UserProfile | null, role: UserRole): boolean => {

@@ -91,7 +91,7 @@ export function CompliancePDFExport({
         throw new Error(result.error || 'PDF generation failed')
       }
 
-    } catch {
+    } catch (error) {
       console.error('PDF export failed:', error)
       toast.error(
         'PDF Export Failed',

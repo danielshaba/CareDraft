@@ -10,9 +10,7 @@ import {
   FolderOpen,
   Plus,
   Edit,
-  Trash2,
-  Calendar,
-  User
+  Trash2
 } from 'lucide-react'
 import { SectionWithChildren } from '@/lib/sections'
 import { SectionStatus } from '@/types/database'
@@ -74,6 +72,8 @@ export default function SectionTreeNode({
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
+    
+    return () => {} // Return empty cleanup function when not adding listener
   }, [showContextMenu])
 
   // Focus input when editing starts
@@ -182,9 +182,9 @@ export default function SectionTreeNode({
                 />
                 
                 {/* Word count */}
-                {section.word_count_limit > 0 && (
+                {section.word_limit && section.word_limit > 0 && (
                   <span className="text-xs text-gray-500">
-                    {section.current_word_count}/{section.word_count_limit} words
+                    {(section.content || '').split(' ').filter(w => w.length > 0).length}/{section.word_limit} words
                   </span>
                 )}
                 
@@ -193,7 +193,7 @@ export default function SectionTreeNode({
                   <OwnerSelector
                     currentOwner={section.owner}
                     availableOwners={availableOwners}
-                    onOwnerChange={(ownerId) => onUpdate({ owner_id: ownerId })}
+                    onOwnerChange={(ownerId) => onUpdate({ assigned_to: ownerId || undefined })}
                     size="sm"
                     placeholder="Assign..."
                   />
@@ -202,7 +202,7 @@ export default function SectionTreeNode({
                 {/* Due Date Picker */}
                 <div onClick={(e) => e.stopPropagation()}>
                   <DueDatePicker
-                    currentDate={section.due_date}
+                    currentDate={section.due_date || undefined}
                     onDateChange={(date) => onUpdate({ due_date: date })}
                     size="sm"
                     placeholder="Due date..."

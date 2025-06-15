@@ -1,5 +1,11 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+
+
+
 import { Metadata } from 'next'
 import { AuthenticatedLayout } from '@/components/shared/Layout'
 import { StatsOverview } from '@/components/dashboard/StatsOverview'

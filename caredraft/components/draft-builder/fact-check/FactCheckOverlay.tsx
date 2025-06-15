@@ -3,16 +3,15 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  CheckCircleIcon,
-  XMarkIcon,
-  ExclamationTriangleIcon,
-  InformationCircleIcon,
-  Cog6ToothIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  ClipboardDocumentIcon,
-  ShareIcon
-} from '@heroicons/react/24/outline'
+  CheckCircle,
+  AlertTriangle,
+  Info,
+  X,
+  ChevronDown,
+  ChevronUp,
+  Clipboard,
+  Settings,
+} from 'lucide-react'
 import { useFactCheck } from './FactCheckProvider'
 
 interface FactCheckOverlayProps {
@@ -89,10 +88,10 @@ const FactCheckOverlay: React.FC<FactCheckOverlayProps> = ({
 
   const getConfidenceIcon = (confidence: string) => {
     switch (confidence) {
-      case 'high': return CheckCircleIcon
-      case 'medium': return ExclamationTriangleIcon
-      case 'low': return XMarkIcon
-      default: return InformationCircleIcon
+      case 'high': return CheckCircle
+      case 'medium': return AlertTriangle
+      case 'low': return X
+      default: return Info
     }
   }
 
@@ -128,7 +127,7 @@ const FactCheckOverlay: React.FC<FactCheckOverlayProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
           <div className="flex items-center gap-2">
-            <CheckCircleIcon className="w-5 h-5 text-brand-600" />
+            <CheckCircle className="w-5 h-5 text-brand-600" />
             <h3 className="font-semibold text-gray-900">Fact Check Panel</h3>
           </div>
           <div className="flex items-center gap-1">
@@ -137,16 +136,16 @@ const FactCheckOverlay: React.FC<FactCheckOverlayProps> = ({
               className="p-1 hover:bg-gray-100 rounded"
             >
               {isExpanded ? (
-                <ChevronUpIcon className="w-4 h-4 text-gray-500" />
+                <ChevronUp className="w-4 h-4 text-gray-500" />
               ) : (
-                <ChevronDownIcon className="w-4 h-4 text-gray-500" />
+                <ChevronDown className="w-4 h-4 text-gray-500" />
               )}
             </button>
             <button
               onClick={onClose}
               className="p-1 hover:bg-gray-100 rounded"
             >
-              <XMarkIcon className="w-4 h-4 text-gray-500" />
+              <X className="w-4 h-4 text-gray-500" />
             </button>
           </div>
         </div>
@@ -164,9 +163,9 @@ const FactCheckOverlay: React.FC<FactCheckOverlayProps> = ({
             {/* Tab Navigation */}
             <div className="flex border-b border-gray-200 mb-4">
               {[
-                { id: 'verify', label: 'Verify', icon: CheckCircleIcon },
-                { id: 'sources', label: 'Sources', icon: InformationCircleIcon },
-                { id: 'settings', label: 'Settings', icon: Cog6ToothIcon }
+                { id: 'verify', label: 'Verify', icon: CheckCircle },
+                { id: 'sources', label: 'Sources', icon: Info },
+                { id: 'settings', label: 'Settings', icon: Settings }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -188,7 +187,7 @@ const FactCheckOverlay: React.FC<FactCheckOverlayProps> = ({
               <div className="space-y-4">
                 {!currentFactCheck && !isLoading && (
                   <div className="text-center py-6">
-                    <InformationCircleIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                    <Info className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                     <p className="text-sm text-gray-500 mb-4">
                       Click "Start Fact Check" to verify the selected text
                     </p>
@@ -245,7 +244,7 @@ const FactCheckOverlay: React.FC<FactCheckOverlayProps> = ({
                               className="p-1 hover:bg-gray-100 rounded"
                               title="Copy to clipboard"
                             >
-                              <ClipboardDocumentIcon className="w-4 h-4 text-gray-500" />
+                              <Clipboard className="w-4 h-4 text-gray-500" />
                             </button>
                             {onApplyChanges && (
                               <button
@@ -281,14 +280,14 @@ const FactCheckOverlay: React.FC<FactCheckOverlayProps> = ({
               <div className="space-y-4">
                 {activeSources.length === 0 ? (
                   <div className="text-center py-6">
-                    <InformationCircleIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                    <Info className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                     <p className="text-sm text-gray-500">
                       No sources available. Perform a fact check to see sources.
                     </p>
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {activeSources.slice(0, showAllSources ? activeSources.length : 3).map((source, index) => (
+                    {activeSources.slice(0, showAllSources ? activeSources.length : 3).map((source) => (
                       <div key={source.id} className="border border-gray-200 rounded-md p-3">
                         <div className="flex items-start justify-between mb-2">
                           <h4 className="font-medium text-gray-900 text-sm">{source.title}</h4>

@@ -25,7 +25,6 @@ export interface UseValidationOptions {
 
 export function useProfileValidation(options: UseValidationOptions = {}) {
   const {
-    validateOnChange = true,
     showWarnings = true,
     customValidators = []
   } = options

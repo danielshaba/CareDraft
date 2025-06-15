@@ -4,9 +4,7 @@ import { immer } from 'zustand/middleware/immer'
 import type { 
   UIStore, 
   NotificationItem, 
-  ModalState, 
-  UserPreferences,
-  NotificationType
+  UserPreferences
 } from '@/lib/types/store.types'
 
 // Default user preferences
@@ -278,8 +276,8 @@ export const useUIStore = create<UIStore>()(
                   state.sidebarCollapsed = state.preferences.sidebarCollapsed
                 })
               }
-            } catch {
-              console.warn('Failed to load preferences from localStorage:', error)
+            } catch (error: unknown) {
+              console.warn('Failed to load preferences from localStorage:', error instanceof Error ? error.message : 'Unknown error')
             }
           },
 
@@ -289,8 +287,8 @@ export const useUIStore = create<UIStore>()(
             try {
               const { preferences } = get()
               localStorage.setItem('ui-preferences', JSON.stringify(preferences))
-            } catch {
-              console.warn('Failed to save preferences to localStorage:', error)
+            } catch (error: unknown) {
+              console.warn('Failed to save preferences:', error instanceof Error ? error.message : 'Unknown error')
             }
           },
 
@@ -303,8 +301,8 @@ export const useUIStore = create<UIStore>()(
             if (isClient) {
               try {
                 localStorage.removeItem('ui-preferences')
-              } catch {
-                console.warn('Failed to clear preferences from localStorage:', error)
+              } catch (error: unknown) {
+                console.warn('Failed to clear preferences from localStorage:', error instanceof Error ? error.message : 'Unknown error')
               }
             }
           },
@@ -411,15 +409,12 @@ export const useUIStore = create<UIStore>()(
 
           checkConnection: () => {
             if (!isClient) return
-
-            const startTime = Date.now()
             
             fetch('/api/health', { 
               method: 'HEAD',
               cache: 'no-cache'
             })
               .then(() => {
-                const latency = Date.now() - startTime
                 set((state) => {
                   state.isConnected = true
                   state.lastConnectionCheck = new Date()
@@ -488,8 +483,8 @@ if (isClient) {
     (preferences) => {
       try {
         localStorage.setItem('ui-preferences', JSON.stringify(preferences))
-      } catch {
-        console.warn('Failed to save preferences:', error)
+      } catch (error: unknown) {
+        console.warn('Failed to save preferences:', error instanceof Error ? error.message : 'Unknown error')
       }
     },
     { equalityFn: (a, b) => JSON.stringify(a) === JSON.stringify(b) }

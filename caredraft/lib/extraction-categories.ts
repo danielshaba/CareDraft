@@ -4,8 +4,7 @@ import {
   Calendar, 
   Heart, 
   Users, 
-  ClipboardList,
-  LucideIcon 
+  ClipboardList
 } from 'lucide-react'
 import { ExtractionCategory } from '@/components/shared/SmartExtractionButton'
 

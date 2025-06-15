@@ -20,10 +20,10 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getExtractionCategory } from '@/lib/extraction-categories'
-import { useDraftStore } from '@/lib/stores/draft-store'
+
 import { toast } from '@/hooks/use-toast'
-import { createClient } from '@/lib/supabase'
-import { useAuth } from '@/hooks/use-auth'
+
+
 
 interface ExtractionResult {
   id: string | number
@@ -51,8 +51,8 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
   const [activeTab, setActiveTab] = useState<string>('')
   const [editingState, setEditingState] = useState<EditingState>({})
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
-  const { addToDraft } = useDraftStore()
-  const { user } = useAuth()
+  // const { createDraft } = useDraftStore() // TODO: Fix draft integration
+  // const { user } = useAuth() // TODO: Use for user context
 
   // Filter categories that have results and set initial active tab
   const categoriesWithResults = Object.entries(results).filter(([_, items]) => items.length > 0)
@@ -123,7 +123,11 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
       }
     }))
     
-    toast.success('Content updated', 'Your changes have been saved.')
+    toast({
+      title: 'Content updated',
+      description: 'Your changes have been saved.',
+      variant: 'success'
+    })
   }
 
   const handleCancelEdit = (itemId: string) => {
@@ -159,10 +163,18 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
   const copyToClipboard = async (content: string) => {
     try {
       await navigator.clipboard.writeText(content)
-      toast.success('Copied to clipboard', 'Content has been copied to your clipboard.')
+      toast({
+        title: 'Copied to clipboard',
+        description: 'Content has been copied to your clipboard.',
+        variant: 'success'
+      })
     } catch (error) {
       console.error('Failed to copy content:', error)
-      toast.error('Copy failed', 'Unable to copy content to clipboard.')
+              toast({
+          title: 'Copy failed',
+          description: 'Unable to copy content to clipboard.',
+          variant: 'destructive'
+        })
     }
   }
 
@@ -171,19 +183,26 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
       const category = getExtractionCategory(item.category)
       const content = editingState[`${item.category}-${item.id}`]?.editedContent || item.content
       
-      const draftItem = addToDraft(
+      // TODO: Implement draft integration with proper organization context
+      console.log('Would create draft with:', {
+        title: `${category?.label || 'Unknown Category'} - ${selectedDocumentName}`,
         content,
-        item.category,
-        category?.label || 'Unknown Category'
-      )
+        type: 'document' as const,
+        organizationId: 'temp-org-id' // TODO: Get from auth context
+      })
       
-      toast.success(
-        'Added to draft',
-        `Content added to your draft. Total items: ${draftItem ? '1' : '0'}`
-      )
+      toast({
+        title: 'Added to draft',
+        description: 'Content added to your draft.',
+        variant: 'success'
+      })
     } catch (error) {
       console.error('Failed to add to draft:', error)
-      toast.error('Failed to add to draft', 'Unable to add content to your draft.')
+      toast({
+        title: 'Failed to add to draft',
+        description: 'Unable to add content to your draft.',
+        variant: 'destructive'
+      })
     }
   }
 
@@ -202,7 +221,11 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
       console.log('Saved to content bank:', bankItem)
     } catch (error) {
       console.error('Failed to save to content bank:', error)
-      toast.error('Failed to save to bank', 'Unable to save content to your content bank.')
+      toast({
+        title: 'Failed to save to bank',
+        description: 'Unable to save content to your content bank.',
+        variant: 'destructive'
+      })
     }
   }
 
@@ -211,7 +234,6 @@ export function ExtractionResultsPanel({ results, selectedDocumentName = 'Unknow
     const isEditing = editingState[itemId]?.isEditing || false
     const editedContent = editingState[itemId]?.editedContent || ''
     const isExpanded = expandedItems.has(itemId)
-    const displayContent = isEditing ? editedContent : item.content
 
     return (
       <div key={item.id} className="border rounded-lg p-4 space-y-3 bg-white hover:shadow-sm transition-shadow overflow-hidden max-w-full">

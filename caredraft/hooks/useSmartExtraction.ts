@@ -41,7 +41,7 @@ export function useSmartExtraction() {
         results: mockResults,
         processingTime: Date.now() - startTime
       }
-    } catch {
+    } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Smart extraction failed'
       setError(errorMessage)
       
@@ -65,7 +65,7 @@ export function useSmartExtraction() {
 }
 
 // Enhanced mock data generator for more realistic results
-function generateMockResults(categoryId: string, text: string, documentName: string): SmartExtractionResult[] {
+function generateMockResults(categoryId: string, text: string, _documentName: string): SmartExtractionResult[] {
   const wordCount = text.split(' ').length
   const confidence = 0.75 + Math.random() * 0.2 // 75-95% confidence
   

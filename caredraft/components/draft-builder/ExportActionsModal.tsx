@@ -11,14 +11,11 @@ import {
   Loader2, 
   Eye,
   Share2,
-  Settings,
   FileDown,
   Save,
   SendHorizontal
 } from 'lucide-react'
 import { DocumentExportService, type ExportOptions, type ProposalExportData, type ExportResult } from '@/lib/services/export'
-import { DocumentStorageService, type ExportedDocumentMetadata } from '@/lib/services/document-storage'
-import { EmailDeliveryService, type EmailDeliveryConfig } from '@/lib/services/email-delivery'
 
 interface ExportActionsModalProps {
   isOpen: boolean
@@ -29,6 +26,28 @@ interface ExportActionsModalProps {
 type ExportFormat = 'pdf' | 'docx'
 type ExportAction = 'save-draft' | 'submit-review' | 'export-download' | 'export-email'
 
+interface StoredDocumentData {
+  originalTitle: string
+  exportFormat: ExportFormat
+  fileSize: number
+  id: string
+  filePath: string
+  downloadCount: number
+  version: number
+  createdAt: string
+  updatedAt: string
+  organizationId: string
+  userId: string
+  proposalId: string
+  metadata: {
+    exportedAt: string
+    exportOptions: ExportOptions
+    processingTime: number
+    userAgent: string
+  }
+  isPublic: boolean
+}
+
 interface ExportProgress {
   action: ExportAction | null
   format?: ExportFormat
@@ -36,7 +55,7 @@ interface ExportProgress {
   progress: number
   message: string
   result?: ExportResult
-  storedDocument?: unknown
+  storedDocument?: StoredDocumentData
   showEmailForm?: boolean
 }
 
@@ -49,7 +68,7 @@ export default function ExportActionsModal({ isOpen, onClose, editor }: ExportAc
     message: ''
   })
   const [showPreview, setShowPreview] = useState(false)
-  const [exportOptions, setExportOptions] = useState<ExportOptions>({
+  const [exportOptions] = useState<ExportOptions>({
     format: 'pdf',
     includeMetadata: true,
     includeCompliance: true,
@@ -233,7 +252,7 @@ export default function ExportActionsModal({ isOpen, onClose, editor }: ExportAc
         })
       }
 
-    } catch {
+    } catch (error) {
       setExportProgress({
         action,
         format: currentFormat,
@@ -325,7 +344,7 @@ export default function ExportActionsModal({ isOpen, onClose, editor }: ExportAc
         throw new Error('Failed to store document')
       }
 
-    } catch {
+    } catch (error) {
       setExportProgress(prev => ({
         ...prev,
         status: 'error',

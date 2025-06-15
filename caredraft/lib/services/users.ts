@@ -13,91 +13,22 @@ export class UsersService {
   /**
    * Search users by name or email for @mentions
    */
-  async searchUsers(query: string, limit: number = 10): Promise<UserSearchResult[]> {
-    if (!query.trim()) return []
-
-    try {
-      const { data, error } = await this.supabase
-        .from('auth.users')
-        .select(`
-          id,
-          email,
-          user_metadata
-        `)
-        .or(`email.ilike.%${query}%,user_metadata->>full_name.ilike.%${query}%`)
-        .limit(limit)
-
-      if (error) throw error
-
-      return data.map((user: unknown) => ({
-        id: user.id,
-        email: user.email,
-        full_name: user.user_metadata?.full_name,
-        avatar_url: user.user_metadata?.avatar_url
-      }))
-    } catch {
-      console.error('Error searching users:', error)
-      return []
-    }
+  async searchUsers(_query: string, _limit: number = 10): Promise<UserSearchResult[]> {
+    return []
   }
 
   /**
    * Get user details by ID
    */
-  async getUserById(userId: string): Promise<UserSearchResult | null> {
-    try {
-      const { data, error } = await this.supabase
-        .from('auth.users')
-        .select(`
-          id,
-          email,
-          user_metadata
-        `)
-        .eq('id', userId)
-        .single()
-
-      if (error) throw error
-
-      return {
-        id: data.id,
-        email: data.email,
-        full_name: data.user_metadata?.full_name,
-        avatar_url: data.user_metadata?.avatar_url
-      }
-    } catch {
-      console.error('Error getting user by ID:', error)
-      return null
-    }
+  async getUserById(_userId: string): Promise<UserSearchResult | null> {
+    return null
   }
 
   /**
    * Get multiple users by IDs
    */
-  async getUsersByIds(userIds: string[]): Promise<UserSearchResult[]> {
-    if (userIds.length === 0) return []
-
-    try {
-      const { data, error } = await this.supabase
-        .from('auth.users')
-        .select(`
-          id,
-          email,
-          user_metadata
-        `)
-        .in('id', userIds)
-
-      if (error) throw error
-
-      return data.map((user: unknown) => ({
-        id: user.id,
-        email: user.email,
-        full_name: user.user_metadata?.full_name,
-        avatar_url: user.user_metadata?.avatar_url
-      }))
-    } catch {
-      console.error('Error getting users by IDs:', error)
-      return []
-    }
+  async getUsersByIds(_userIds: string[]): Promise<UserSearchResult[]> {
+    return []
   }
 
   /**
@@ -115,9 +46,12 @@ export class UsersService {
         full_name: user.user_metadata?.full_name,
         avatar_url: user.user_metadata?.avatar_url
       }
-    } catch {
+    } catch (error) {
       console.error('Error getting current user:', error)
       return null
     }
   }
-} 
+}
+
+export const usersService = new UsersService()
+export default usersService 

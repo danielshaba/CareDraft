@@ -24,7 +24,7 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
     if (!editor) return
     
     // Get current cursor position
-    const { from } = editor.state.selection
+    // const { from } = editor.state.selection
     
     // Insert content at cursor position
     editor.chain().focus().insertContent(content).run()
@@ -78,7 +78,6 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
         isOpen={isAnswerBankOpen}
         onClose={() => setIsAnswerBankOpen(false)}
         onInsert={handleInsertAnswer}
-        editor={editor}
       />
     </>
   )

@@ -3,18 +3,17 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  CheckCircleIcon,
-  PencilIcon,
-  DocumentTextIcon,
-  SparklesIcon,
-  GlobeAltIcon,
-  MagnifyingGlassIcon,
-  SpeakerWaveIcon,
-  ShieldCheckIcon,
-  DocumentDuplicateIcon,
-  BookOpenIcon,
-  BeakerIcon
-} from '@heroicons/react/24/outline'
+  CheckCircle,
+  Pencil,
+  FileText,
+  Sparkles,
+  Globe,
+  Search,
+  Volume2,
+  Shield,
+  Copy,
+  Beaker
+} from 'lucide-react'
 import { useFactCheck } from './fact-check/FactCheckProvider'
 
 interface Position {
@@ -50,7 +49,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [loading, setLoading] = useState<string | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
-  const { performFactCheck, isLoading } = useFactCheck()
+  const { performFactCheck } = useFactCheck()
 
   const menuActions: MenuAction[] = [
     // EVIDENCING Section
@@ -58,7 +57,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'fact-check',
       label: 'Fact Check',
       description: 'Verify accuracy with AI sources',
-      icon: CheckCircleIcon,
+      icon: CheckCircle,
       category: 'evidencing',
       shortcut: 'F'
     },
@@ -68,7 +67,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'improve',
       label: 'Improve',
       description: 'Enhance clarity and impact',
-      icon: PencilIcon,
+      icon: Pencil,
       category: 'editing',
       shortcut: 'I'
     },
@@ -76,7 +75,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'expand',
       label: 'Expand',
       description: 'Add detail and examples',
-      icon: DocumentTextIcon,
+      icon: FileText,
       category: 'editing',
       shortcut: 'E'
     },
@@ -84,7 +83,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'summarize',
       label: 'Summarize',
       description: 'Create concise version',
-      icon: DocumentDuplicateIcon,
+      icon: Copy,
       category: 'editing',
       shortcut: 'S'
     },
@@ -94,7 +93,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'incorporate',
       label: 'Incorporate',
       description: 'Merge additional content seamlessly',
-      icon: DocumentDuplicateIcon,
+      icon: Copy,
       category: 'inputs',
       shortcut: 'Ctrl+I'
     },
@@ -102,7 +101,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'we-will',
       label: 'We Will',
       description: 'Convert to action-oriented statements',
-      icon: SpeakerWaveIcon,
+      icon: Volume2,
       category: 'inputs',
       shortcut: 'W'
     },
@@ -110,7 +109,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'translate',
       label: 'Translate',
       description: 'Multi-language support',
-      icon: GlobeAltIcon,
+      icon: Globe,
       category: 'inputs',
       shortcut: 'T'
     },
@@ -120,7 +119,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'tone-voice',
       label: 'CareDraft Tone of Voice',
       description: 'Apply brand voice standards',
-      icon: SparklesIcon,
+      icon: Sparkles,
       category: 'custom',
       shortcut: 'V'
     },
@@ -128,7 +127,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'replace-words',
       label: 'Replace Banned Words',
       description: 'Use dignified alternatives',
-      icon: ShieldCheckIcon,
+      icon: Shield,
       category: 'custom',
       shortcut: 'R'
     },
@@ -138,7 +137,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'pure-completion',
       label: 'Pure Completion',
       description: 'AI-powered text continuation',
-      icon: BeakerIcon,
+      icon: Beaker,
       category: 'other',
       shortcut: 'C'
     },
@@ -146,7 +145,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       id: 'search',
       label: 'Search',
       description: 'Find relevant knowledge',
-      icon: MagnifyingGlassIcon,
+      icon: Search,
       category: 'other',
       shortcut: 'Ctrl+F'
     }

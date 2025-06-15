@@ -1,5 +1,8 @@
 'use client'
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -8,7 +11,7 @@ import { Mail, CheckCircle, AlertCircle, RefreshCw, ArrowLeft } from 'lucide-rea
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import CareDraftLogo from '@/components/ui/CareDraftLogo'
+import { Logo } from '@/components/ui/Logo'
 import { useOnboardingStore } from '@/lib/stores/onboarding-store'
 
 export default function VerifyEmailPage() {
@@ -111,7 +114,7 @@ export default function VerifyEmailPage() {
         <Card className="border-0 shadow-2xl bg-white/95 backdrop-blur-sm">
           <CardHeader className="text-center pb-4">
             <div className="flex justify-center mb-4">
-              <CareDraftLogo className="h-12 w-auto" />
+              <Logo size="lg" variant="full" />
             </div>
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 bg-brand-light rounded-full flex items-center justify-center">
@@ -233,4 +236,5 @@ export default function VerifyEmailPage() {
       </motion.div>
     </div>
   )
-} 
+}
+

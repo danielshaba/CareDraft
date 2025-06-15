@@ -47,7 +47,7 @@ export function useTextExtraction() {
       }
       
       return result
-    } catch {
+    } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Text extraction failed'
       setError(errorMessage)
       

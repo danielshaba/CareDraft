@@ -20,18 +20,18 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // CareDraft Brand Colors
+        // CareDraft Official Brand Colors (Updated to align with #2A6F6F)
         brand: {
           50: '#f0fdfd',   // Very light teal
           100: '#ccfbf1',  // Light mint
           200: '#99f6e4',  // Lighter teal
           300: '#5eead4',  // Medium light teal
           400: '#2dd4bf',  // Medium teal
-          500: '#3B9C9C',  // Primary brand color
-          600: '#0d9488',  // Darker teal
-          700: '#0f766e',  // Dark teal
-          800: '#115e59',  // Very dark teal
-          900: '#134e4a',  // Darkest teal
+          500: '#2A6F6F',  // Official CareDraft primary color
+          600: '#2A6F6F',  // Official CareDraft primary color
+          700: '#236060',  // Darker official teal
+          800: '#1a4848',  // Very dark teal
+          900: '#133838',  // Darkest teal
         },
         'brand-primary': {
           50: '#f0fdfd',
@@ -39,11 +39,11 @@ const config: Config = {
           200: '#99f6e4',
           300: '#5eead4',
           400: '#2dd4bf',
-          500: '#3B9C9C',  // Primary #3B9C9C
-          600: '#0d9488',
-          700: '#0f766e',
-          800: '#115e59',
-          900: '#134e4a',
+          500: '#2A6F6F',  // Official CareDraft primary #2A6F6F
+          600: '#2A6F6F',  // Official CareDraft primary #2A6F6F
+          700: '#236060',  // Darker official teal
+          800: '#1a4848',  // Very dark teal
+          900: '#133838',  // Darkest teal
         },
         'brand-accent': {
           50: '#f0fdfd',
@@ -51,14 +51,14 @@ const config: Config = {
           200: '#99f6e4', 
           300: '#5eead4',
           400: '#2dd4bf',
-          500: '#2A6F6F',  // Accent #2A6F6F
-          600: '#0f766e',
-          700: '#134e4a',
-          800: '#115e59',
-          900: '#0c4a4e',
+          500: '#2A6F6F',  // Official CareDraft primary #2A6F6F
+          600: '#2A6F6F',  // Official CareDraft primary #2A6F6F
+          700: '#236060',  // Darker official teal
+          800: '#1a4848',  // Very dark teal
+          900: '#133838',  // Darkest teal
         },
         'brand-secondary': {
-          50: '#EAF7F7',   // Secondary #EAF7F7
+          50: '#EAF7F7',   // Official light teal #EAF7F7
           100: '#d1fae5',
           200: '#a7f3d0',
           300: '#6ee7b7',

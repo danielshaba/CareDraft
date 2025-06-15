@@ -6,8 +6,6 @@ import {
   Eye, 
   Send, 
   Archive,
-  Clock,
-  CheckCircle,
   AlertCircle
 } from 'lucide-react'
 import { ProposalStatus } from '@/lib/database.types'
@@ -57,11 +55,11 @@ export default function ProposalStatusBadge({
         return {
           label: 'Submitted',
           icon: Send,
-          bgColor: 'bg-green-100',
-          textColor: 'text-green-700',
-          borderColor: 'border-green-200',
-          hoverBg: 'hover:bg-green-200',
-          dotColor: 'bg-green-500'
+          bgColor: 'bg-teal-100',
+          textColor: 'text-teal-700',
+          borderColor: 'border-teal-200',
+          hoverBg: 'hover:bg-teal-200',
+          dotColor: 'bg-teal-600'
         }
       case 'archived':
         return {
@@ -187,6 +185,8 @@ export function ProposalStatusSelector({
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
+    
+    return undefined
   }, [isOpen])
 
   const handleStatusSelect = (status: ProposalStatus) => {

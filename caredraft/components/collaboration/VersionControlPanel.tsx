@@ -180,7 +180,7 @@ export default function VersionControlPanel({
       {showDiff && diffVersion1 && (
         <DiffViewer
           version1={diffVersion1}
-          version2={diffVersion2}
+          version2={diffVersion2 || undefined}
           onClose={handleCloseDiff}
         />
       )}

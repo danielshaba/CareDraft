@@ -71,7 +71,7 @@ function PDFPreview({ filePath, fileName }: PDFPreviewProps) {
   const handleDownload = useCallback(async () => {
     try {
       await downloadFile(STORAGE_BUCKETS.TENDER_DOCUMENTS, filePath)
-    } catch {
+    } catch (error) {
       console.error('Download failed:', error)
     }
   }, [filePath, fileName])
@@ -182,7 +182,7 @@ function DocumentFallback({ fileName, fileType, filePath }: { fileName: string, 
   const handleDownload = useCallback(async () => {
     try {
       await downloadFile(STORAGE_BUCKETS.TENDER_DOCUMENTS, filePath)
-    } catch {
+    } catch (error) {
       console.error('Download failed:', error)
     }
   }, [filePath, fileName])

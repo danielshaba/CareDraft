@@ -12,7 +12,6 @@ import {
   Clock, 
   User, 
   FileText, 
-  Calendar,
   AlertTriangle,
   Users,
   Settings,
@@ -48,13 +47,28 @@ export function NotificationPanel({
   className = ''
 }: NotificationPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const [isClient, setIsClient] = useState(false);
+  
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  
+  // Only access notification context on client side to prevent SSR issues
   const { 
     realtimeNotifications, 
     unreadCount, 
     isConnected,
     connectionError 
-  } = useNotificationContext();
-  const { markAsRead, clearNotifications, removeNotification } = useNotificationActions();
+  } = isClient ? useNotificationContext() : {
+    realtimeNotifications: [],
+    unreadCount: 0,
+    isConnected: false,
+    connectionError: null
+  };
+  const { markAsRead, clearNotifications } = isClient ? useNotificationActions() : {
+    markAsRead: () => {},
+    clearNotifications: () => {}
+  };
   
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
 
@@ -71,6 +85,8 @@ export function NotificationPanel({
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
+    } else {
+      return () => {};
     }
   }, [isOpen, onClose]);
 

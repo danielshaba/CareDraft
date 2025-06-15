@@ -63,12 +63,12 @@ export async function initializeStorageBuckets() {
   
   const results = []
   
-  for (const [bucketKey, bucketId] of Object.entries(STORAGE_BUCKETS)) {
+  for (const [_bucketKey, bucketId] of Object.entries(STORAGE_BUCKETS)) {
     const config = BUCKET_CONFIG[bucketId]
     
     try {
       // Check if bucket exists
-      const { data: existingBucket, error: listError } = await supabase
+      const { data: existingBucket, error: _listError } = await supabase
         .storage
         .getBucket(bucketId)
       
@@ -94,7 +94,7 @@ export async function initializeStorageBuckets() {
         console.log(`✅ Created bucket '${bucketId}' successfully`)
         results.push({ bucket: bucketId, status: 'created', error: null, data })
       }
-    } catch {
+    } catch (err) {
       console.error(`❌ Exception creating bucket '${bucketId}':`, err)
       results.push({ bucket: bucketId, status: 'exception', error: err })
     }
@@ -193,7 +193,7 @@ export async function uploadFile(
       data, 
       filePath: data.path,
     }
-  } catch {
+  } catch (err) {
     return { error: err instanceof Error ? err.message : 'Upload failed' }
   }
 }
@@ -214,7 +214,7 @@ export async function downloadFile(bucket: StorageBucket, filePath: string) {
     }
     
     return { data }
-  } catch {
+  } catch (err) {
     return { error: err instanceof Error ? err.message : 'Download failed' }
   }
 }
@@ -256,7 +256,7 @@ export async function createSignedUrl(
     }
     
     return { data }
-  } catch {
+  } catch (err) {
     return { error: err instanceof Error ? err.message : 'Failed to create signed URL' }
   }
 }
@@ -280,7 +280,7 @@ export async function listFiles(bucket: StorageBucket, folder?: string, limit: n
     }
     
     return { data }
-  } catch {
+  } catch (err) {
     return { error: err instanceof Error ? err.message : 'Failed to list files' }
   }
 }
@@ -302,7 +302,7 @@ export async function deleteFile(bucket: StorageBucket, filePaths: string | stri
     }
     
     return { data }
-  } catch {
+  } catch (err) {
     return { error: err instanceof Error ? err.message : 'Failed to delete file' }
   }
 }
@@ -327,7 +327,7 @@ export async function getFileMetadata(bucket: StorageBucket, filePath: string) {
     
     const file = data.find(f => f.name === filePath.split('/').pop())
     return { data: file }
-  } catch {
+  } catch (err) {
     return { error: err instanceof Error ? err.message : 'Failed to get file metadata' }
   }
 } 

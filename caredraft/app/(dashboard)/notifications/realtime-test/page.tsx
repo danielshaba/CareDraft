@@ -8,6 +8,10 @@ import { Bell, Send, Trash2, Settings, RefreshCw, Users } from 'lucide-react';
 import { RealtimeNotificationProvider, useNotificationContext } from '../../../../components/notifications/RealtimeNotificationProvider';
 import { NotificationIndicator, NotificationCounter, ConnectionStatus } from '../../../../components/notifications/NotificationIndicator';
 
+// Disable static generation for this page since it has client-side functionality
+export const dynamic = 'force-dynamic'
+
+
 // Test component that uses the notification context
 function NotificationTestContent() {
   const {

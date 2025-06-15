@@ -7,7 +7,6 @@ import {
   Calendar, 
   Share2, 
   Trash2, 
-  Eye, 
   Filter,
   ChevronDown,
   Clock,
@@ -16,7 +15,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/form-input'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorDisplay } from '@/components/ui/error-display'
@@ -44,14 +43,12 @@ export function ResearchSessionSidebar({
     isLoading,
     error,
     selectedSessionIds,
-    showCreateModal,
     filters,
     pagination,
     loadSessions,
     loadStats,
     deleteSession,
     duplicateSession,
-    toggleSessionSelection,
     clearSelection,
     setShowCreateModal,
     setShowShareModal,

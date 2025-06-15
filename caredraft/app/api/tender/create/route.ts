@@ -20,7 +20,10 @@ const createTenderSchema = z.object({
     key_dates: z.array(z.object({
       date: z.string(),
       description: z.string()
-    })).optional()
+    })).optional(),
+    extraction_confidence: z.number().min(0).max(100).optional(),
+    document_count: z.number().positive().optional(),
+    modified_fields: z.array(z.string()).optional()
   }).optional()
 })
 
@@ -62,18 +65,51 @@ export async function POST(request: NextRequest) {
 
     // If parsed metadata is provided, store it
     if (validatedData.parsed_metadata) {
+      // Prepare evaluation criteria for storage
+      const evaluationCriteria = validatedData.parsed_metadata.evaluation_criteria 
+        ? validatedData.parsed_metadata.evaluation_criteria.reduce((acc, item) => {
+            acc[item.criteria] = item.weight
+            return acc
+          }, {} as Record<string, number>)
+        : {}
+
       const { error: metadataError } = await supabase
         .from('tender_metadata')
         .insert({
-          workflow_id: workflow.id,
-          evaluation_criteria: validatedData.parsed_metadata.evaluation_criteria || [],
-          compliance_requirements: validatedData.parsed_metadata.compliance_requirements || [],
-          key_dates: validatedData.parsed_metadata.key_dates || []
+          tender_workflow_id: workflow.id,
+          tender_name: validatedData.title,
+          issuing_body: validatedData.issuing_authority,
+          submission_deadline: validatedData.deadline ? new Date(validatedData.deadline).toISOString() : null,
+          contract_value_min: validatedData.contract_value ? Math.round(validatedData.contract_value * 100) : null, // Convert to cents
+          evaluation_criteria: evaluationCriteria,
+          scoring_weightings: evaluationCriteria, // Store same data in scoring_weightings for compatibility
+          compliance_requirements: validatedData.parsed_metadata.compliance_requirements || []
         })
 
       if (metadataError) {
         console.error('Error storing tender metadata:', metadataError)
         // Continue anyway - metadata is not critical
+      }
+
+      // Store key dates separately if needed - for now they go in the workflow
+      if (validatedData.parsed_metadata.key_dates && validatedData.parsed_metadata.key_dates.length > 0) {
+        // Store additional analytics data about AI extraction
+        const { error: analyticsError } = await supabase
+          .from('tender_analytics')
+          .insert({
+            tender_workflow_id: workflow.id,
+            team_members: [{
+              extraction_confidence: validatedData.parsed_metadata.extraction_confidence || 75,
+              document_count: validatedData.parsed_metadata.document_count || 1,
+              modified_fields: validatedData.parsed_metadata.modified_fields || [],
+              key_dates: validatedData.parsed_metadata.key_dates
+            }]
+          })
+
+        if (analyticsError) {
+          console.error('Error storing AI analytics:', analyticsError)
+          // Non-critical, continue
+        }
       }
     }
 

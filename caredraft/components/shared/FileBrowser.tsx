@@ -21,7 +21,8 @@ import {
   type StorageBucket
 } from '@/lib/storage'
 import { useUser } from '@/components/providers/MinimalAuthProvider'
-import { useToast } from '@/components/ui/toast'
+import { useToast } from '@/hooks/use-toast'
+
 
 // Define FileMetadata type based on Supabase storage response
 interface FileMetadata {
@@ -176,6 +177,7 @@ export function FileBrowser({
   const [searchTerm, setSearchTerm] = useState('')
   const [error, setError] = useState<string | null>(null)
   const user = useUser()
+  const { toast } = useToast()
 
   const loadFiles = useCallback(async () => {
     if (!user) return
@@ -191,10 +193,14 @@ export function FileBrowser({
       }
 
       setFiles(result.data || [])
-    } catch {
+    } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to load files'
       setError(errorMessage)
-      toast.error(errorMessage)
+      toast({
+        title: 'Error loading files',
+        description: errorMessage,
+        variant: 'destructive'
+      })
     } finally {
       setLoading(false)
     }
@@ -217,7 +223,11 @@ export function FileBrowser({
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
-        toast.success(`Downloaded ${file.name}`)
+        toast({
+          title: 'Download successful',
+          description: `Downloaded ${file.name}`,
+          variant: 'success'
+        })
         return
       }
 
@@ -236,11 +246,19 @@ export function FileBrowser({
         link.click()
         document.body.removeChild(link)
         
-        toast.success(`Downloaded ${file.name}`)
+        toast({
+          title: 'Download successful',
+          description: `Downloaded ${file.name}`,
+          variant: 'success'
+        })
       }
-    } catch {
+    } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Download failed'
-      toast.error(errorMessage)
+      toast({
+        title: 'Download failed',
+        description: errorMessage,
+        variant: 'destructive'
+      })
     }
   }, [bucket, user])
 
@@ -259,10 +277,18 @@ export function FileBrowser({
       }
 
       setFiles(prev => prev.filter(f => f.name !== file.name))
-      toast.success(`Deleted ${file.name}`)
-    } catch {
+      toast({
+        title: 'File deleted',
+        description: `Deleted ${file.name}`,
+        variant: 'success'
+      })
+    } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Delete failed'
-      toast.error(errorMessage)
+      toast({
+        title: 'Delete failed',
+        description: errorMessage,
+        variant: 'destructive'
+      })
     }
   }, [bucket, user])
 

@@ -482,7 +482,7 @@ export default function DocumentManagerInterface() {
       }))
       
       setDocuments(prev => [...newDocuments, ...prev])
-    } catch {
+    } catch (error) {
       console.error('Upload failed:', error)
     } finally {
       setIsUploading(false)

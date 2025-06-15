@@ -122,7 +122,7 @@ export function RealtimeNotificationProvider({
       if (audioElement) {
         try {
           await audioElement.play();
-        } catch {
+        } catch (error) {
           if (debug) {
             console.log('[NotificationProvider] Could not play notification sound:', error);
           }

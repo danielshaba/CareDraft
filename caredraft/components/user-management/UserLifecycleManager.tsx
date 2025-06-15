@@ -6,18 +6,15 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useToast } from '@/components/ui/toast'
-import { useAuth } from '@/components/providers/MinimalAuthProvider'
+
 import { 
-  Users, UserX, UserCheck, ShieldAlert, Download, Calendar, Clock, 
-  MoreVertical, Search, Filter, AlertTriangle, CheckCircle, 
-  FileDown, BarChart3, Activity, User, Shield
+  UserX, UserCheck, Download, MoreVertical, Filter, CheckCircle, 
+  BarChart3, Activity, User
 } from 'lucide-react'
 
 export function UserLifecycleManager() {
-  const { user } = useAuth()
   const toast = useToast()
   const [activeTab, setActiveTab] = useState('deactivated')
-  const [loading, setLoading] = useState(false)
 
   // Mock data for demonstration
   const mockDeactivatedUsers = [
@@ -62,7 +59,7 @@ export function UserLifecycleManager() {
     toast.success('User Reactivated', `User ${userId} has been successfully reactivated`)
   }
 
-  const handleExportData = (userId: string) => {
+  const handleExportData = (_userId: string) => {
     toast.info('Export Started', 'User data export has been initiated')
   }
 

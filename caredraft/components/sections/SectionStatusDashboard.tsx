@@ -3,7 +3,6 @@
 import React from 'react'
 import { 
   BarChart3, 
-  TrendingUp, 
   Clock, 
   AlertTriangle,
   Users,
@@ -93,12 +92,14 @@ export default function SectionStatusDashboard({
       }
 
       // User assignment
-      if (section.owner_id) {
-        uniqueUsers.add(section.owner_id)
+      if (section.assigned_to) {
+        uniqueUsers.add(section.assigned_to)
       }
 
-      // Word count
-      totalWordCount += section.current_word_count
+      // Word count (using content length as approximation)
+      if (section.content) {
+        totalWordCount += section.content.split(' ').length
+      }
     })
 
     metrics.assignedUsers = uniqueUsers.size
